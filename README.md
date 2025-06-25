@@ -1,12 +1,12 @@
 # Confia!
 
 # Nome dos Integrantes:
-Bruno Pimenta - 2230
-Breno VIllela - 2230
+Bruno Pimenta - 22300147
+Breno VIllela - 22301356
 Gabriel Victor - 22300473
-Samuel Brito - 2230
-Pedro Borges - 2230
-Rafael Augusto - 2230
+Samuel Brito - 22301186
+Pedro Borges - 22300180
+Rafael Augusto - 22301046
 
 # Turma:
 3A2

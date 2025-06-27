@@ -14,22 +14,22 @@
 # Checklist:
 
 - [] Editor de Texto Simples
-- [] Feedback sobre Notícias
-- [x] Página de "Sobre Nós"
-- [] Ferramenta de Pesquisa
-- [] Definir Categoria e Tags
-- [] Seção de "Últimas Notícias"
 - [] Resumos Inteligentes
+- [] Permitir Upload de Imagens
+- [] Feedback sobre Notícias
+- [] Comparação de Fontes
+- [] Discussões e Comentários
 - [] Índice de Confiabilidade das Fontes
+- [] Análise de Conflitos Políticos
+- [] Ferramenta de Pesquisa
+- [] Botão de compartilhamento
+- [] Calendário de Eventos Políticos
+- [] Resumo de Entrevistas Políticas
+- [] Análise de Discurso de Candidatos
+- [] Página de "Sobre Nós"
+- [x] Tema Claro e Escuro
+- [] Definir Categoria e Tags
+- [] Exibição de "Notícias Relacionadas"
+- [] Seção de "Últimas Notícias"
 - [] Interface de Navegação Rápida
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
-- [] 
 - [] 

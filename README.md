@@ -29,7 +29,6 @@
 - [] Página de "Sobre Nós"
 - [x] Tema Claro e Escuro
 - [] Definir Categoria e Tags
-- [] 
 - [] Exibição de "Notícias Relacionadas"
 - [] Seção de "Últimas Notícias"
 - [] Interface de Navegação Rápida

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Artigo - Confia!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    </head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+    <div class="lg:ml-64">
+        <main class="container mx-auto px-4 py-12">
+            <article class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8">
+                <h1 id="artigo-titulo" class="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-white mb-4">
+                    Carregando Título...
+                </h1>
+                
+               <img id="artigo-imagem" src="" alt="Imagem de capa" class="max-w-xl mx-auto h-auto rounded-lg shadow-md mb-8 hidden">
+                
+                <div id="artigo-conteudo" class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                    <p>Carregando conteúdo...</p>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        // Função para carregar e exibir a notícia
+        async function carregarNoticia() {
+            // 1. Pega o ID da notícia da URL (ex: artigo.html?id=12345)
+            const urlParams = new URLSearchParams(window.location.search);
+            const noticiaId = urlParams.get('id');
+
+            if (!noticiaId) {
+                document.getElementById('artigo-titulo').innerText = "Erro: ID da notícia não encontrado.";
+                return;
+            }
+
+            try {
+                // 2. Busca os dados da notícia na nossa API
+                const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}`);
+                if (!response.ok) {
+                    throw new Error('Notícia não encontrada');
+                }
+                const noticia = await response.json();
+
+                // 3. Preenche a página com os dados recebidos
+                document.title = noticia.titulo + " - Confia!"; // Atualiza o título da aba
+                document.getElementById('artigo-titulo').innerText = noticia.titulo;
+                document.getElementById('artigo-conteudo').innerHTML = noticia.conteudo; // Usamos innerHTML para renderizar o HTML do editor
+
+                // Exibe a imagem se ela existir
+                const imgElement = document.getElementById('artigo-imagem');
+                if (noticia.imagemCapa) {
+                    // Substitui barras invertidas por barras normais para compatibilidade web
+                    const imagePath = noticia.imagemCapa.replace(/\\/g, '/');
+                    imgElement.src = `http://localhost:3000/${imagePath}`; // Assumindo que o backend servirá a imagem
+                    imgElement.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                document.getElementById('artigo-titulo').innerText = "Erro ao carregar a notícia.";
+                console.error(error);
+            }
+        }
+
+        // Roda a função quando a página carrega
+        window.onload = carregarNoticia;
+    </script>
+</body>
+</html>

@@ -12,28 +12,12 @@
         }
     </script>
     <style>
-        .side {
-            transition: transform 0.3s ease-in-out;
-        }
-        .side-open {
-            transform: translateX(0) !important;
-        }
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .s-drop {
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 20;
-        }
-        .s-bar:focus-within .s-drop {
-            display: block; 
-        }
+        .side { transition: transform 0.3s ease-in-out; }
+        .side-open { transform: translateX(0) !important; }
+        .overlay { transition: opacity 0.3s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .s-drop { display: none; position: absolute; width: 100%; z-index: 20; }
+        .s-bar:focus-within .s-drop { display: block;  }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
@@ -46,24 +30,12 @@
         </div>
 
         <nav class="flex-grow p-4 space-y-2 mt-4">
-            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3"></i> Início
-            </a>
-            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
-            </a>
-            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
-            </a>
-            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
-            </a>
-            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
-            </a>
-            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
-            </a>
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
         </nav>
     </aside>
 
@@ -72,42 +44,27 @@
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
-                    <i class="fas fa-bars"></i>
-                </button>
-                
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
                 <div class="s-bar relative w-full max-w-lg mx-4">
-                    <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Pesquisar..." 
-                               class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500">
-                            <i class="fas fa-search"></i>
-                        </button>
                     </div>
-                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
-                        <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
-                    </div>
-                </div>
-
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    <i class="fas fa-sun" id="theme-icon"></i>
-                </button>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
             </div>
         </header>
 
         <main class="container mx-auto px-4 py-10">
             <section class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8">
-              <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-4 flex items-center">
-                <i class="fas fa-comment-alt mr-3 text-blue-500"></i> Envie seu Feedback
-              </h2>
+              <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-comment-alt mr-3 text-blue-500"></i> Envie seu Feedback</h2>
               <p class="text-gray-600 dark:text-gray-400 mb-8">Sua opinião é fundamental para aprimorarmos nosso conteúdo e a plataforma. Agradecemos por dedicar um momento para compartilhar suas impressões conosco.</p>
         
-              <form class="space-y-6">
-                <div>
-                  <label for="article" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Reportagem Avaliada (Opcional)</label>
-                  <input type="text" id="article" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o título ou link da reportagem" />
+              <form id="feedback-form" class="space-y-6">
+                <div class="relative">
+                    <label for="article" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Reportagem Avaliada (Opcional)</label>
+                    <input type="text" id="article"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Comece a digitar o título da notícia..." autocomplete="off" />
+                    <div id="feedback-search-results" class="absolute z-10 w-full bg-white dark:bg-slate-700 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1 border border-gray-300 dark:border-slate-600">
+                        </div>
                 </div>
-        
                 <div>
                   <label for="rating" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Sua Avaliação Geral</label>
                   <select id="rating" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -119,158 +76,144 @@
                     <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
                   </select>
                 </div>
-        
                 <div>
                   <label for="comment" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Comentário</label>
                   <textarea id="comment" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deixe seu comentário, sugestão ou crítica..."></textarea>
                 </div>
-        
                 <div class="flex justify-end pt-4">
-                  <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                    <i class="fas fa-paper-plane mr-2"></i> Enviar Feedback
-                  </button>
+                  <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"><i class="fas fa-paper-plane mr-2"></i> Enviar Feedback</button>
                 </div>
               </form>
             </section>
         </main>
 
         <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
-                        <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="g.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
-                    <p>&copy; 2025 NewsHub. Todos os direitos reservados.</p>
-                </div>
-            </div>
-        </footer>
+            </footer>
     </div>
 
     <script>
+        // Lógica do Template (Menu, Tema) que já existia
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResults = document.getElementById('searchResults');
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('theme-icon');
         const html = document.querySelector('html');
 
-        // Lógica do Menu Lateral
-        function openMenu() {
-            sidebar.classList.add('side-open');
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('opacity-100');
-        }
-
-        function closeMenu() {
-            sidebar.classList.remove('side-open');
-            overlay.classList.add('pointer-events-none');
-            overlay.classList.remove('opacity-100');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebar.classList.contains('side-open') ? closeMenu() : openMenu();
-        });
-        
+        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
         overlay.addEventListener('click', closeMenu);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('side-open')) {
-                closeMenu();
-            }
-        });
-
-        // Lógica da Barra de Busca (simples, sem resultados nesta página)
-        function performSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            searchResults.innerHTML = '';
-            if (query.length > 2) {
-                searchResults.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">A busca funciona na página principal.</div>`;
-            }
-        }
-        searchInput.addEventListener('input', performSearch);
-        searchButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-
-        // Lógica do Tema (Claro/Escuro)
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
         function toggleTheme() {
             if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                html.classList.remove('dark'); html.classList.add('light');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
                 localStorage.setItem('theme', 'light');
             } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                html.classList.remove('light'); html.classList.add('dark');
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
                 localStorage.setItem('theme', 'dark');
             }
         }
-
         themeToggle.addEventListener('click', toggleTheme);
-
-        // Carregar tema salvo no localStorage
         window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-                if (savedTheme === 'dark') {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.classList.add(savedTheme);
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
             } else {
-                // Tema padrão, caso nenhum esteja salvo
-                html.classList.add('light');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
             }
+        });
+
+        // --- CÓDIGO NOVO PARA O FORMULÁRIO DE FEEDBACK ---
+        const feedbackForm = document.getElementById('feedback-form');
+
+        feedbackForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impede o recarregamento da página
+
+            const artigoAvaliado = document.getElementById('article').value;
+            const avaliacao = document.getElementById('rating').value;
+            const comentario = document.getElementById('comment').value;
+
+            if (!avaliacao || !comentario) {
+                alert('Por favor, preencha sua avaliação e o comentário.');
+                return;
+            }
+
+            const feedbackData = {
+                artigoAvaliado,
+                avaliacao,
+                comentario
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(feedbackData)
+                });
+
+                if (response.ok) {
+                    alert('Obrigado pelo seu feedback!');
+                    feedbackForm.reset(); // Limpa o formulário
+                } else {
+                    alert('Ocorreu um erro ao enviar seu feedback. Tente novamente.');
+                }
+            } catch (error) {
+                console.error('Erro de conexão:', error);
+                alert('Erro de conexão com o servidor.');
+            }
+        });
+
+                const articleInput = document.getElementById('article');
+        const searchResultsContainer = document.getElementById('feedback-search-results');
+
+        // Adiciona um "escutador" para o evento de digitação no campo
+        articleInput.addEventListener('input', async () => {
+            const query = articleInput.value.trim();
+            searchResultsContainer.innerHTML = ''; // Limpa resultados anteriores
+
+            if (query.length < 3) {
+                return; // Só busca com 3+ caracteres
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
+                const resultados = await response.json();
+
+                if (resultados.length > 0) {
+                    resultados.forEach(noticia => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'p-3 hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer text-gray-800 dark:text-gray-200';
+                        resultItem.innerText = noticia.titulo;
+
+                        // Ação de clique: preenche o campo e limpa os resultados
+                        resultItem.addEventListener('click', () => {
+                            articleInput.value = noticia.titulo;
+                            searchResultsContainer.innerHTML = '';
+                        });
+
+                        searchResultsContainer.appendChild(resultItem);
+                    });
+                } else {
+                    searchResultsContainer.innerHTML = '<div class="p-3 text-gray-500">Nenhum artigo encontrado.</div>';
+                }
+
+            } catch (error) {
+                console.error('Erro ao buscar artigos:', error);
+            }
+        });
+
+        // Opcional: esconde os resultados quando o usuário clica fora
+        articleInput.addEventListener('blur', () => {
+            // Adiciona um pequeno atraso para permitir que o clique no resultado seja registrado
+            setTimeout(() => {
+                searchResultsContainer.innerHTML = '';
+            }, 200);
         });
     </script>
 </body>

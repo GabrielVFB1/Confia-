@@ -19,12 +19,14 @@ mongoose.connect(MONGO_URI)
 app.use('/uploads', express.static('uploads'));
 
 // Importar o arquivo de rotas de notícias
-const noticiasRoutes = require('./routes/noticias'); 
+const noticiasRoutes = require('./routes/noticias');
+const feedbackRoutes = require('./routes/feedback'); 
 
 // --- A LINHA CRÍTICA QUE ESTAVA FALTANDO VAI AQUI ---
 // Diz ao Express que todas as requisições que começam com /api/noticias
 // devem ser gerenciadas pelo nosso arquivo noticiasRoutes.
 app.use('/api/noticias', noticiasRoutes);
+app.use('/api/feedback', feedbackRoutes);
 // ----------------------------------------------------
 
 // Rota de teste (pode ser removida se não for mais necessária)

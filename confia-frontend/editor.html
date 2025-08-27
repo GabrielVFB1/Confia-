@@ -214,168 +214,122 @@
     </div>
 
     <script>
-        // Lógica do Template (Menu, Tema)
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
+    // --- SELETORES GLOBAIS (MENU, TEMA) ---
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.querySelector('html');
 
-        function openMenu() {
-            sidebar.classList.add('side-open');
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('opacity-100');
-        }
-
-        function closeMenu() {
-            sidebar.classList.remove('side-open');
-            overlay.classList.add('pointer-events-none');
-            overlay.classList.remove('opacity-100');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebar.classList.contains('side-open') ? closeMenu() : openMenu();
-        });
-        
-        overlay.addEventListener('click', closeMenu);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('side-open')) {
-                closeMenu();
-            }
-        });
-
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        themeToggle.addEventListener('click', toggleTheme);
-
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-                if (savedTheme === 'dark') {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
-            } else {
-                html.classList.add('light');
-                themeIcon.classList.add('fa-sun');
-            }
-        });
-
-        // Lógica Específica da Página do Editor
-        const imageUpload = document.getElementById('image-upload');
-        const fileNameSpan = document.getElementById('file-name');
-        const imagePreview = document.getElementById('image-preview');
-
-        imageUpload.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                fileNameSpan.textContent = file.name;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = imagePreview.querySelector('img');
-                    img.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            } else {
-                fileNameSpan.textContent = 'Nenhum arquivo selecionado';
-                imagePreview.classList.add('hidden');
-            }
-        });
-
-
-
-         // 1. Pegar referências para os elementos do formulário
+    // --- SELETORES DA PÁGINA DO EDITOR ---
+    const imageUpload = document.getElementById('image-upload');
+    const fileNameSpan = document.getElementById('file-name');
+    const imagePreview = document.getElementById('image-preview');
     const publishButton = document.getElementById('publish-button');
     const articleTitle = document.getElementById('article-title');
     const articleCategory = document.getElementById('article-category');
     const articleTags = document.getElementById('article-tags');
     const textEditor = document.getElementById('text-editor');
-    // A imagem será tratada depois
 
-    // 2. Adicionar o "escutador" de evento ao botão
+    // --- LÓGICA DO TEMPLATE (MENU, TEMA) ---
+    function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+    function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
+    
+    function toggleTheme() {
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark'); html.classList.add('light');
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.remove('light'); html.classList.add('dark');
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    themeToggle.addEventListener('click', toggleTheme);
+
+    function carregarTema() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.add(savedTheme);
+        if (savedTheme === 'dark') {
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+        } else {
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+        }
+    }
+
+    // --- LÓGICA ESPECÍFICA DA PÁGINA DO EDITOR ---
+    imageUpload.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            fileNameSpan.textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = imagePreview.querySelector('img');
+                img.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            fileNameSpan.textContent = 'Nenhum arquivo selecionado';
+            imagePreview.classList.add('hidden');
+        }
+    });
+
     publishButton.addEventListener('click', publicarNoticia);
 
-    // 3. Função para enviar os dados
     async function publicarNoticia() {
-    // 1. Coleta os dados de todos os campos do formulário
-    const titulo = articleTitle.value;
-    const categoria = articleCategory.value;
-    const conteudo = textEditor.innerHTML;
-    const tags = articleTags.value;
-    const imagemArquivo = imageUpload.files[0];
-
-    // 2. Faz uma validação simples para garantir que os campos essenciais estão preenchidos
-    if (!titulo || !categoria || !conteudo) {
-        alert('Por favor, preencha o título, a categoria e o conteúdo.');
-        return;
-    }
-
-    // 3. Cria um "pacote" FormData para enviar texto e arquivos juntos
-    const formData = new FormData();
-    formData.append('titulo', titulo);
-    formData.append('categoria', categoria);
-    formData.append('tags', tags);
-    formData.append('conteudo', conteudo);
-    
-    if (imagemArquivo) {
-        // A chave 'imagemCapa' aqui deve ser a mesma do backend: upload.single('imagemCapa')
-        formData.append('imagemCapa', imagemArquivo);
-    }
-
-    try {
-        // 4. Envia o pacote de dados para a API do backend
-        const response = await fetch('http://localhost:3000/api/noticias', {
-            method: 'POST',
-            body: formData 
-        });
-
-        // 5. Verifica a resposta do backend
-        if (response.ok) {
-            // Se a resposta for de sucesso...
-            
-            // Primeiro, pegamos a resposta completa do servidor, que contém a notícia salva com seu ID
-            const noticiaSalva = await response.json(); 
-            
-            alert('Notícia publicada com sucesso! Redirecionando...');
-
-            // Redirecionamos o usuário para a nova página do artigo, passando o ID na URL
-            window.location.href = `artigo.html?id=${noticiaSalva._id}`; 
-            
-        } else {
-            // Se a resposta for de erro...
-            const errorData = await response.json();
-            alert(`Erro ao publicar notícia: ${errorData.message}`);
+        const titulo = articleTitle.value;
+        const categoria = articleCategory.value;
+        const conteudo = textEditor.innerHTML;
+        const tags = articleTags.value;
+        const imagemArquivo = imageUpload.files[0];
+        if (!titulo || !categoria || !conteudo) {
+            alert('Por favor, preencha o título, a categoria e o conteúdo.');
+            return;
         }
-    } catch (error) {
-        // Se houver um erro de conexão (ex: servidor desligado)
-        console.error('Erro na requisição:', error);
-        alert('Ocorreu um erro de conexão. Verifique se o servidor backend está rodando.');
+        const formData = new FormData();
+        formData.append('titulo', titulo);
+        formData.append('categoria', categoria);
+        formData.append('tags', tags);
+        formData.append('conteudo', conteudo);
+        if (imagemArquivo) {
+            formData.append('imagemCapa', imagemArquivo);
+        }
+        try {
+            const response = await fetch('http://localhost:3000/api/noticias', {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                const noticiaSalva = await response.json();
+                alert('Notícia publicada com sucesso! Redirecionando...');
+                window.location.href = `artigo.html?id=${noticiaSalva._id}`;
+            } else {
+                const errorData = await response.json();
+                alert(`Erro ao publicar notícia: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            alert('Ocorreu um erro de conexão. Verifique se o servidor backend está rodando.');
+        }
     }
-}
 
-    </script>
+    // --- CORREÇÃO PARA O PROBLEMA DE 'COPIAR E COLAR' ---
+    textEditor.addEventListener('paste', (event) => {
+        event.preventDefault();
+        const text = (event.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+    });
+    
+    // --- FUNÇÃO DE INICIALIZAÇÃO DA PÁGINA ---
+    window.addEventListener('DOMContentLoaded', () => {
+        carregarTema();
+    });
+</script>
 </body>
 </html>

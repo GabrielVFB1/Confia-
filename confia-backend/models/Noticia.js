@@ -28,6 +28,13 @@ const noticiaSchema = new mongoose.Schema({
   dataPublicacao: {
     type: Date,
     default: Date.now
+  },
+
+  scoreConfiabilidade: {
+    type: Number,
+    min: 0,
+    max: 100,
+    default: 75 // Um valor padrão
   }
 });
 

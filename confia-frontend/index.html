@@ -12,89 +12,45 @@
         }
     </script>
     <style>
-        .side {
-            transition: transform 0.3s ease-in-out;
-        }
-        .side-open {
-            transform: translateX(0) !important;
-        }
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .s-drop {
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 20;
-        }
-        .s-bar:focus-within .s-drop {
-            display: block; 
-        }
+        .side { transition: transform 0.3s ease-in-out; }
+        .side-open { transform: translateX(0) !important; }
+        .overlay { transition: opacity 0.3s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .s-drop { display: none; position: absolute; width: 100%; z-index: 20; }
+        .s-bar:focus-within .s-drop { display: block;  }
     </style>
-    <head>
-    <link rel="website icon"  type="png" href="logo_confia.png">
-</head>
+    <link rel="website icon" type="png" href="logo_confia.png">
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 font-sans">
 
-     <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
-                               transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center p-4 h-16 border-b  dark:border-gray-700">
+    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
-
         <nav class="flex-grow p-4 space-y-2 mt-4">
-            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-home w-6 mr-3"></i> Início
-            </a>
-            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
-            </a>
-            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
-            </a>
-            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
-            </a>
-            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
-            </a>
-            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
-            </a>
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
         </nav>
     </aside>
-
     <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
-
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
-                    <i class="fas fa-bars"></i>
-                </button>
-                
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
                 <div class="s-bar relative w-full max-w-lg mx-4">
                     <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." 
-                             class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500"><i class="fas fa-search"></i></button>
                     </div>
-                     <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
-                        <div id="searchResults" class="max-h-60 overflow-y-auto">
-                             </div>
+                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                        <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
                 </div>
-
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    <i class="fas fa-sun" id="theme-icon"></i>
-                </button>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
             </div>
         </header>
 
@@ -105,420 +61,153 @@
                     <p class="text-gray-600 dark:text-gray-400">Aqui estão as últimas atualizações e notícias personalizadas para você.</p>
                 </div>
             </section>
-
             <section class="mb-10">
-                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                    <i class="fas fa-star mr-2 text-yellow-400"></i> Destaques
-                </h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-star mr-2 text-yellow-400"></i> Destaques</h2>
                 <div class="relative overflow-hidden rounded-xl shadow-lg">
-                    <div id="highlightCarousel" class="flex transition-transform duration-300">
-                        <div class="w-full flex-shrink-0 relative">
-                            <img src="https://source.unsplash.com/random/1200x400/?news,technology" alt="News" class="w-full h-64 md:h-96 object-cover brightness-75">
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                                <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">TECNOLOGIA</span>
-                                <h3 class="text-white text-xl md:text-2xl font-bold mt-2">Novo avanço na inteligência artificial revoluciona mercado</h3>
-                                <p class="text-gray-300 text-sm hidden md:block">Especialistas discutem o impacto da nova tecnologia em diversos setores da indústria.</p>
-                            </div>
-                        </div>
-                        <div class="w-full flex-shrink-0 relative">
-                            <img src="https://source.unsplash.com/random/1200x400/?politics" alt="News" class="w-full h-64 md:h-96 object-cover brightness-75">
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                                <span class="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded">POLÍTICA</span>
-                                <h3 class="text-white text-xl md:text-2xl font-bold mt-2">Novas medidas econômicas anunciadas pelo governo</h3>
-                                <p class="text-gray-300 text-sm hidden md:block">Especialistas analisam impacto nas finanças públicas.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                        <div class="w-2 h-2 bg-white rounded-full opacity-50"></div>
-                        <div class="w-2 h-2 bg-white rounded-full"></div>
-                    </div>
+                    <div id="highlightCarousel" class="flex transition-transform duration-300"></div>
+                    <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </section>
-
             <section class="mb-10">
-                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                    <i class="fas fa-bolt mr-2 text-blue-500"></i> Acesso Rápido
-                </h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-bolt mr-2 text-blue-500"></i> Acesso Rápido</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <a href="#" class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 text-center hover:shadow-xl dark:hover:bg-slate-700 transition flex flex-col items-center">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-chart-line text-blue-600 dark:text-blue-400 text-xl"></i>
-                        </div>
-                        <span class="font-medium text-slate-700 dark:text-slate-300">Mercado Financeiro</span>
-                    </a>
-                    <a href="#" class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 text-center hover:shadow-xl dark:hover:bg-slate-700 transition flex flex-col items-center">
-                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-flask text-green-600 dark:text-green-400 text-xl"></i>
-                        </div>
-                        <span class="font-medium text-slate-700 dark:text-slate-300">Ciência</span>
-                    </a>
-                    <a href="#" class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 text-center hover:shadow-xl dark:hover:bg-slate-700 transition flex flex-col items-center">
-                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-futbol text-purple-600 dark:text-purple-400 text-xl"></i>
-                        </div>
-                        <span class="font-medium text-slate-700 dark:text-slate-300">Esportes</span>
-                    </a>
-                    <a href="#" class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 text-center hover:shadow-xl dark:hover:bg-slate-700 transition flex flex-col items-center">
-                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/50 rounded-full flex items-center justify-center mb-2">
-                            <i class="fas fa-umbrella-beach text-yellow-600 dark:text-yellow-400 text-xl"></i>
-                        </div>
-                        <span class="font-medium text-slate-700 dark:text-slate-300">Entretenimento</span>
-                    </a>
-                </div>
+                    </div>
             </section>
-
             <div class="flex flex-col lg:flex-row gap-6">
                 <section class="lg:w-2/3">
-                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-clock mr-2 text-gray-500"></i> Últimas Notícias
-                    </h2>
-                    <div class="space-y-4">
-                        <article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
-                            <div class="md:flex">
-                                <div class="md:w-1/3">
-                                    <img src="https://source.unsplash.com/random/300x200/?business" alt="News" class="w-full h-full object-cover">
-                                </div>
-                                <div class="p-4 md:w-2/3">
-                                    <div class="flex justify-between items-start">
-                                        <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">NEGÓCIOS</span>
-                                        <span class="text-gray-500 dark:text-gray-400 text-sm">há 15 minutos</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2 news-title" data-category="NEGÓCIOS">Empresas adotam novas estratégias pós-pandemia</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mt-1">Líderes empresariais compartilham insights sobre adaptação ao novo cenário econômico global.</p>
-                                    <div class="mt-3 flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                        <i class="fas fa-user mr-1"></i> Por Carlos Silva
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        
-                        <article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
-                            <div class="md:flex">
-                                <div class="md:w-1/3">
-                                    <img src="https://source.unsplash.com/random/300x200/?health" alt="News" class="w-full h-full object-cover">
-                                </div>
-                                <div class="p-4 md:w-2/3">
-                                    <div class="flex justify-between items-start">
-                                        <span class="bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded">SAÚDE</span>
-                                        <span class="text-gray-500 dark:text-gray-400 text-sm">há 1 hora</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2 news-title" data-category="SAÚDE">Novo tratamento para doença rara mostra resultados promissores</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mt-1">Estudo clínico revela eficácia de 85% em pacientes que não respondiam a terapias convencionais.</p>
-                                    <div class="mt-3 flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                        <i class="fas fa-user mr-1"></i> Por Ana Oliveira
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        
-                        <article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
-                            <div class="md:flex">
-                                <div class="md:w-1/3">
-                                    <img src="https://source.unsplash.com/random/300x200/?technology" alt="News" class="w-full h-full object-cover">
-                                </div>
-                                <div class="p-4 md:w-2/3">
-                                    <div class="flex justify-between items-start">
-                                        <span class="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded">TECNOLOGIA</span>
-                                        <span class="text-gray-500 dark:text-gray-400 text-sm">há 2 horas</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2 news-title" data-category="TECNOLOGIA">Lançamento do novo smartphone com câmera revolucionária</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mt-1">Fabricante promete qualidade profissional em um dispositivo móvel com preço acessível.</p>
-                                    <div class="mt-3 flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                        <i class="fas fa-user mr-1"></i> Por Roberto Santos
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        
-                        <div class="text-center mt-6">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition">
-                                Carregar mais notícias
-                            </button>
-                        </div>
-                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-clock mr-2 text-gray-500"></i> Últimas Notícias</h2>
+                    <div id="ultimas-noticias-container" class="space-y-4"></div>
                 </section>
-                
-                <section class="lg:w-1/3">
-                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-heart mr-2 text-red-500"></i> Para Você
-                    </h2>
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 mb-6">
-                        <h3 class="font-bold text-gray-800 dark:text-white mb-3">Baseado no seu interesse em Tecnologia</h3>
-                        
-                        <div class="flex mb-4 pb-4 border-b border-gray-200 dark:border-slate-700">
-                            <div class="w-1/3">
-                                <img src="https://source.unsplash.com/random/100x100/?gadget" alt="News" class="w-full h-20 object-cover rounded">
-                            </div>
-                            <div class="w-2/3 pl-3">
-                                <span class="text-xs text-blue-500 dark:text-blue-400 font-semibold">TECNOLOGIA</span>
-                                <h4 class="text-sm font-medium text-gray-800 dark:text-white mt-1 news-title" data-category="TECNOLOGIA">Os melhores gadgets de 2025 segundo especialistas</h4>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">há 4 horas</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex mb-4 pb-4 border-b border-gray-200 dark:border-slate-700">
-                            <div class="w-1/3">
-                                <img src="https://source.unsplash.com/random/100x100/?startup" alt="News" class="w-full h-20 object-cover rounded">
-                            </div>
-                            <div class="w-2/3 pl-3">
-                                <span class="text-xs text-blue-500 dark:text-blue-400 font-semibold">STARTUPS</span>
-                                <h4 class="text-sm font-medium text-gray-800 dark:text-white mt-1 news-title" data-category="STARTUPS">Como startups estão usando IA para crescer</h4>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">há 6 horas</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex">
-                            <div class="w-1/3">
-                                <img src="https://source.unsplash.com/random/100x100/?coding" alt="News" class="w-full h-20 object-cover rounded">
-                            </div>
-                            <div class="w-2/3 pl-3">
-                                <span class="text-xs text-blue-500 dark:text-blue-400 font-semibold">PROGRAMAÇÃO</span>
-                                <h4 class="text-sm font-medium text-gray-800 dark:text-white mt-1 news-title" data-category="PROGRAMAÇÃO">As linguagens mais demandadas em 2025</h4>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">ontem</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4">
-                        <h3 class="font-bold text-gray-800 dark:text-white mb-3 flex items-center">
-                            <i class="fas fa-fire mr-2 text-orange-500"></i> Assuntos em Alta
-                        </h3>
-                        <div class="space-y-2">
-                            <a href="#" class="block hover:bg-gray-200 dark:hover:bg-slate-700 p-2 rounded transition">
-                                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">#Eleições2026</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">1.2K publicações</div>
-                            </a>
-                            <a href="#" class="block hover:bg-gray-200 dark:hover:bg-slate-700 p-2 rounded transition">
-                                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">#CopaDoMundo</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">856 publicações</div>
-                            </a>
-                            <a href="#" class="block hover:bg-gray-200 dark:hover:bg-slate-700 p-2 rounded transition">
-                                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">#NovoFilmeMarvel</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">723 publicações</div>
-                            </a>
-                            <a href="#" class="block hover:bg-gray-200 dark:hover:bg-slate-700 p-2 rounded transition">
-                                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">#CriseEconômica</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">689 publicações</div>
-                            </a>
-                            <a href="#" class="block hover:bg-gray-200 dark:hover:bg-slate-700 p-2 rounded transition">
-                                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">#TecnologiaVerde</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">512 publicações</div>
-                            </a>
-                        </div>
-                    </div>
-                </section>
+                <aside class="lg:w-1/3">
+                    </aside>
             </div>
         </main>
 
         <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
-                        <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
-                    <p>&copy; 2025 NewsHub. Todos os direitos reservados.</p>
-                </div>
-            </div>
-        </footer>
+            </footer>
     </div>
 
     <script>
+        // --- SELETORES GLOBAIS ---
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const carousel = document.getElementById('highlightCarousel');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResults = document.getElementById('searchResults');
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('theme-icon');
         const html = document.querySelector('html');
-
-        // Lógica do Menu Lateral
-        function openMenu() {
-            sidebar.classList.add('side-open');
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('opacity-100');
-        }
-
-        function closeMenu() {
-            sidebar.classList.remove('side-open');
-            overlay.classList.add('pointer-events-none');
-            overlay.classList.remove('opacity-100');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebar.classList.contains('side-open') ? closeMenu() : openMenu();
-        });
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
         
+        // --- LÓGICA DO MENU LATERAL ---
+        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
         overlay.addEventListener('click', closeMenu);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('side-open')) {
-                closeMenu();
-            }
-        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
 
-        // Lógica do Carrossel
-        let currentSlide = 0;
-        const slides = carousel ? carousel.querySelectorAll('.flex-shrink-0') : [];
-        const totalSlides = slides.length;
+        // --- LÓGICA DO TEMA (CLARO/ESCURO) ---
+        function toggleTheme() {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark'); html.classList.add('light');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light'); html.classList.add('dark');
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        themeToggle.addEventListener('click', toggleTheme);
         
+        function carregarTema() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.classList.add(savedTheme);
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            }
+        }
+        
+        // --- LÓGICA DE CARREGAMENTO DE CONTEÚDO DINÂMICO ---
+        async function carregarNoticias() {
+            const noticiasContainer = document.getElementById('ultimas-noticias-container');
+            const destaquesContainer = document.getElementById('highlightCarousel');
+            try {
+                const response = await fetch('http://localhost:3000/api/noticias');
+                const noticias = await response.json();
+                noticiasContainer.innerHTML = '';
+                destaquesContainer.innerHTML = '';
+                
+                const noticiasDestaque = noticias.slice(0, 2);
+                noticiasDestaque.forEach(noticia => {
+                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/1200x400/?news';
+                    destaquesContainer.innerHTML += `<div class="w-full flex-shrink-0 relative"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-64 md:h-96 object-cover brightness-75"><a href="artigo.html?id=${noticia._id}" class="absolute inset-0"><div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6"><span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><h3 class="text-white text-xl md:text-2xl font-bold mt-2 hover:underline">${noticia.titulo}</h3></div></a></div>`;
+                });
+
+                const noticiasLista = noticias.slice(0, 5);
+                noticiasLista.forEach(noticia => {
+                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
+                    const resumo = noticia.conteudo.replace(/<[^>]*>/g, '').substring(0, 120);
+                    noticiasContainer.innerHTML += `<article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300"><div class="md:flex"><div class="md:w-1/3"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-full object-cover"></div><div class="p-4 md:w-2/3"><div class="flex justify-between items-start"><span class="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><span class="text-gray-500 dark:text-gray-400 text-sm">${new Date(noticia.dataPublicacao).toLocaleDateString()}</span></div><h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2"><a href="artigo.html?id=${noticia._id}" class="hover:underline">${noticia.titulo}</a></h3><p class="text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">${resumo}...</p></div></div></article>`;
+                });
+                
+                iniciarCarrossel();
+            } catch (error) {
+                console.error('Erro ao carregar notícias:', error);
+                noticiasContainer.innerHTML = '<p class="text-red-500">Não foi possível carregar as notícias. Verifique se o backend está rodando.</p>';
+            }
+        }
+
+        // --- LÓGICA DA BARRA DE BUSCA ---
+        async function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            const searchResultsContainer = document.getElementById('searchResults');
+            searchResultsContainer.innerHTML = '';
+            if (query.length < 3) return;
+            try {
+                const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
+                const resultados = await response.json();
+                if (resultados.length === 0) {
+                    searchResultsContainer.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado.</div>`;
+                } else {
+                    resultados.forEach(noticia => {
+                        searchResultsContainer.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600"><div class="font-medium text-gray-800 dark:text-gray-200">${noticia.titulo}</div><div class="text-xs text-gray-500 dark:text-gray-400 mt-1"><span>${noticia.categoria.toUpperCase()}</span></div></a>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Erro na busca:', error);
+                searchResultsContainer.innerHTML = `<div class="p-4 text-red-500">Erro ao conectar com a busca.</div>`;
+            }
+        }
+        searchInput.addEventListener('input', performSearch);
+
+        // --- LÓGICA DO CARROSSEL ---
+        let currentSlide = 0;
+        let slides = [];
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carousel = document.getElementById('highlightCarousel');
+
         function goToSlide(index) {
+            const totalSlides = slides.length;
             if (!carousel || totalSlides === 0) return;
             currentSlide = (index + totalSlides) % totalSlides;
             carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
 
-        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-        
-        setInterval(() => {
-            if (document.hasFocus()) {
-                goToSlide(currentSlide + 1);
-            }
-        }, 5000);
-
-        // Lógica da Barra de Busca
-        function performSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            searchResults.innerHTML = '';
-
-            if (query.length > 2) {
-                const newsTitles = document.querySelectorAll('.news-title');
-                let results = [];
-
-                newsTitles.forEach(titleElement => {
-                    const titleText = titleElement.textContent;
-                    const category = titleElement.getAttribute('data-category');
-                    const article = titleElement.closest('article, .flex');
-
-                    if (titleText.toLowerCase().includes(query) || category.toLowerCase().includes(query)) {
-                        let time = article.querySelector('.text-sm')?.textContent || 'Não especificado';
-                        results.push({ title: titleText, category: category, time: time, element: article });
-                    }
-                });
-
-                if (results.length === 0) {
-                    searchResults.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado.</div>`;
-                } else {
-                    results.forEach(result => {
-                        const resultItem = document.createElement('a');
-                        resultItem.href = '#';
-                        resultItem.className = 'block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600';
-                        resultItem.innerHTML = `
-                            <div class="font-medium text-gray-800 dark:text-gray-200">${result.title}</div>
-                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                <span>${result.category}</span>
-                                <span>${result.time}</span>
-                            </div>
-                        `;
-                        resultItem.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            result.element.style.outline = '3px solid #3b82f6';
-                            setTimeout(() => {
-                                result.element.style.outline = 'none';
-                            }, 3000);
-                            searchInput.value = '';
-                            searchResults.innerHTML = '';
-                        });
-                        searchResults.appendChild(resultItem);
-                    });
-                }
-            }
+        function iniciarCarrossel() {
+            slides = carousel.querySelectorAll('.flex-shrink-0');
+            if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+            if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+            setInterval(() => { if (document.hasFocus()) goToSlide(currentSlide + 1); }, 5000);
         }
 
-        searchInput.addEventListener('input', performSearch);
-        searchButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-
-        // Lógica do Tema (Claro/Escuro)
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        themeToggle.addEventListener('click', toggleTheme);
-
-        // Carregar tema salvo no localStorage
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-                if (savedTheme === 'dark') {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
-            } else {
-                // Tema padrão, caso nenhum esteja salvo
-                html.classList.add('light');
-                themeIcon.classList.add('fa-sun');
-            }
+        // --- FUNÇÃO DE INICIALIZAÇÃO ---
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarTema();
+            carregarNoticias();
         });
     </script>
 </body>

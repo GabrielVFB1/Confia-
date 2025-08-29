@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artigo - Confia!</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        .side { transition: transform 0.3s ease-in-out; }
+        .side-open { transform: translateX(0) !important; }
+        .overlay { transition: opacity 0.3s ease-in-out; }
+
+        /* 🔧 Correção: força cores base do texto */
+        #artigo-conteudo {
+            color: #1f2937; /* text-gray-800 */
+        }
+        html.dark #artigo-conteudo {
+            color: #e5e7eb; /* text-gray-200 */
+        }
+    </style>
+    <link rel="website icon" type="png" href="logo_confia.png">
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+
+    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
+            <img src="logo_confia.png" width="145px">
+        </div>
+        <nav class="flex-grow p-4 space-y-2 mt-4">
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
+        </nav>
+    </aside>
+    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+
+    <div class="lg:ml-64">
+        <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
+                <div class="w-full max-w-lg mx-4"></div>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-12">
+            <article class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8">
+                <h1 id="artigo-titulo" class="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-white mb-4">Carregando Título...</h1>
+                <div id="artigo-tags-container" class="flex flex-wrap items-center gap-2 mb-6">
+                    <div id="artigo-score-container" class="flex items-center gap-2"></div>
+                </div>
+
+                <div class="my-4">
+                        <button id="botao-compartilhar" class="bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg inline-flex items-center transition-colors">
+                            <i class="fas fa-share-alt mr-2"></i>
+                            <span>Compartilhar</span>
+                        </button>
+                </div>
+
+
+                <img id="artigo-imagem" src="" alt="Imagem de capa" class="max-w-xl mx-auto h-auto rounded-lg shadow-md mb-8 hidden">
+                <div id="artigo-conteudo" class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+                    <p>Carregando conteúdo...</p>
+                </div>
+            </article>
+
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Notícias Relacionadas</h2>
+                <div id="relacionadas-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.querySelector('html');
+
+        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
+        overlay.addEventListener('click', closeMenu);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
+        
+        function toggleTheme() {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark'); html.classList.add('light');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light'); html.classList.add('dark');
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        function carregarTema() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.classList.add(savedTheme);
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            }
+        }
+
+        async function carregarNoticia() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const noticiaId = urlParams.get('id');
+            if (!noticiaId) {
+                document.getElementById('artigo-titulo').innerText = "Erro: ID da notícia não encontrado.";
+                return;
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}`);
+                if (!response.ok) throw new Error('Notícia não encontrada');
+                const noticia = await response.json();
+
+                document.title = noticia.titulo + " - Confia!";
+                document.getElementById('artigo-titulo').innerText = noticia.titulo;
+
+                /* 🔧 Correção: limpar estilos inline que travam cor */
+                let conteudo = noticia.conteudo.replace(/style="[^"]*"/g, "");
+                document.getElementById('artigo-conteudo').innerHTML = conteudo;
+
+                const tagsContainer = document.getElementById('artigo-tags-container');
+                if (noticia.tags && noticia.tags.length > 0) {
+                    noticia.tags.forEach(tag => {
+                        const tagElement = document.createElement('span');
+                        tagElement.className = 'bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-900';
+                        tagElement.innerText = tag;
+                        tagsContainer.appendChild(tagElement);
+                    });
+                }
+
+                const scoreContainer = document.getElementById('artigo-score-container');
+                if (noticia.scoreConfiabilidade) {
+                    const score = noticia.scoreConfiabilidade;
+                    let cor = 'bg-green-100 text-green-800';
+                    if (score < 85) cor = 'bg-yellow-100 text-yellow-800';
+                    if (score < 70) cor = 'bg-red-100 text-red-800';
+                    scoreContainer.innerHTML = `<span class="font-bold text-sm text-gray-600 dark:text-gray-400">Confiabilidade:</span><span class="${cor} text-sm font-bold px-3 py-1 rounded-full">${score}%</span>`;
+                }
+
+                const imgElement = document.getElementById('artigo-imagem');
+                if (noticia.imagemCapa) {
+                    const imagePath = noticia.imagemCapa.replace(/\\/g, '/');
+                    imgElement.src = `http://localhost:3000/${imagePath}`;
+                    imgElement.classList.remove('hidden');
+                }
+
+                
+   // --- CÓDIGO NOVO PARA O BOTÃO DE COMPARTILHAR ---
+            const botaoCompartilhar = document.getElementById('botao-compartilhar');
+
+            // Verifica se o navegador suporta a API de compartilhamento
+            if (navigator.share) {
+                botaoCompartilhar.addEventListener('click', async () => {
+                    try {
+                        await navigator.share({
+                            title: noticia.titulo,
+                            text: `Confira esta notícia no Confia!: "${noticia.titulo}"`,
+                            url: window.location.href // URL da página atual
+                        });
+                        console.log('Notícia compartilhada com sucesso!');
+                    } catch (error) {
+                        console.error('Erro ao compartilhar:', error);
+                    }
+                });
+            } else {
+                // Se o navegador não suportar, podemos esconder o botão ou avisar o usuário
+                botaoCompartilhar.style.display = 'none';
+                console.log('Web Share API não suportada neste navegador.');
+            }
+           
+
+            await carregarRelacionadas(noticiaId);
+            
+        } catch (error) {
+            document.getElementById('artigo-titulo').innerText = "Erro ao carregar a notícia.";
+            console.error(error);
+        }
+        }
+
+        async function carregarRelacionadas(noticiaId) {
+            const container = document.getElementById('relacionadas-container');
+            try {
+                const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}/relacionadas`);
+                const relacionadas = await response.json();
+                if (relacionadas.length === 0) return;
+                relacionadas.forEach(noticia => {
+                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
+                    container.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-32 object-cover"><div class="p-4"><h3 class="font-bold text-gray-800 dark:text-white">${noticia.titulo}</h3></div></a>`;
+                });
+            } catch (error) {
+                console.error('Erro ao buscar relacionadas:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarTema();
+            carregarNoticia();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Central - Portal de Notícias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        .side { transition: transform 0.3s ease-in-out; }
+        .side-open { transform: translateX(0) !important; }
+        .overlay { transition: opacity 0.3s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .s-drop { display: none; position: absolute; width: 100%; z-index: 20; }
+        .s-bar:focus-within .s-drop { display: block;  }
+    </style>
+    <link rel="website icon" type="png" href="logo_confia.png">
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+
+    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
+            <img src="logo_confia.png" width="145px">
+        </div>
+        <nav class="flex-grow p-4 space-y-2 mt-4">
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
+        </nav>
+    </aside>
+    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <div class="lg:ml-64">
+        <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
+                <div class="s-bar relative w-full max-w-lg mx-4">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                        <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
+                    </div>
+                </div>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-6">
+            <section class="mb-8">
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Bem-vindo!</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Aqui estão as últimas atualizações e notícias personalizadas para você.</p>
+                </div>
+            </section>
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-star mr-2 text-yellow-400"></i> Destaques</h2>
+                <div class="relative overflow-hidden rounded-xl shadow-lg">
+                    <div id="highlightCarousel" class="flex transition-transform duration-300"></div>
+                    <button id="prevBtn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextBtn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+            <section class="mb-10">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-bolt mr-2 text-blue-500"></i> Acesso Rápido</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    </div>
+            </section>
+            <div class="flex flex-col lg:flex-row gap-6">
+                <section class="lg:w-2/3">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-clock mr-2 text-gray-500"></i> Últimas Notícias</h2>
+                    <div id="ultimas-noticias-container" class="space-y-4"></div>
+                </section>
+                <aside class="lg:w-1/3">
+                    </aside>
+            </div>
+        </main>
+
+        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8">
+            </footer>
+    </div>
+
+    <script>
+        // --- SELETORES GLOBAIS ---
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.querySelector('html');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        
+        // --- LÓGICA DO MENU LATERAL ---
+        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
+        overlay.addEventListener('click', closeMenu);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
+
+        // --- LÓGICA DO TEMA (CLARO/ESCURO) ---
+        function toggleTheme() {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark'); html.classList.add('light');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light'); html.classList.add('dark');
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        function carregarTema() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.classList.add(savedTheme);
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            }
+        }
+        
+        // --- LÓGICA DE CARREGAMENTO DE CONTEÚDO DINÂMICO ---
+        async function carregarNoticias() {
+            const noticiasContainer = document.getElementById('ultimas-noticias-container');
+            const destaquesContainer = document.getElementById('highlightCarousel');
+            try {
+                const response = await fetch('http://localhost:3000/api/noticias');
+                const noticias = await response.json();
+                noticiasContainer.innerHTML = '';
+                destaquesContainer.innerHTML = '';
+                
+                const noticiasDestaque = noticias.slice(0, 2);
+                noticiasDestaque.forEach(noticia => {
+                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/1200x400/?news';
+                    destaquesContainer.innerHTML += `<div class="w-full flex-shrink-0 relative"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-64 md:h-96 object-cover brightness-75"><a href="artigo.html?id=${noticia._id}" class="absolute inset-0"><div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6"><span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><h3 class="text-white text-xl md:text-2xl font-bold mt-2 hover:underline">${noticia.titulo}</h3></div></a></div>`;
+                });
+
+                const noticiasLista = noticias.slice(0, 5);
+                noticiasLista.forEach(noticia => {
+                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
+                    const resumo = noticia.conteudo.replace(/<[^>]*>/g, '').substring(0, 120);
+                    noticiasContainer.innerHTML += `<article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300"><div class="md:flex"><div class="md:w-1/3"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-full object-cover"></div><div class="p-4 md:w-2/3"><div class="flex justify-between items-start"><span class="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><span class="text-gray-500 dark:text-gray-400 text-sm">${new Date(noticia.dataPublicacao).toLocaleDateString()}</span></div><h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2"><a href="artigo.html?id=${noticia._id}" class="hover:underline">${noticia.titulo}</a></h3><p class="text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">${resumo}...</p></div></div></article>`;
+                });
+                
+                iniciarCarrossel();
+            } catch (error) {
+                console.error('Erro ao carregar notícias:', error);
+                noticiasContainer.innerHTML = '<p class="text-red-500">Não foi possível carregar as notícias. Verifique se o backend está rodando.</p>';
+            }
+        }
+
+        // --- LÓGICA DA BARRA DE BUSCA ---
+        async function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            const searchResultsContainer = document.getElementById('searchResults');
+            searchResultsContainer.innerHTML = '';
+            if (query.length < 3) return;
+            try {
+                const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
+                const resultados = await response.json();
+                if (resultados.length === 0) {
+                    searchResultsContainer.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado.</div>`;
+                } else {
+                    resultados.forEach(noticia => {
+                        searchResultsContainer.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600"><div class="font-medium text-gray-800 dark:text-gray-200">${noticia.titulo}</div><div class="text-xs text-gray-500 dark:text-gray-400 mt-1"><span>${noticia.categoria.toUpperCase()}</span></div></a>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Erro na busca:', error);
+                searchResultsContainer.innerHTML = `<div class="p-4 text-red-500">Erro ao conectar com a busca.</div>`;
+            }
+        }
+        searchInput.addEventListener('input', performSearch);
+
+        // --- LÓGICA DO CARROSSEL ---
+        let currentSlide = 0;
+        let slides = [];
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carousel = document.getElementById('highlightCarousel');
+
+        function goToSlide(index) {
+            const totalSlides = slides.length;
+            if (!carousel || totalSlides === 0) return;
+            currentSlide = (index + totalSlides) % totalSlides;
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function iniciarCarrossel() {
+            slides = carousel.querySelectorAll('.flex-shrink-0');
+            if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+            if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+            setInterval(() => { if (document.hasFocus()) goToSlide(currentSlide + 1); }, 5000);
+        }
+
+        // --- FUNÇÃO DE INICIALIZAÇÃO ---
+        window.addEventListener('DOMContentLoaded', () => {
+            carregarTema();
+            carregarNoticias();
+        });
+    </script>
+</body>
+</html>

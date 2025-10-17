@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="light">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +53,7 @@
     <link rel="website icon"  type="png" href="logo_confia.png">
 </head>
 </head>
-<body class="bg-gray-50 dark:bg-slate-900 font-sans overflow-hidden">
+<body class="bg-gray-50 dark:bg-slate-900 font-sans min-h-screen overflow-y-scroll">
 
     <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
                                transform -translate-x-full lg:translate-x-0">
@@ -81,61 +81,68 @@
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
         </nav>
+           <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
+   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
+         alt="User Avatar" 
+         class="w-12 h-12 rounded-full">
+    <span class="text-white font-medium">Nome do Usuário</span>
+</a>
     </aside>
 
     <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
-        <header class="bg-white dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+        <header class="bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
+                <button id="menuToggle" class="text-gray-300 text-2xl lg:hidden">
                     <i class="fas fa-bars"></i>
                 </button>
                 
                 <div class="search-bar relative w-full md:w-1/3 mx-4 md:mb-0">
                     <div class="relative">
                         <input type="text" id="searchInput" placeholder="Pesquisar notícias..." 
-                            class="w-full py-2 px-4 pr-10 rounded-full text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                            class="w-full py-2 px-4 pr-10 rounded-full text-gray-300 bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-blue-400">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    <div class="search-dropdown mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                    <div class="search-dropdown mt-1 bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto">
                         </div>
                     </div>
                 </div>
 
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    <i class="fas fa-sun" id="theme-icon"></i>
+                <button id="themeToggle" class="text-gray-300 text-xl p-2 rounded-full hover:bg-gray-700 transition">
+                    <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
             </div>
         </header>
 
         <main class="container mx-auto px-4 py-8">
             <section class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
+                <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
                     <i class="fas fa-file-alt mr-3 text-blue-600 dark:text-blue-400"></i> Todas as Reportagens
                 </h2>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Explore nosso arquivo completo de reportagens. Use a barra de pesquisa para encontrar conteúdos específicos ou filtre por categorias e datas.</p>
+                <p class="text-gray-400 mb-6">Explore nosso arquivo completo de reportagens. Use a barra de pesquisa para encontrar conteúdos específicos ou filtre por categorias e datas.</p>
             </section>
 
             <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <article class="article-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
+                <article class="article-card bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
                     <img src="https://source.unsplash.com/random/400x250/?technology" alt="Technology News" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
                             <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">TECNOLOGIA</span>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">25/07/2024</span>
+                            <span class="text-gray-400 text-sm">25/07/2024</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mt-2">O impacto da IA generativa no mercado de trabalho</h3>
-                        <p id="summary-1" class="text-gray-600 dark:text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">A inteligência artificial generativa está remodelando indústrias, automatizando tarefas e criando novas oportunidades. Empresas de tecnologia e startups estão na vanguarda dessa transformação, enquanto a força de trabalho se adapta a novas demandas e competências. Descubra como essa mudança afetará seu futuro profissional.</p>
+                        <h3 class="text-xl font-bold text-white mt-2">O impacto da IA generativa no mercado de trabalho</h3>
+                        <p id="summary-1" class="text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">A inteligência artificial generativa está remodelando indústrias, automatizando tarefas e criando novas oportunidades. Empresas de tecnologia e startups estão na vanguarda dessa transformação, enquanto a força de trabalho se adapta a novas demandas e competências. Descubra como essa mudança afetará seu futuro profissional.</p>
                         <div class="mt-4 flex items-center justify-between">
-                            <a href="article-1.html" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-500 font-medium transition flex items-center">
+                            <a href="article-1.html" class="text-blue-400 hover:text-blue-500 font-medium transition flex items-center">
                                 Leia mais
                                 <i class="fas fa-arrow-right ml-2 text-sm"></i>
                             </a>
-                            <button class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition" 
+                            <button class="bg-gray-700 text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-600 transition" 
                                     onclick="toggleSummary('summary-1', this)">
                                 Resumo IA
                             </button>
@@ -143,21 +150,21 @@
                     </div>
                 </article>
 
-                <article class="article-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
+                <article class="article-card bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
                     <img src="https://source.unsplash.com/random/400x250/?finance,economy" alt="Finance News" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
                             <span class="bg-green-600 text-white text-xs font-semibold px-2 py-1 rounded">ECONOMIA</span>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">24/07/2024</span>
+                            <span class="text-gray-400 text-sm">24/07/2024</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mt-2">Análise: O cenário econômico pós-inflação</h3>
-                        <p id="summary-2" class="text-gray-600 dark:text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">Especialistas discutem os desafios e oportunidades que surgem à medida que as principais economias globais tentam controlar a inflação. A política monetária dos bancos centrais e o impacto nas cadeias de suprimentos globais são os pontos-chave. O que podemos esperar para os próximos meses?</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Análise: O cenário econômico pós-inflação</h3>
+                        <p id="summary-2" class="text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">Especialistas discutem os desafios e oportunidades que surgem à medida que as principais economias globais tentam controlar a inflação. A política monetária dos bancos centrais e o impacto nas cadeias de suprimentos globais são os pontos-chave. O que podemos esperar para os próximos meses?</p>
                         <div class="mt-4 flex items-center justify-between">
-                            <a href="article-2.html" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-500 font-medium transition flex items-center">
+                            <a href="article-2.html" class="text-blue-400 hover:text-blue-500 font-medium transition flex items-center">
                                 Leia mais
                                 <i class="fas fa-arrow-right ml-2 text-sm"></i>
                             </a>
-                            <button class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition" 
+                            <button class="bg-gray-700 text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-600 transition" 
                                     onclick="toggleSummary('summary-2', this)">
                                 Resumo IA
                             </button>
@@ -165,21 +172,21 @@
                     </div>
                 </article>
 
-                <article class="article-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
+                <article class="article-card bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
                     <img src="https://source.unsplash.com/random/400x250/?space,exploration" alt="Science News" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
                             <span class="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded">CIÊNCIA</span>
-                            <span class="text-gray-500 dark:text-gray-400 text-sm">23/07/2024</span>
+                            <span class="text-gray-400 text-sm">23/07/2024</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mt-2">Missão Artemis: Próximos passos para a volta à Lua</h3>
-                        <p id="summary-3" class="text-gray-600 dark:text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">A NASA revelou os detalhes do cronograma para a missão Artemis, que visa estabelecer uma presença humana sustentável na Lua. Saiba mais sobre as novas tecnologias de exploração e os desafios que a agência espacial enfrentará nos próximos anos para alcançar esse objetivo histórico.</p>
+                        <h3 class="text-xl font-bold text-white mt-2">Missão Artemis: Próximos passos para a volta à Lua</h3>
+                        <p id="summary-3" class="text-gray-400 mt-2 text-sm overflow-hidden line-clamp-3">A NASA revelou os detalhes do cronograma para a missão Artemis, que visa estabelecer uma presença humana sustentável na Lua. Saiba mais sobre as novas tecnologias de exploração e os desafios que a agência espacial enfrentará nos próximos anos para alcançar esse objetivo histórico.</p>
                         <div class="mt-4 flex items-center justify-between">
-                            <a href="article-3.html" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-500 font-medium transition flex items-center">
+                            <a href="article-3.html" class="text-blue-400 hover:text-blue-500 font-medium transition flex items-center">
                                 Leia mais
                                 <i class="fas fa-arrow-right ml-2 text-sm"></i>
                             </a>
-                            <button class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition" 
+                            <button class="bg-gray-700 text-gray-300 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-600 transition" 
                                     onclick="toggleSummary('summary-3', this)">
                                 Resumo IA
                             </button>
@@ -198,35 +205,39 @@
 
         <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
             <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">NewsHub</h3>
-                        <p class="text-gray-600 dark:text-gray-400">Sua fonte confiável de notícias e reportagens em tempo real.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <div class="sm:col-span-2 lg:col-span-1">
+                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
+                        <p class="text-sm">Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
                     </div>
+
                     <div>
                         <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Saúde</a></li>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
                         </ul>
                     </div>
+
                     <div>
                         <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 transition">Política de Privacidade</a></li>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="g.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
                         </ul>
                     </div>
-                    <div>
+
+                    <div class="sm:col-span-2 lg:col-span-1">
                         <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="text-gray-600 dark:text-gray-400 mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
+                        <p class="mb-2 text-sm">Inscreva-se para receber as principais notícias</p>
+                        <div class="flex w-full">
+                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-200 dark:bg-slate-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white flex items-center justify-center">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
@@ -239,7 +250,7 @@
                     </div>
                 </div>
                 <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
-                    <p>&copy; 2024 NewsHub. Todos os direitos reservados.</p>
+                    <p class="text-sm">&copy; 2025 Confia!. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
@@ -304,12 +315,18 @@
         // Carregar tema salvo no localStorage
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                html.classList.add('dark');
+            
+            // Aplica o tema salvo, se existir. Caso contrário, mantém 'dark' (definido no HTML)
+            if (savedTheme) {
+                html.classList.remove('light', 'dark');
+                html.classList.add(savedTheme);
+            }
+
+            // Define o ícone correto baseado na classe atual do HTML
+            if (html.classList.contains('dark')) {
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
             } else {
-                html.classList.add('light');
                 themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
             }
@@ -334,10 +351,11 @@
             
             results.forEach(result => {
                 const resultItem = document.createElement('div');
-                resultItem.className = 'p-3 hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-100 dark:border-slate-600';
+                // Cores do resultado de pesquisa ajustadas para o modo escuro
+                resultItem.className = 'p-3 hover:bg-slate-600 cursor-pointer border-b border-gray-700';
                 resultItem.innerHTML = `
-                    <div class="font-medium text-gray-800 dark:text-gray-200">${result.title}</div>
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div class="font-medium text-gray-200">${result.title}</div>
+                    <div class="flex justify-between text-xs text-gray-400 mt-1">
                         <span>${result.category}</span>
                         <span>${result.time}</span>
                     </div>
@@ -392,13 +410,13 @@
                 summaryElement.innerHTML = fullSummaries[summaryId];
                 summaryElement.classList.remove('line-clamp-3');
                 button.textContent = 'Resumo Original';
-                button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                button.classList.remove('bg-gray-700', 'text-gray-300');
                 button.classList.add('bg-blue-500', 'text-white');
             } else {
                 summaryElement.innerHTML = originalSummaries[summaryId];
                 summaryElement.classList.add('line-clamp-3');
                 button.textContent = 'Resumo IA';
-                button.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                button.classList.add('bg-gray-700', 'text-gray-300');
                 button.classList.remove('bg-blue-500', 'text-white');
             }
         }

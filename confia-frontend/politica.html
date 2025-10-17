@@ -14,6 +14,8 @@
     <style>
         .side {
             transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
         }
         .side-open {
             transform: translateX(0) !important;
@@ -39,9 +41,8 @@
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 font-sans">
 
-    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
-                               transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center p-4 h-16 border-b  dark:border-gray-700">
+    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
 
@@ -65,6 +66,14 @@
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
         </nav>
+          <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
+ <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
+   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
+         alt="User Avatar" 
+         class="w-12 h-12 rounded-full">
+    <span class="text-white font-medium">Nome do Usuário</span>
+</a>
     </aside>
 
     <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
@@ -78,8 +87,7 @@
                 
                 <div class="s-bar relative w-full max-w-lg mx-4">
                     <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." 
-                               class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500">
                             <i class="fas fa-search"></i>
                         </button>

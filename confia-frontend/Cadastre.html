@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Hub Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'bg-gradient': 'bg-gradient 20s ease infinite',
+                        'card-entrance': 'card-entrance 1.2s ease-out forwards',
+                    },
+                    keyframes: {
+                        'bg-gradient': {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        'card-entrance': {
+                            '0%': { transform: 'scale(0.95)', opacity: '0', filter: 'blur(5px)' },
+                            '100%': { transform: 'scale(1)', opacity: '1', filter: 'blur(0)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="website icon" type="image/png" href="logo_confia.png">
+    <style>
+        .login-bg {
+            background: linear-gradient(135deg, #a7e0ff, #82b1ff, #64b5f6, #42a5f5);
+            background-size: 400% 400%;
+            animation: bg-gradient 20s ease infinite;
+        }
+        .dark .login-bg {
+            background: linear-gradient(135deg, #1e3a8a, #111827, #2d3748, #4a5568);
+            background-size: 400% 400%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans flex items-center justify-center min-h-screen login-bg">
+
+    <main class="container mx-auto px-4 py-6 flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-2xl bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden md:flex md:h-[480px] transition-all duration-300 transform animate-card-entrance">
+            
+            <!-- Lado esquerdo -->
+            <div class="hidden md:block md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-900 relative p-6 flex flex-col items-center justify-center text-white">
+                <img src="logo_confia.png" alt="Logo Confia" class="w-32 mb-4 drop-shadow-lg relative z-10">
+                <h2 class="text-3xl font-bold mb-2 text-center drop-shadow relative z-10">Bem-vindo(a)</h2>
+                <p class="text-sm text-center opacity-90 mt-2 relative z-10">Crie sua conta para personalizar suas notícias e acessar todo o conteúdo.</p>
+            </div>
+            
+            <!-- Lado direito -->
+            <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+                
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white text-center mb-7">Crie sua Conta</h2>
+                
+                <form id="cadastroForm" class="space-y-4">
+
+                    <div>
+                        <label for="name" class="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-1">Nome Completo</label>
+                        <input type="text" id="name" name="name" placeholder="Seu nome" required
+                            class="w-full pr-4 py-3 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-1">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="seu-email@exemplo.com" required
+                            class="w-full pr-4 py-3 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="text-sm font-medium text-gray-700 dark:text-gray-300 block mb-1">Senha</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required
+                            class="w-full pr-4 py-3 rounded-lg bg-gray-50 dark:bg-slate-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                    </div>
+
+                    <!-- Botão de cadastro -->
+                    <a href="#" id="cadastrarLink"
+                        class="block text-center bg-blue-600 text-white py-3.5 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 shadow-lg mt-6">
+                        Cadastrar
+                    </a>
+                    
+                    <p class="text-center text-sm text-gray-600 dark:text-gray-400 pt-2">
+                        Já tem uma conta? 
+                        <a href="login.html" class="text-blue-600 hover:underline dark:text-blue-400 font-medium">Fazer Login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const cadastrarLink = document.getElementById('cadastrarLink');
+        const nomeInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const senhaInput = document.getElementById('password');
+
+        cadastrarLink.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (!nomeInput.value.trim() || !emailInput.value.trim() || !senhaInput.value.trim()) {
+                alert("Por favor, preencha todos os campos antes de cadastrar.");
+                return;
+            }
+
+            // voltar após o cadastro
+            alert("Cadastro realizado com sucesso!");
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+</html>

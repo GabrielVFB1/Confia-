@@ -21,6 +21,13 @@
         html.dark #artigo-conteudo {
             color: #e5e7eb; /* text-gray-200 */
         }
+
+        @media (max-width: 768px) {
+        #artigo-imagem {
+            width: 100%;      /* Faz a imagem ocupar a largura total do artigo */
+            max-width: 100%;  /* Remove a limitação de 'max-w-xl' do Tailwind em telas pequenas */
+        }
+    }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
@@ -38,6 +45,14 @@
             <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
             <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
         </nav>
+           <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
+<a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
+   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
+         alt="User Avatar" 
+         class="w-12 h-12 rounded-full">
+    <span class="text-white font-medium">Nome do Usuário</span>
+</a>
     </aside>
     <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 

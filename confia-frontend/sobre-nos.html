@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="light">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,23 @@
         .s-bar:focus-within .s-drop {
             display: block; 
         }
+
+        /* 🔧 Sidebar responsiva */
+        #sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (min-width: 1024px) {
+            #sidebar {
+                transform: translateX(0);
+            }
+            #overlay {
+                display: none;
+            }
+            .lg\\:ml-64 {
+                margin-left: 16rem;
+            }
+        }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
@@ -65,7 +82,16 @@
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
         </nav>
-    </aside>
+   </aside>
+
+   <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
+  <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
+   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
+         alt="User Avatar" 
+         class="w-12 h-12 rounded-full">
+    <span class="text-white font-medium">Nome do Usuário</span>
+</a>
 
     <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
@@ -77,11 +103,7 @@
                 </button>
                 
                 <div class="s-bar relative w-full max-w-lg mx-4">
-                    <div class="relative">
-                        
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+                    
                     <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
@@ -123,8 +145,6 @@
                     <li>Pedro Borges</li>
                     <li>Rafael Augusto</li>
                 </ul>
-
-                
 
                 <div class="mt-10 border-t border-gray-200 dark:border-slate-700 pt-6 text-sm text-gray-500 dark:text-gray-500">
                     Última atualização: Agosto de 2025
@@ -185,14 +205,12 @@
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
         const searchResults = document.getElementById('searchResults');
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('theme-icon');
         const html = document.querySelector('html');
 
-        // Lógica do Menu Lateral
+        // Menu Lateral
         function openMenu() {
             sidebar.classList.add('side-open');
             overlay.classList.remove('pointer-events-none');
@@ -218,30 +236,14 @@
             }
         });
 
-        // Lógica da Barra de Busca (simples, sem resultados nesta página)
-        function performSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            searchResults.innerHTML = '';
-            if (query.length > 2) {
-                searchResults.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">A busca funciona na página principal.</div>`;
-            }
-        }
-        searchInput.addEventListener('input', performSearch);
-        searchButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-
-        // Lógica do Tema (Claro/Escuro)
+        // Tema Claro/Escuro
         function toggleTheme() {
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
-                html.classList.add('light');
                 themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
                 localStorage.setItem('theme', 'light');
             } else {
-                html.classList.remove('light');
                 html.classList.add('dark');
                 themeIcon.classList.remove('fa-sun');
                 themeIcon.classList.add('fa-moon');
@@ -251,22 +253,16 @@
 
         themeToggle.addEventListener('click', toggleTheme);
 
-        // Carregar tema salvo no localStorage
+        // Carregar tema salvo
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-                if (savedTheme === 'dark') {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
             } else {
-                // Tema padrão, caso nenhum esteja salvo
-                html.classList.add('light');
+                html.classList.remove('dark');
+                themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
             }
         });

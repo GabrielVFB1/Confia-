@@ -1,7 +1,9 @@
-// server.js (VERSÃO FINAL E CORRIGIDA)
+// server.js 
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 
 const app = express();
 app.use(cors());
@@ -9,11 +11,11 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-const MONGO_URI = 'mongodb+srv://22300147:Sapinho90@confia.tneyira.mongodb.net/?retryWrites=true&w=majority&appName=Confia';
 
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Conectado ao MongoDB!'))
-  .catch((err) => console.error('Erro ao conectar ao MongoDB:', err));
+const database = require('./config/database'); // Importa o Singleton
+
+// Inicia a conexão usando o Singleton
+database.connect();
 
 // Middleware para servir arquivos estáticos (imagens) da pasta 'uploads'
 app.use('/uploads', express.static('uploads'));

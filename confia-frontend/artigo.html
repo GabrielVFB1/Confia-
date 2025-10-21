@@ -79,6 +79,23 @@
                         </button>
                 </div>
 
+                <section id="ia-analysis-box" class="my-6 p-4 border-l-4 border-blue-500 bg-blue-50 dark:bg-slate-700 rounded-md shadow-sm hidden">
+                  <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200 flex items-center mb-2">
+                          <i class="fas fa-robot mr-2"></i> Análise da IA
+                  </h3>
+                    
+                    <div class="mb-3">
+                        <strong class="text-gray-700 dark:text-gray-300">Resumo:</strong>
+                        <p id="ia-resumo" class="text-gray-600 dark:text-gray-400 italic">...</p>
+                    </div>
+
+                    <div>
+                        <strong class="text-gray-700 dark:text-gray-300">Revisão:</strong>
+                        <p id="ia-revisao" class="text-gray-600 dark:text-gray-400">...</p>
+                    </div>
+                </section>
+                
+
 
                 <img id="artigo-imagem" src="" alt="Imagem de capa" class="max-w-xl mx-auto h-auto rounded-lg shadow-md mb-8 hidden">
                 <div id="artigo-conteudo" class="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
@@ -94,92 +111,124 @@
     </div>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
+    // --- SELETORES GLOBAIS (MENU, TEMA) ---
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.querySelector('html');
 
-        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
-        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
-        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
-        overlay.addEventListener('click', closeMenu);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
-        
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark'); html.classList.add('light');
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light'); html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
+    // Funções do Menu (sem alteração)
+    function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
+    function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
+    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
+    
+    // Funções de Tema (sem alteração)
+    function toggleTheme() {
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark'); html.classList.add('light');
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.remove('light'); html.classList.add('dark');
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
         }
-        themeToggle.addEventListener('click', toggleTheme);
-        
-        function carregarTema() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.classList.add(savedTheme);
-            if (savedTheme === 'dark') {
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-            } else {
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-            }
+    }
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    function carregarTema() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.classList.add(savedTheme);
+        if (savedTheme === 'dark') {
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+        } else {
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
         }
+    }
 
-        async function carregarNoticia() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const noticiaId = urlParams.get('id');
-            if (!noticiaId) {
-                document.getElementById('artigo-titulo').innerText = "Erro: ID da notícia não encontrado.";
-                return;
+    // ===================================================================
+    // FUNÇÃO 'carregarNoticia' (VERSÃO ATUALIZADA)
+    // ===================================================================
+    async function carregarNoticia() {
+        // --- 1. Seletores dos novos elementos da IA ---
+        const iaBox = document.getElementById('ia-analysis-box');
+        const iaResumo = document.getElementById('ia-resumo');
+        const iaRevisao = document.getElementById('ia-revisao');
+        // -----------------------------------------
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const noticiaId = urlParams.get('id');
+        if (!noticiaId) {
+            document.getElementById('artigo-titulo').innerText = "Erro: ID da notícia não encontrado.";
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}`);
+            if (!response.ok) throw new Error('Notícia não encontrada');
+            const noticia = await response.json();
+
+            document.title = noticia.titulo + " - Confia!";
+            document.getElementById('artigo-titulo').innerText = noticia.titulo;
+
+            /* 🔧 Correção: limpar estilos inline que travam cor */
+            let conteudo = noticia.conteudo.replace(/style="[^"]*"/g, "");
+            document.getElementById('artigo-conteudo').innerHTML = conteudo;
+
+            // --- 2. LÓGICA PARA EXIBIR A ANÁLISE DA IA ---
+            // Verifica se a IA gerou um resumo (e não é a msg padrão)
+            if (noticia.resumo && !noticia.resumo.includes("não aplicado") && !noticia.resumo.includes("indisponível")) {
+                iaResumo.innerText = noticia.resumo;
+                iaRevisao.innerText = noticia.revisaoIA;
+                iaBox.classList.remove('hidden'); // Mostra o bloco!
             }
-            try {
-                const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}`);
-                if (!response.ok) throw new Error('Notícia não encontrada');
-                const noticia = await response.json();
+            // ---------------------------------------------
 
-                document.title = noticia.titulo + " - Confia!";
-                document.getElementById('artigo-titulo').innerText = noticia.titulo;
+            const tagsContainer = document.getElementById('artigo-tags-container');
+            if (noticia.tags && noticia.tags.length > 0) {
+                noticia.tags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.className = 'bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-900';
+                    tagElement.innerText = tag;
+                    tagsContainer.appendChild(tagElement);
+                });
+            }
 
-                /* 🔧 Correção: limpar estilos inline que travam cor */
-                let conteudo = noticia.conteudo.replace(/style="[^"]*"/g, "");
-                document.getElementById('artigo-conteudo').innerHTML = conteudo;
+            const scoreContainer = document.getElementById('artigo-score-container');
+            
+            // --- 3. CORREÇÃO DO NOME DO CAMPO ---
+            // O backend agora salva 'taxaConfiabilidade'
+           // --- 3. CORREÇÃO DO NOME DO CAMPO ---
+            // O backend agora salva 'taxaConfiabilidade'
 
-                const tagsContainer = document.getElementById('artigo-tags-container');
-                if (noticia.tags && noticia.tags.length > 0) {
-                    noticia.tags.forEach(tag => {
-                        const tagElement = document.createElement('span');
-                        tagElement.className = 'bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-200 dark:text-blue-900';
-                        tagElement.innerText = tag;
-                        tagsContainer.appendChild(tagElement);
-                    });
-                }
-
-                const scoreContainer = document.getElementById('artigo-score-container');
-                if (noticia.scoreConfiabilidade) {
-                    const score = noticia.scoreConfiabilidade;
-                    let cor = 'bg-green-100 text-green-800';
-                    if (score < 85) cor = 'bg-yellow-100 text-yellow-800';
-                    if (score < 70) cor = 'bg-red-100 text-red-800';
-                    scoreContainer.innerHTML = `<span class="font-bold text-sm text-gray-600 dark:text-gray-400">Confiabilidade:</span><span class="${cor} text-sm font-bold px-3 py-1 rounded-full">${score}%</span>`;
-                }
-
-                const imgElement = document.getElementById('artigo-imagem');
-                if (noticia.imagemCapa) {
-                    const imagePath = noticia.imagemCapa.replace(/\\/g, '/');
-                    imgElement.src = `http://localhost:3000/${imagePath}`;
-                    imgElement.classList.remove('hidden');
-                }
-
+            // A verificação foi mudada para "se for diferente de nulo"
+            // Isso garante que um score '0' VAI aparecer.
+            if (noticia.taxaConfiabilidade !== undefined && noticia.taxaConfiabilidade !== null) { 
+                const score = noticia.taxaConfiabilidade; 
+                let cor = 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900';
                 
-   // --- CÓDIGO NOVO PARA O BOTÃO DE COMPARTILHAR ---
-            const botaoCompartilhar = document.getElementById('botao-compartilhar');
+                // Vamos ajustar as cores para ficarem mais precisas
+                if (score < 75) cor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900';
+                if (score < 50) cor = 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900';
+                
+                scoreContainer.innerHTML = `<span class="font-bold text-sm text-gray-600 dark:text-gray-400">Confiabilidade:</span><span class="${cor} text-sm font-bold px-3 py-1 rounded-full">${score}%</span>`;
+            }
+            // -------------------------------------
+            // -------------------------------------
 
-            // Verifica se o navegador suporta a API de compartilhamento
+            const imgElement = document.getElementById('artigo-imagem');
+            if (noticia.imagemCapa) {
+                const imagePath = noticia.imagemCapa.replace(/\\/g, '/');
+                imgElement.src = `http://localhost:3000/${imagePath}`;
+                imgElement.classList.remove('hidden');
+            }
+
+            
+            // --- CÓDIGO DO BOTÃO DE COMPARTILHAR (sem alteração) ---
+            const botaoCompartilhar = document.getElementById('botao-compartilhar');
             if (navigator.share) {
                 botaoCompartilhar.addEventListener('click', async () => {
                     try {
@@ -194,39 +243,42 @@
                     }
                 });
             } else {
-                // Se o navegador não suportar, podemos esconder o botão ou avisar o usuário
                 botaoCompartilhar.style.display = 'none';
                 console.log('Web Share API não suportada neste navegador.');
             }
-           
-
+            
             await carregarRelacionadas(noticiaId);
             
         } catch (error) {
             document.getElementById('artigo-titulo').innerText = "Erro ao carregar a notícia.";
             console.error(error);
         }
-        }
+    }
+    // ===================================================================
+    // FIM DA FUNÇÃO MODIFICADA
+    // ===================================================================
 
-        async function carregarRelacionadas(noticiaId) {
-            const container = document.getElementById('relacionadas-container');
-            try {
-                const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}/relacionadas`);
-                const relacionadas = await response.json();
-                if (relacionadas.length === 0) return;
-                relacionadas.forEach(noticia => {
-                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
-                    container.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-32 object-cover"><div class="p-4"><h3 class="font-bold text-gray-800 dark:text-white">${noticia.titulo}</h3></div></a>`;
-                });
-            } catch (error) {
-                console.error('Erro ao buscar relacionadas:', error);
-            }
+    // Função de Carregar Relacionadas (sem alteração)
+    async function carregarRelacionadas(noticiaId) {
+        const container = document.getElementById('relacionadas-container');
+        try {
+            const response = await fetch(`http://localhost:3000/api/noticias/${noticiaId}/relacionadas`);
+            const relacionadas = await response.json();
+            if (relacionadas.length === 0) return;
+            relacionadas.forEach(noticia => {
+                const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
+                container.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-32 object-cover"><div class="p-4"><h3 class="font-bold text-gray-800 dark:text-white">${noticia.titulo}</h3></div></a>`;
+            });
+        } catch (error) {
+            console.error('Erro ao buscar relacionadas:', error);
         }
+    }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            carregarTema();
-            carregarNoticia();
-        });
-    </script>
+    // Inicialização da Página (sem alteração)
+    window.addEventListener('DOMContentLoaded', () => {
+        carregarTema();
+        carregarNoticia();
+    });
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - Hub Central</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/sobre-nos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -12,59 +13,20 @@
         }
     </script>
     <style>
-        .side {
-            transition: transform 0.3s ease-in-out;
-        }
-        .side-open {
-            transform: translateX(0) !important;
-        }
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .s-drop {
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 20;
-        }
-        .s-bar:focus-within .s-drop {
-            display: block; 
-        }
-
-        /* 🔧 Sidebar responsiva */
-        #sidebar {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        @media (min-width: 1024px) {
-            #sidebar {
-                transform: translateX(0);
-            }
-            #overlay {
-                display: none;
-            }
-            .lg\\:ml-64 {
-                margin-left: 16rem;
-            }
-        }
+        .side-open { transform: translateX(0) !important; }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
-<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+<body>
 
-   <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
-                               transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center p-4 h-16 border-b  dark:border-gray-700">
+   <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
 
         <nav class="flex-grow p-4 space-y-2 mt-4">
             <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3"></i> Início
+                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
             </a>
             <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
@@ -79,21 +41,17 @@
                 <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
             </a>
             <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
+                <i class="fas fa-users w-6 mr-3"></i> Sobre Nós
             </a>
         </nav>
    </aside>
 
-   <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
-  <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
-   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
-         alt="User Avatar" 
-         class="w-12 h-12 rounded-full">
+   <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
     <span class="text-white font-medium">Nome do Usuário</span>
-</a>
+   </a>
 
-    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
@@ -102,12 +60,7 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 
-                <div class="s-bar relative w-full max-w-lg mx-4">
-                    
-                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
-                        <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
-                    </div>
-                </div>
+                <div></div>
 
                 <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
                     <i class="fas fa-sun" id="theme-icon"></i>
@@ -115,29 +68,29 @@
             </div>
         </header>
 
-        <main class="container mx-auto px-4 py-12">
-            <section class="bg-white dark:bg-slate-800 shadow-md rounded-lg p-6 md:p-8">
-                <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-6"><i class="fas fa-users mr-3 text-blue-500"></i>Sobre Nós</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-lg mb-6">
+        <main>
+            <section id="about-section">
+                <h2><i class="fas fa-users"></i>Sobre Nós</h2>
+                <p class="intro-text">
                     O <strong>Confia!</strong> é um projeto dedicado a oferecer informações confiáveis, claras e relevantes para o público. Nossa missão é democratizar o acesso à notícia de qualidade, com responsabilidade e compromisso com a verdade.
                 </p>
 
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4">Missão do Projeto</h3>
-                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                <h3>Missão do Projeto</h3>
+                <p>
                     Informar com integridade, promovendo uma visão crítica da realidade por meio de conteúdo jornalístico gerado com apoio de inteligência artificial e curadoria humana.
                 </p>
 
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4">Princípios Editoriais</h3>
-                <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 mb-6 space-y-2">
+                <h3>Princípios Editoriais</h3>
+                <ul>
                     <li>Compromisso com a verdade e a imparcialidade.</li>
                     <li>Transparência na produção de conteúdo.</li>
                     <li>Responsabilidade social e ética jornalística.</li>
                     <li>Respeito à diversidade de opiniões e fontes.</li>
                 </ul>
 
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-8 mb-4">Equipe Técnica</h3>
+                <h3>Equipe Técnica</h3>
                 
-                <ul class="text-gray-600 dark:text-gray-400 list-disc list-inside space-y-1">
+                <ul id="team-list">
                     <li>Bruno Pimenta</li>
                     <li>Samuel Souza</li>
                     <li>Gabriel Victor</li>
@@ -146,126 +99,61 @@
                     <li>Rafael Augusto</li>
                 </ul>
 
-                <div class="mt-10 border-t border-gray-200 dark:border-slate-700 pt-6 text-sm text-gray-500 dark:text-gray-500">
+                <div id="last-update">
                     Última atualização: Agosto de 2025
                 </div>
             </section>
         </main>
 
-        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
+        <footer>
+            <div id="footer-container">
+                <div id="footer-content">
+                    <div class="footer-section">
+                        <h3>Confia!</h3>
                         <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
+                    <div class="footer-section">
+                        <h4>Categorias</h4>
+                        <ul>
+                            <li><a href="#">Política</a></li>
+                            <li><a href="#">Economia</a></li>
+                            <li><a href="#">Tecnologia</a></li>
+                            <li><a href="#">Saúde</a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
+                    <div class="footer-section">
+                        <h4>Links Úteis</h4>
+                        <ul>
+                            <li><a href="#">Sobre Nós</a></li>
+                            <li><a href="#">Contato</a></li>
+                            <li><a href="#">Termos de Uso</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
+                    <div class="footer-section">
+                        <h4>Newsletter</h4>
+                        <p>Inscreva-se para receber as principais notícias</p>
+                        <div id="newsletter-form">
+                            <input type="email" placeholder="Seu e-mail">
+                            <button>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
+                        <div id="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
-                    <p>&copy; 2025 NewsHub. Todos os direitos reservados.</p>
+                <div id="footer-bottom">
+                    <p>&copy; 2025 Confia!. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const searchResults = document.getElementById('searchResults');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
-
-        // Menu Lateral
-        function openMenu() {
-            sidebar.classList.add('side-open');
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('opacity-100');
-        }
-
-        function closeMenu() {
-            sidebar.classList.remove('side-open');
-            overlay.classList.add('pointer-events-none');
-            overlay.classList.remove('opacity-100');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebar.classList.contains('side-open') ? closeMenu() : openMenu();
-        });
-        
-        overlay.addEventListener('click', closeMenu);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('side-open')) {
-                closeMenu();
-            }
-        });
-
-        // Tema Claro/Escuro
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        themeToggle.addEventListener('click', toggleTheme);
-
-        // Carregar tema salvo
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            } else {
-                html.classList.remove('dark');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            }
-        });
-    </script>
+    <script src="js/sobre-nos.js"></script>
 </body>
 </html>

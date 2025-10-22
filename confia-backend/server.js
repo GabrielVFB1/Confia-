@@ -1,9 +1,11 @@
 // server.js 
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(cors());
@@ -29,6 +31,7 @@ const feedbackRoutes = require('./routes/feedback');
 // devem ser gerenciadas pelo nosso arquivo noticiasRoutes.
 app.use('/api/noticias', noticiasRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/auth', authRoutes);
 // ----------------------------------------------------
 
 // Rota de teste (pode ser removida se não for mais necessária)

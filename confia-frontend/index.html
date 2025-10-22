@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Central - Portal de Notícias</title>
+    <link rel="stylesheet" href="css/index.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,19 +12,12 @@
             darkMode: 'class',
         }
     </script>
-    <style>
-        .side { transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; }
-        .side-open { transform: translateX(0) !important; }
-        .overlay { transition: opacity 0.3s ease-in-out; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .s-drop { display: none; position: absolute; width: 100%; z-index: 20; }
-        .s-bar:focus-within .s-drop { display: block;  }
-    </style>
+
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 font-sans">
 
-    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+    <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
         <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
@@ -43,17 +37,17 @@
     <span class="text-white font-medium">Nome do Usuário</span>
 </a>
     </aside>
-    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
                 <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
-                <div class="s-bar relative w-full max-w-lg mx-4">
+                <div class="relative w-full max-w-lg mx-4">
                     <div class="relative">
                         <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500"><i class="fas fa-search"></i></button>
                     </div>
-                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                    <div id="searchDropdown" class="hidden absolute w-full z-20 mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
                 </div>
@@ -91,131 +85,344 @@
             </div>
         </main>
 
-        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8">
-            </footer>
+        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 text-center">
+            <p>© 2025 Hub Central - Todos os direitos reservados.</p>
+        </footer>
     </div>
 
-    <script>
-        // --- SELETORES GLOBAIS ---
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        
-        // --- LÓGICA DO MENU LATERAL ---
-        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
-        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
-        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
+   <script>
+    // --- SELETORES GLOBAIS ---
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.querySelector('html');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const searchDropdown = document.getElementById('searchDropdown');
+    const searchResultsContainer = document.getElementById('searchResults'); // Renomeado no JS
+    const noticiasContainer = document.getElementById('ultimas-noticias-container'); // Renomeado no JS
+    const destaquesContainer = document.getElementById('highlightCarousel'); // Renomeado no JS
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const carousel = document.getElementById('highlightCarousel'); // Adicionado seletor do carrossel
+
+    // --- LÓGICA DO MENU LATERAL ---
+    let menuOpen = false;
+    function openMenu() {
+        if (!sidebar || !overlay) return;
+        sidebar.style.transform = 'translateX(0)';
+        overlay.classList.remove('pointer-events-none');
+        overlay.classList.add('opacity-100');
+        menuOpen = true;
+    }
+    function closeMenu() {
+        if (!sidebar || !overlay) return;
+        sidebar.style.transform = 'translateX(-100%)';
+        overlay.classList.add('pointer-events-none');
+        overlay.classList.remove('opacity-100');
+        menuOpen = false;
+    }
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); menuOpen ? closeMenu() : openMenu(); });
+    }
+    if (overlay) {
         overlay.addEventListener('click', closeMenu);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
-        // --- LÓGICA DO TEMA (CLARO/ESCURO) ---
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark'); html.classList.add('light');
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light'); html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
+    // --- LÓGICA DO TEMA (CLARO/ESCURO) ---
+    function toggleTheme() {
+        if (!html || !themeIcon) return;
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark'); html.classList.add('light');
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.remove('light'); html.classList.add('dark');
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
         }
+    }
+    if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
-        
-        function carregarTema() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.classList.add(savedTheme);
-            if (savedTheme === 'dark') {
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-            } else {
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+    }
+    
+    function carregarTema() {
+        if (!html || !themeIcon) return;
+        // Define light como padrão se não houver preferência salva ou do sistema
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        // Limpa classes antes de adicionar a correta para evitar conflitos
+        html.classList.remove('light', 'dark'); 
+        html.classList.add(savedTheme); 
+        if (savedTheme === 'dark') {
+            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
+        } else {
+            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
+        }
+    }
+    
+    // --- LÓGICA DE CARREGAMENTO DE CONTEÚDO DINÂMICO (CORRIGIDA PARA INDEX) ---
+    async function carregarNoticias() {
+        // Garante que os containers existam
+        if (!noticiasContainer || !destaquesContainer) {
+            console.error("Containers de notícias ou destaques não encontrados no HTML!");
+            if(noticiasContainer) noticiasContainer.innerHTML = '<p class="text-red-500 py-4">Erro interno: Container não encontrado.</p>';
+            return;
+        }
+
+        noticiasContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400 py-4">Carregando últimas notícias...</p>';
+        destaquesContainer.innerHTML = ''; // Limpa destaques
+
+        const limiteHomepage = 5; // Quantas notícias mostrar na seção "Últimas"
+        const limiteDestaques = 2; // Quantas notícias mostrar no carrossel
+
+        try {
+            // --- CORREÇÃO 1: Busca paginada ---
+            const response = await fetch(`http://localhost:3000/api/noticias?page=1&limit=${limiteHomepage}`);
+            if (!response.ok) throw new Error(`Falha ao buscar notícias (Status: ${response.status})`);
+            const dadosPaginados = await response.json();
+
+            // --- CORREÇÃO 2: Acessa o array 'noticias' ---
+            const noticias = dadosPaginados.noticias || [];
+            // ------------------------------------------
+
+            // Limpa containers novamente antes de preencher
+            noticiasContainer.innerHTML = '';
+            destaquesContainer.innerHTML = '';
+
+            if (noticias.length === 0) {
+                noticiasContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400 py-4">Nenhuma notícia encontrada.</p>';
+                // Esconde botões do carrossel se não há destaques
+                if(prevBtn) prevBtn.style.display = 'none';
+                if(nextBtn) nextBtn.style.display = 'none';
+                return; // Sai se não houver notícias
             }
-        }
-        
-        // --- LÓGICA DE CARREGAMENTO DE CONTEÚDO DINÂMICO ---
-        async function carregarNoticias() {
-            const noticiasContainer = document.getElementById('ultimas-noticias-container');
-            const destaquesContainer = document.getElementById('highlightCarousel');
-            try {
-                const response = await fetch('http://localhost:3000/api/noticias');
-                const noticias = await response.json();
-                noticiasContainer.innerHTML = '';
-                destaquesContainer.innerHTML = '';
-                
-                const noticiasDestaque = noticias.slice(0, 2);
-                noticiasDestaque.forEach(noticia => {
-                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/1200x400/?news';
-                    destaquesContainer.innerHTML += `<div class="w-full flex-shrink-0 relative"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-64 md:h-96 object-cover brightness-75"><a href="artigo.html?id=${noticia._id}" class="absolute inset-0"><div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6"><span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><h3 class="text-white text-xl md:text-2xl font-bold mt-2 hover:underline">${noticia.titulo}</h3></div></a></div>`;
-                });
 
-                const noticiasLista = noticias.slice(0, 5);
-                noticiasLista.forEach(noticia => {
-                    const imagePath = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : 'https://source.unsplash.com/random/300x200/?news';
-                    const resumo = noticia.conteudo.replace(/<[^>]*>/g, '').substring(0, 120);
-                    noticiasContainer.innerHTML += `<article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300"><div class="md:flex"><div class="md:w-1/3"><img src="${imagePath}" alt="Imagem da notícia" class="w-full h-full object-cover"></div><div class="p-4 md:w-2/3"><div class="flex justify-between items-start"><span class="bg-purple-600 text-white text-xs font-semibold px-2 py-1 rounded">${noticia.categoria.toUpperCase()}</span><span class="text-gray-500 dark:text-gray-400 text-sm">${new Date(noticia.dataPublicacao).toLocaleDateString()}</span></div><h3 class="text-lg font-bold text-gray-800 dark:text-white mt-2"><a href="artigo.html?id=${noticia._id}" class="hover:underline">${noticia.titulo}</a></h3><p class="text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">${resumo}...</p></div></div></article>`;
-                });
-                
-                iniciarCarrossel();
-            } catch (error) {
-                console.error('Erro ao carregar notícias:', error);
-                noticiasContainer.innerHTML = '<p class="text-red-500">Não foi possível carregar as notícias. Verifique se o backend está rodando.</p>';
+            // --- CARROSSEL DE DESTAQUES ---
+            const noticiasDestaque = noticias.slice(0, limiteDestaques);
+            noticiasDestaque.forEach(noticia => {
+                const imagePath = noticia.imagemCapa
+                    ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}`
+                    : `https://source.unsplash.com/random/1200x400/?news&sig=${noticia._id}`;
+                destaquesContainer.innerHTML += `
+                    <div class="w-full flex-shrink-0 relative">
+                        <img src="${imagePath}" alt="Imagem da notícia ${escapeHtml(noticia.titulo)}" class="w-full h-64 md:h-96 object-cover brightness-75">
+                        <a href="artigo.html?id=${noticia._id}" class="absolute inset-0 group">
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">${escapeHtml(noticia.categoria.toUpperCase())}</span>
+                                <h3 class="text-white text-xl md:text-2xl font-bold mt-2 group-hover:underline">${escapeHtml(noticia.titulo)}</h3>
+                            </div>
+                        </a>
+                    </div>`;
+            });
+            iniciarCarrossel(); // Inicia o carrossel APÓS adicionar os slides
+
+            // --- LISTA DE ÚLTIMAS NOTÍCIAS ---
+            const noticiasLista = noticias.slice(0, limiteHomepage); // Usa as mesmas notícias buscadas
+            noticiasLista.forEach(noticia => {
+                 noticiasContainer.insertAdjacentHTML('beforeend', renderizarCardNoticiaHomepage(noticia));
+            });
+
+        } catch (error) {
+            console.error('Erro ao carregar notícias:', error);
+            noticiasContainer.innerHTML = `<p class="text-red-500 py-4">Não foi possível carregar as notícias. Verifique se o backend está rodando.</p>`;
+             // Esconde botões do carrossel em caso de erro
+             if(prevBtn) prevBtn.style.display = 'none';
+             if(nextBtn) nextBtn.style.display = 'none';
+        }
+    }
+
+    // --- FUNÇÃO AUXILIAR PARA RENDERIZAR CARD NO INDEX (COM CONFIABILIDADE E RESUMO IA) ---
+   // --- FUNÇÃO AUXILIAR PARA RENDERIZAR CARD NO INDEX (100% LIMPA) ---
+      function renderizarCardNoticiaHomepage(noticia) {
+            const imagePath = noticia.imagemCapa
+                ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}`
+                : `https://source.unsplash.com/random/300x200/?news&sig=${noticia._id}`;
+            
+            const resumo = (noticia.resumo && !noticia.resumo.includes("não aplicado") && !noticia.resumo.includes("indisponível"))
+                           ? noticia.resumo // Usa resumo da IA
+                           : noticia.conteudo.replace(/<[^>]+>/g, '').substring(0, 120) + '...'; // Senão, gera do conteúdo
+
+            let scoreColorClasses = 'bg-gray-200 text-gray-700 dark:bg-gray-600 dark:text-gray-300';
+            let scoreDisplay = 'N/A';
+            if (noticia.taxaConfiabilidade !== undefined && noticia.taxaConfiabilidade !== null) {
+                const score = noticia.taxaConfiabilidade;
+                scoreDisplay = `${score}%`;
+                scoreColorClasses = 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900';
+                if (score < 85) scoreColorClasses = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900';
+                if (score < 70) scoreColorClasses = 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900';
             }
-        }
 
-        // --- LÓGICA DA BARRA DE BUSCA ---
-        async function performSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            const searchResultsContainer = document.getElementById('searchResults');
-            searchResultsContainer.innerHTML = '';
-            if (query.length < 3) return;
-            try {
-                const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
-                const resultados = await response.json();
-                if (resultados.length === 0) {
-                    searchResultsContainer.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado.</div>`;
-                } else {
-                    resultados.forEach(noticia => {
-                        searchResultsContainer.innerHTML += `<a href="artigo.html?id=${noticia._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600"><div class="font-medium text-gray-800 dark:text-gray-200">${noticia.titulo}</div><div class="text-xs text-gray-500 dark:text-gray-400 mt-1"><span>${noticia.categoria.toUpperCase()}</span></div></a>`;
-                    });
-                }
-            } catch (error) {
-                console.error('Erro na busca:', error);
-                searchResultsContainer.innerHTML = `<div class="p-4 text-red-500">Erro ao conectar com a busca.</div>`;
-            }
-        }
-        searchInput.addEventListener('input', performSearch);
+            // HTML Limpo
+            return `
+                <article class="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                    <div class="md:flex">
+                        <div class="md:flex-shrink-0 md:w-48">
+                            <img src="${imagePath}" alt="Imagem da notícia ${escapeHtml(noticia.titulo)}" class="w-full h-32 md:h-full object-cover">
+                        </div>
+                        <div class="p-4 flex flex-col justify-between flex-grow">
+                             <div>
+                                <div class="flex flex-wrap justify-between items-center text-xs mb-1 gap-1">
+                                    <span class="bg-purple-100 text-purple-800 dark:bg-purple-200 dark:text-purple-900 font-semibold px-2 py-0.5 rounded">${escapeHtml(noticia.categoria.toUpperCase())}</span>
+                                     <span class="${scoreColorClasses} font-bold px-2 py-0.5 rounded-full text-xs" title="Taxa de Confiabilidade">
+                                        <i class="fas fa-shield-alt mr-1 opacity-75"></i> ${scoreDisplay}
+                                     </span>
+                                    <span class="text-gray-500 dark:text-gray-400 w-full text-right mt-1 md:w-auto md:text-left md:mt-0">${new Date(noticia.dataPublicacao).toLocaleDateString()}</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 dark:text-white mt-1 mb-1 line-clamp-2">
+                                    <a href="artigo.html?id=${noticia._id}" class="hover:underline">${escapeHtml(noticia.titulo)}</a>
+                                </h3>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mt-1">${escapeHtml(resumo)}</p>
+                            <a href="artigo.html?id=${noticia._id}" class="text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm mt-2 self-start">
+                                Leia mais <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `;
+      }
 
-        // --- LÓGICA DO CARROSSEL ---
-        let currentSlide = 0;
-        let slides = [];
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const carousel = document.getElementById('highlightCarousel');
 
-        function goToSlide(index) {
-            const totalSlides = slides.length;
-            if (!carousel || totalSlides === 0) return;
-            currentSlide = (index + totalSlides) % totalSlides;
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-        }
+    // --- FUNÇÃO escapeHtml (Necessária para Segurança) ---
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return "";
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+     }
 
-        function iniciarCarrossel() {
-            slides = carousel.querySelectorAll('.flex-shrink-0');
-            if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-            if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-            setInterval(() => { if (document.hasFocus()) goToSlide(currentSlide + 1); }, 5000);
-        }
 
-        // --- FUNÇÃO DE INICIALIZAÇÃO ---
-        window.addEventListener('DOMContentLoaded', () => {
-            carregarTema();
-            carregarNoticias();
+    // --- LÓGICA DA BARRA DE BUSCA (sem alteração, mas precisa do escapeHtml) ---
+    if (searchInput) {
+        searchInput.addEventListener('focus', () => {
+             if (searchInput.value.length >= 3 && searchDropdown) searchDropdown.classList.remove('hidden');
         });
-    </script>
+        searchInput.addEventListener('blur', () => {
+             // Atraso para permitir clique no resultado
+             if (searchDropdown) setTimeout(() => searchDropdown.classList.add('hidden'), 200);
+        });
+    }
+
+    async function performSearch() {
+        if (!searchInput || !searchResultsContainer || !searchDropdown) return;
+        const query = searchInput.value.trim();
+        searchResultsContainer.innerHTML = ''; // Limpa resultados anteriores
+
+        if (query.length < 3) {
+            searchDropdown.classList.add('hidden');
+            return;
+        }
+
+        searchDropdown.classList.remove('hidden');
+        searchResultsContainer.innerHTML = '<div class="p-4 text-gray-500 dark:text-gray-400">Buscando...</div>';
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(query)}`);
+            if (!response.ok) throw new Error('Falha na busca');
+            const resultados = await response.json();
+            searchResultsContainer.innerHTML = '';
+
+            if (resultados.length === 0) {
+                searchResultsContainer.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado para "${escapeHtml(query)}".</div>`;
+            } else {
+                resultados.forEach(noticia => {
+                    // Usa escapeHtml nos dados vindos do backend
+                    searchResultsContainer.innerHTML += `
+                        <a href="artigo.html?id=${noticia._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600">
+                            <div class="font-medium text-gray-800 dark:text-gray-200">${escapeHtml(noticia.titulo)}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <span>${escapeHtml(noticia.categoria.toUpperCase())}</span>
+                            </div>
+                        </a>`;
+                });
+            }
+        } catch (error) {
+            console.error('Erro na busca:', error);
+            searchResultsContainer.innerHTML = `<div class="p-4 text-red-500">Erro ao conectar com a busca.</div>`;
+        }
+    }
+    let searchTimeout;
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 300); // Debounce
+        });
+    }
+    if (searchButton) {
+        searchButton.addEventListener('click', performSearch);
+    }
+
+    // --- LÓGICA DO CARROSSEL ---
+    let currentSlide = 0;
+    let slides = [];
+    let slideInterval; // Guarda a referência do intervalo
+
+    function goToSlide(index) {
+        if (!carousel || slides.length === 0) return; // Segurança
+        const totalSlides = slides.length;
+        currentSlide = (index + totalSlides) % totalSlides; // Loop
+        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function startSlideInterval() {
+        clearInterval(slideInterval); // Limpa timer anterior
+        slideInterval = setInterval(() => {
+            // Só avança se a aba estiver em foco
+            if (document.hasFocus()) {
+                goToSlide(currentSlide + 1);
+            }
+        }, 5000); // Intervalo de 5 segundos
+    }
+
+    function iniciarCarrossel() {
+        if (!carousel) return;
+        // Seleciona os slides DENTRO do container do carrossel
+        slides = carousel.querySelectorAll('.flex-shrink-0'); 
+
+        // Esconde botões e para se tiver 1 ou 0 slides
+        if (slides.length <= 1) {
+             if(prevBtn) prevBtn.style.display = 'none';
+             if(nextBtn) nextBtn.style.display = 'none';
+             // Aplica transform 0 para garantir que o único slide esteja visível
+             carousel.style.transform = 'translateX(0%)'; 
+             return; 
+        } else {
+             // Mostra botões se houver mais de 1 slide
+             if(prevBtn) prevBtn.style.display = 'block';
+             if(nextBtn) nextBtn.style.display = 'block';
+        }
+
+        // Adiciona listeners aos botões (se existirem)
+        if (prevBtn) {
+             // Remove listener antigo para evitar duplicação (melhor prática)
+             prevBtn.replaceWith(prevBtn.cloneNode(true)); 
+             document.getElementById('prevBtn').addEventListener('click', () => {
+                goToSlide(currentSlide - 1);
+                startSlideInterval(); // Reinicia intervalo ao clicar
+            });
+        }
+        if (nextBtn) {
+            nextBtn.replaceWith(nextBtn.cloneNode(true));
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                goToSlide(currentSlide + 1);
+                startSlideInterval(); // Reinicia intervalo ao clicar
+            });
+        }
+        
+        startSlideInterval(); // Inicia a troca automática
+    }
+
+    // --- FUNÇÃO DE INICIALIZAÇÃO ---
+    window.addEventListener('DOMContentLoaded', () => {
+        carregarTema();
+        carregarNoticias(); // Chama a função corrigida
+    });
+</script>
 </body>
 </html>

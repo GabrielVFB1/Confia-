@@ -13,6 +13,7 @@
                     animation: {
                         'bg-gradient': 'bg-gradient 20s ease infinite',
                         'card-entrance': 'card-entrance 1.2s ease-out forwards',
+                        'rotate-icon': 'rotate-icon 0.5s ease-in-out',
                     },
                     keyframes: {
                         'bg-gradient': {
@@ -23,12 +24,18 @@
                             '0%': { transform: 'scale(0.95)', opacity: '0', filter: 'blur(5px)' },
                             '100%': { transform: 'scale(1)', opacity: '1', filter: 'blur(0)' },
                         },
+                        'rotate-icon': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '50%': { transform: 'rotate(180deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        }
                     },
                 },
             },
         }
     </script>
-    <link rel="website icon" type="image/png" href="logo_confia.png">
+    <link rel="icon" type="image/png" href="logo_confia.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .login-bg {
             background: linear-gradient(135deg, #a7e0ff, #82b1ff, #64b5f6, #42a5f5);
@@ -42,6 +49,11 @@
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 font-sans flex items-center justify-center min-h-screen login-bg">
+
+    <!-- Botão de tema igual ao login -->
+    <button id="themeToggle" class="fixed top-4 right-4 z-50 text-gray-600 dark:text-gray-300 text-xl transition-colors">
+        <i class="fas fa-sun" id="theme-icon"></i>
+    </button>
 
     <main class="container mx-auto px-4 py-6 flex items-center justify-center min-h-screen">
         <div class="w-full max-w-2xl bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden md:flex md:h-[480px] transition-all duration-300 transform animate-card-entrance">
@@ -94,23 +106,97 @@
     </main>
 
     <script>
-        const cadastrarLink = document.getElementById('cadastrarLink');
+        // Alternar tema igual login
+       // Validação de cadastro (MODIFICADO PARA CONECTAR AO BACKEND)
+        const cadastrarLink = document.getElementById('cadastrarLink'); // Assumindo que este é o seu botão/link de submit
         const nomeInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
         const senhaInput = document.getElementById('password');
 
-        cadastrarLink.addEventListener('click', (e) => {
-            e.preventDefault();
+        // Garante que os elementos existem antes de adicionar o listener
+        if (cadastrarLink && nomeInput && emailInput && senhaInput) {
+            cadastrarLink.addEventListener('click', async (e) => { // Tornamos a função async
+                e.preventDefault(); // Impede a navegação padrão do link <a>
 
-            if (!nomeInput.value.trim() || !emailInput.value.trim() || !senhaInput.value.trim()) {
-                alert("Por favor, preencha todos os campos antes de cadastrar.");
-                return;
+                const nome = nomeInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = senhaInput.value.trim();
+
+                // Validação (igual antes)
+                if (!nome || !email || !password) {
+                    alert("Por favor, preencha todos os campos antes de cadastrar.");
+                    return;
+                }
+
+                // --- INÍCIO DA LÓGICA DE ENVIO PARA O BACKEND ---
+                // Feedback visual (opcional)
+                cadastrarLink.textContent = 'Cadastrando...';
+                cadastrarLink.style.pointerEvents = 'none'; // Desabilita clique
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ nome, email, password }), // Envia como JSON
+                    });
+
+                    const data = await response.json(); // Lê a resposta do backend
+
+                    if (response.ok) { // Status 201 Created
+                        alert(data.message || 'Cadastro realizado com sucesso! Faça o login.');
+                        window.location.href = 'login.html'; // Redireciona para o login
+                    } else {
+                        // Mostra a mensagem de erro vinda do backend (ex: email já existe, senha curta)
+                        alert(`Erro no cadastro: ${data.message || `Erro ${response.status}`}`);
+                         // Restaura o botão em caso de erro
+                        cadastrarLink.textContent = 'Cadastrar';
+                        cadastrarLink.style.pointerEvents = 'auto'; // Reabilita clique
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição de cadastro:', error);
+                    alert('Não foi possível conectar ao servidor. Verifique se o backend está rodando e tente novamente.');
+                     // Restaura o botão em caso de erro de rede
+                    cadastrarLink.textContent = 'Cadastrar';
+                    cadastrarLink.style.pointerEvents = 'auto';
+                }
+                // Não precisa de 'finally' se o botão só é restaurado no erro
+                // --- FIM DA LÓGICA DE ENVIO ---
+            });
+        } else {
+             console.error("Não foi possível encontrar um ou mais elementos do formulário de cadastro (name, email, password, cadastrarLink).");
+        }
+
+        // --- LÓGICA DO TEMA (Mantida igual) ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('theme-icon'); // Verifique se o ID é esse mesmo
+        const html = document.documentElement;
+
+        if (themeToggle && themeIcon && html) {
+             themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                 const isDark = html.classList.contains('dark');
+                 html.classList.toggle('light', !isDark); // Garante que light/dark sejam opostos
+
+                if (isDark) {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                     localStorage.setItem('theme', 'dark'); // Salva a preferência
+                } else {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                     localStorage.setItem('theme', 'light');
+                }
+            });
+
+             // Carregar tema ao iniciar
+             const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+             html.classList.add(savedTheme); // Define a classe inicial
+             if (savedTheme === 'dark') {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
             }
-
-            // voltar após o cadastro
-            alert("Cadastro realizado com sucesso!");
-            window.location.href = "login.html";
-        });
+        }
     </script>
 </body>
 </html>

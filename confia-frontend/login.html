@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Hub Central</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
     tailwind.config = {
@@ -14,6 +15,7 @@
           animation: {
             'bg-gradient': 'bg-gradient 20s ease infinite',
             'card-entrance': 'card-entrance 1.2s ease-out forwards',
+            'shine': 'shine 2s infinite'
           },
           keyframes: {
             'bg-gradient': {
@@ -24,6 +26,9 @@
               '0%': { transform: 'scale(0.95)', opacity: '0', filter: 'blur(5px)' },
               '100%': { transform: 'scale(1)', opacity: '1', filter: 'blur(0)' },
             },
+            'shine': {
+              '100%': { transform: 'translateX(100%)' }
+            }
           },
         },
       },
@@ -43,16 +48,40 @@
       background: linear-gradient(135deg, #1e3a8a, #111827, #2d3748, #4a5568);
       background-size: 400% 400%;
     }
+
+    @keyframes shine {
+      100% {
+        transform: translateX(100%);
+      }
+    }
   </style>
 </head>
 
 <body class="bg-gray-100 dark:bg-slate-900 font-sans flex items-center justify-center min-h-screen login-bg">
 
+  <!-- Botão de alternância de tema (somente ícone) -->
+  <button id="themeToggle" class="fixed top-5 left-6 z-50 text-yellow-500 dark:text-yellow-300 
+      hover:scale-110 transition-transform duration-300 focus:outline-none">
+    <i id="themeIcon" class="fas fa-sun text-2xl drop-shadow-md"></i>
+  </button>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="fixed top-4 right-4 z-50 bg-white dark:bg-gray-800 text-gray-700 dark:text-white 
+      hover:bg-gray-100 dark:hover:bg-gray-700 p-3 rounded-full transition-all duration-300 shadow-xl 
+      hover:shadow-2xl border border-gray-200 dark:border-gray-600 group">
+    <i class="fas fa-arrow-left text-lg"></i>
+    <span class="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-gray-800 dark:bg-gray-700 
+      text-white text-sm px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 
+      transition-opacity whitespace-nowrap shadow-lg">Voltar ao início</span>
+  </a>
+
   <main class="container mx-auto px-4 py-6 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-2xl bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden md:flex md:h-[450px] transition-all duration-300 transform animate-card-entrance">
+    <div class="w-full max-w-2xl bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden 
+        md:flex md:h-[450px] transition-all duration-300 transform animate-card-entrance">
 
       <!-- LADO ESQUERDO -->
-      <div class="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-900 flex-col items-center justify-center text-white p-6 relative">
+      <div class="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-900 
+          flex-col items-center justify-center text-white p-6 relative">
         <img src="logo_confia.png" alt="Logo Confia" class="w-32 mb-4 drop-shadow-lg relative z-10">
         <h2 class="text-3xl font-bold mb-2 text-center drop-shadow relative z-10">Bem-vindo(a) de volta!</h2>
         <p class="text-sm text-center opacity-90 mt-2 relative z-10">
@@ -100,13 +129,18 @@
             </a>
           </div>
 
-          <!-- BOTÃO COMO LINK -->
-          <a
-            href="index.html"
-            id="entrarLink"
-            class="block text-center bg-blue-600 text-white py-3.5 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 shadow-lg">
-            Entrar
-          </a>
+          <!-- BOTÃO MELHORADO -->
+          <button
+            type="submit"
+            id="entrarBtn"
+            class="w-full relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-600 
+                   text-white py-3.5 rounded-lg font-semibold shadow-lg transition-all duration-300 
+                   hover:shadow-blue-500/50 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-400">
+            
+            <span class="relative z-10">Entrar</span>
+            <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent 
+                         translate-x-[-100%] animate-[shine_2s_infinite]"></span>
+          </button>
 
           <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
             Não tem uma conta?
@@ -120,12 +154,31 @@
   </main>
 
   <script>
-    const entrarLink = document.getElementById('entrarLink');
+    // alternar tema (ícone apenas)
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const html = document.documentElement;
+
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      themeIcon.classList.add('rotate-180', 'transition-transform', 'duration-500');
+
+      setTimeout(() => themeIcon.classList.remove('rotate-180'), 500);
+
+      if (html.classList.contains('dark')) {
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+      } else {
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+    });
+
+    // validação do login
+    const entrarBtn = document.getElementById('entrarBtn');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 
-    entrarLink.addEventListener('click', (e) => {
-      e.preventDefault(); // impede o redirecionamento automático
+    entrarBtn.addEventListener('click', (e) => {
+      e.preventDefault();
 
       const email = emailInput.value.trim();
       const senha = passwordInput.value.trim();
@@ -135,8 +188,8 @@
         return;
       }
 
-      // Se estiver tudo certo, pode redirecionar
-      window.location.href = "index.html"; // altere aqui o destino do login
+      // redirecionar se estiver tudo ok
+      window.location.href = "index.html";
     });
   </script>
 

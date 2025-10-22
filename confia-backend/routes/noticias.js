@@ -27,6 +27,7 @@ router.get('/pesquisa', noticiaController.pesquisarNoticias)
 router.get('/:id', noticiaController.buscarNoticiaPorId);
 router.get('/:id/relacionadas', noticiaController.buscarNoticiasRelacionadas);
 router.post('/', upload.single('imagemCapa'), noticiaController.criarNoticia);
+router.get('/categoria/:categoriaNome', noticiaController.buscarNoticiasPorCategoria);
 
 
 module.exports = router;

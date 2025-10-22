@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Política - Hub Central</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/politica.css"> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
@@ -12,49 +12,28 @@
         }
     </script>
     <style>
-        .side {
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-        .side-open {
-            transform: translateX(0) !important;
-        }
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .s-drop {
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 20;
-        }
-        .s-bar:focus-within .s-drop {
-            display: block; 
-        }
+        .side-open { transform: translateX(0) !important; }
+        .s-bar:focus-within .s-drop { display: block; }
+        /* Adicione aqui estilos personalizados se necessário */
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
 <body class="bg-gray-100 dark:bg-slate-900 font-sans">
 
-    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+    <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
         <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
-            <img src="logo_confia.png" width="145px">
+            <img src="logo_confia.png" width="145px" alt="Logo Confia">
         </div>
 
         <nav class="flex-grow p-4 space-y-2 mt-4">
             <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3"></i> Início
+                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
             </a>
             <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
             </a>
             <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
+                <i class="fas fa-landmark w-6 mr-3"></i> Política
             </a>
             <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
@@ -66,17 +45,14 @@
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
         </nav>
-          <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
- <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
-   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
-         alt="User Avatar" 
-         class="w-12 h-12 rounded-full">
-    <span class="text-white font-medium">Nome do Usuário</span>
-</a>
     </aside>
 
-    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+        <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
+        <span class="text-white font-medium">Nome do Usuário</span>
+    </a>
+
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
@@ -84,7 +60,7 @@
                 <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
                     <i class="fas fa-bars"></i>
                 </button>
-                
+
                 <div class="s-bar relative w-full max-w-lg mx-4">
                     <div class="relative">
                         <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -92,7 +68,7 @@
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                    <div id="searchDropdown" class="s-drop hidden absolute w-full z-20 mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
                 </div>
@@ -104,321 +80,178 @@
         </header>
 
         <main class="container mx-auto px-4 py-8">
-            <section class="mb-8 text-center md:text-left">
-                <h2 class="text-4xl font-extrabold text-gray-800 dark:text-white mb-2">Seção de Política</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-400">Conteúdo exclusivo sobre o cenário político nacional e internacional.</p>
+            <section id="page-header" class="mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-2 flex items-center">
+                    <i class="fas fa-landmark mr-3 text-blue-500"></i> Seção de Política
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400">Conteúdo exclusivo sobre o cenário político nacional e internacional.</p>
             </section>
-    
-            <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-                <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-chart-bar text-red-500 mr-3"></i> Análise de Conflitos Políticos
+
+            <section id="main-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div id="conflicts-analysis" class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center">
+                        <i class="fas fa-chart-bar mr-2 text-indigo-500"></i> Análise de Conflitos Políticos
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Veja as visualizações e informações detalhadas sobre disputas e tensões entre partidos, governos e blocos políticos.</p>
-                    <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-lg h-64 flex items-center justify-center text-gray-500 dark:text-gray-400 text-center">
-                        <p>Visualização de dados (Gráfico de Tensões entre Partidos) irá aqui.</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Visualizações sobre disputas e tensões entre partidos, governos e blocos.</p>
+                    <div id="chart-placeholder" class="bg-gray-100 dark:bg-slate-700 p-6 rounded text-center text-gray-500 dark:text-gray-400">
+                        <p>(Visualização de dados - Gráfico de Tensões - irá aqui)</p>
                     </div>
                 </div>
-    
-                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
-                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fas fa-calendar-alt text-blue-500 mr-3"></i> Calendário de Eventos
+
+                <div id="events-calendar" class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center">
+                        <i class="fas fa-calendar-alt mr-2 text-green-500"></i> Calendário de Eventos
                     </h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <p class="font-bold text-gray-800 dark:text-gray-200">28 de Agosto</p>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Debate Eleitoral Nacional</p>
-                            <span class="text-xs text-gray-500 dark:text-gray-500">Local: TV Aberta</span>
+                    <div id="events-list" class="space-y-3">
+                        <div class="event-item border-b border-gray-200 dark:border-gray-700 pb-2">
+                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">28 de Agosto</p>
+                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Debate Eleitoral Nacional</p>
+                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: TV Aberta</span>
                         </div>
-                        <div class="border-l-4 border-yellow-500 pl-4">
-                            <p class="font-bold text-gray-800 dark:text-gray-200">15 de Setembro</p>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Votação da Lei Orçamentária</p>
-                            <span class="text-xs text-gray-500 dark:text-gray-500">Local: Congresso Nacional</span>
+                        <div class="event-item border-b border-gray-200 dark:border-gray-700 pb-2">
+                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">15 de Setembro</p>
+                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Votação da Lei Orçamentária</p>
+                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: Congresso Nacional</span>
                         </div>
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <p class="font-bold text-gray-800 dark:text-gray-200">3 de Outubro</p>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Comício de Encerramento de Campanha</p>
-                            <span class="text-xs text-gray-500 dark:text-gray-500">Local: Praça Central, São Paulo</span>
+                        <div class="event-item">
+                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">3 de Outubro</p>
+                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Comício de Encerramento de Campanha</p>
+                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: Praça Central, São Paulo</span>
                         </div>
                     </div>
                 </div>
             </section>
-    
-            <section class="mb-12">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
-                    <i class="fas fa-robot text-purple-500 mr-3"></i> Análises com IA
+
+            <section id="ai-analysis" class="mb-8">
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
+                    <i class="fas fa-robot mr-2 text-cyan-500"></i> Análises com IA
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
-                        <h4 class="font-bold text-xl text-gray-800 dark:text-white mb-4 flex items-center">
-                            <i class="fas fa-microscope text-purple-400 mr-2"></i> Análise de Discurso de Candidatos
+                <div id="ai-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     <div id="speech-analysis" class="bg-white dark:bg-slate-700 p-4 rounded-lg shadow">
+                        <h4 class="text-md font-bold text-gray-800 dark:text-white mb-2 flex items-center">
+                            <i class="fas fa-microscope mr-2 text-blue-500"></i> Análise de Discurso de Candidatos
                         </h4>
-                        <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-lg">
-                            <p class="font-medium text-gray-700 dark:text-gray-300 mb-2">Comparação de Promessas vs. Ações</p>
-                            <div class="space-y-3">
-                                <div class="bg-gray-200 dark:bg-slate-600 p-3 rounded-lg flex items-center justify-between">
-                                    <span class="font-medium text-gray-800 dark:text-gray-200">Candidato A:</span>
-                                    <div class="text-sm">
-                                        <span class="text-green-600 font-bold">80% Cumpridas</span>
-                                        <span class="text-red-600 font-bold ml-2">20% Ignoradas</span>
+                        <div class="analysis-content text-sm text-gray-600 dark:text-gray-300">
+                            <p class="analysis-title font-semibold mb-2">Comparação de Promessas vs. Ações (Mandato Anterior):</p>
+                            <div class="candidates-data space-y-1">
+                                <div class="candidate-item flex justify-between items-center">
+                                    <span class="candidate-name font-medium">Governo Atual:</span>
+                                    <div class="candidate-stats flex gap-2">
+                                        <span class="stat-fulfilled text-green-600 dark:text-green-400">68% Cumpridas</span>
+                                        <span class="stat-ignored text-red-600 dark:text-red-400">32% Ignoradas/Parciais</span>
                                     </div>
                                 </div>
-                                <div class="bg-gray-200 dark:bg-slate-600 p-3 rounded-lg flex items-center justify-between">
-                                    <span class="font-medium text-gray-800 dark:text-gray-200">Candidato B:</span>
-                                    <div class="text-sm">
-                                        <span class="text-green-600 font-bold">55% Cumpridas</span>
-                                        <span class="text-red-600 font-bold ml-2">45% Ignoradas</span>
-                                    </div>
+                                <div class="candidate-item flex justify-between items-center opacity-70">
+                                    <span class="candidate-name font-medium">Oposição Principal:</span>
+                                     <div class="candidate-stats flex gap-2">
+                                        <span class="text-gray-500 dark:text-gray-400">(Dados de promessas não aplicáveis)</span>
+                                     </div>
                                 </div>
                             </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">*Análise baseada em dados públicos do último ciclo eleitoral. Fonte: Observatório Político Independente (Exemplo).</p>
                         </div>
                     </div>
-    
-                    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
-                        <h4 class="font-bold text-xl text-gray-800 dark:text-white mb-4 flex items-center">
-                            <i class="fas fa-podcast text-purple-400 mr-2"></i> Resumo de Entrevistas Políticas
+
+                     <div id="interview-summary" class="bg-white dark:bg-slate-700 p-4 rounded-lg shadow">
+                        <h4 class="text-md font-bold text-gray-800 dark:text-white mb-2 flex items-center">
+                            <i class="fas fa-podcast mr-2 text-purple-500"></i> Resumo de Discursos Recentes (via IA)
                         </h4>
-                        <p class="text-gray-600 dark:text-gray-400 mb-4">Veja os pontos-chave de entrevistas recentes com líderes políticos, gerados automaticamente pela nossa IA.</p>
-                        <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded-lg">
-                            <p class="font-bold text-gray-800 dark:text-gray-200 mb-2">Entrevista com o Senador XYZ:</p>
-                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1 text-sm">
-                                <li>Foco na reforma tributária.</li>
-                                <li>Defesa de investimento em infraestrutura.</li>
-                                <li>Rejeição de propostas de aumento de impostos.</li>
-                            </ul>
-                            <a href="#" class="mt-4 inline-block text-blue-500 hover:underline text-sm">Leia a entrevista completa</a>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Pontos-chave identificados por IA de discursos e entrevistas relevantes.</p>
+                        <div class="interview-content space-y-3">
+                            <div class="border-b border-gray-200 dark:border-gray-600 pb-2">
+                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Discurso Presidencial sobre Economia (20/10/2025):</p>
+                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
+                                    <li>Ênfase na necessidade de controle inflacionário rigoroso.</li>
+                                    <li>Anúncio de incentivos fiscais para setores de tecnologia verde.</li>
+                                    <li>Menção a negociações comerciais com bloco econômico vizinho.</li>
+                                </ul>
+                            </div>
+                             <div class="border-b border-gray-200 dark:border-gray-600 pb-2">
+                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Líder da Oposição em Comício (18/10/2025):</p>
+                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
+                                    <li>Críticas à política econômica atual, focando no desemprego.</li>
+                                    <li>Proposta de aumento do investimento em programas sociais.</li>
+                                    <li>Apelo por união partidária para as próximas eleições.</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Ministro da Saúde sobre Nova Campanha (15/10/2025):</p>
+                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
+                                    <li>Detalhamento da nova campanha nacional de vacinação.</li>
+                                    <li>Alerta sobre riscos de novas variantes sazonais.</li>
+                                    <li>Ênfase na importância da prevenção e informação pública.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-    
-            <section>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
-                    <i class="fas fa-scroll text-gray-500 dark:text-gray-400 mr-3"></i> Últimas de Política
+
+            <section id="latest-news">
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
+                    <i class="fas fa-scroll mr-2 text-orange-500"></i> Últimas de Política
                 </h3>
-                <div class="space-y-6">
-                    <article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
-                        <div class="md:flex">
-                            <div class="md:w-1/3">
-                                <img src="https://source.unsplash.com/random/300x200/?politics,congress" alt="Política" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 md:w-2/3">
-                                <div class="flex justify-between items-start">
-                                    <span class="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">NACIONAL</span>
-                                    <span class="text-gray-500 dark:text-gray-400 text-sm">há 1 hora</span>
-                                </div>
-                                <h4 class="news-title text-lg font-bold text-gray-800 dark:text-white mt-2" data-category="NACIONAL">Governo propõe novas medidas para impulsionar a economia</h4>
-                                <p class="text-gray-600 dark:text-gray-400 mt-1">Pacote de medidas fiscais e de investimento é anunciado para enfrentar a desaceleração econômica.</p>
-                                <a href="#" class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition mt-2 block">Leia mais</a>
-                            </div>
-                        </div>
-                    </article>
-    
-                    <article class="card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300">
-                        <div class="md:flex">
-                            <div class="md:w-1/3">
-                                <img src="https://source.unsplash.com/random/300x200/?international,conflict" alt="Internacional" class="w-full h-full object-cover">
-                            </div>
-                            <div class="p-4 md:w-2/3">
-                                <div class="flex justify-between items-start">
-                                    <span class="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded">INTERNACIONAL</span>
-                                    <span class="text-gray-500 dark:text-gray-400 text-sm">há 3 horas</span>
-                                </div>
-                                <h4 class="news-title text-lg font-bold text-gray-800 dark:text-white mt-2" data-category="INTERNACIONAL">Tensão diplomática cresce entre duas nações vizinhas</h4>
-                                <p class="text-gray-600 dark:text-gray-400 mt-1">Especialistas alertam para o risco de escalada de conflito após declarações recentes de líderes.</p>
-                                <a href="#" class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition mt-2 block">Leia mais</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition">
-                        Ver todas as notícias de Política
+                <div id="news-list" class="space-y-4">
+                    </div>
+
+                <div id="view-all" class="mt-6 text-center">
+                    <button id="view-all-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Carregar mais notícias de Política
                     </button>
                 </div>
             </section>
         </main>
 
         <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
-                        <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
+            <div id="footer-container" class="container mx-auto px-4">
+                <div id="footer-content" class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="footer-section">
+                        <h3 class="text-lg font-bold mb-2 text-gray-800 dark:text-white">Confia!</h3>
+                        <p class="text-sm">Sua fonte confiável de notícias atualizadas e relevantes.</p>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
+                    <div class="footer-section">
+                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Categorias</h4>
+                        <ul class="space-y-1 text-sm">
+                            <li><a href="politica.html" class="hover:text-blue-500 transition">Política</a></li>
+                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Economia</a></li>
+                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Tecnologia</a></li>
+                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Saúde</a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="g.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
+                    <div class="footer-section">
+                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Links Úteis</h4>
+                        <ul class="space-y-1 text-sm">
+                            <li><a href="sobre-nos.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
+                            <li><a href="feedback.html" class="hover:text-blue-500 transition">Contato/Feedback</a></li>
                             <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
                             <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
-                                <i class="fas fa-paper-plane"></i>
+                    <div class="footer-section">
+                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Newsletter</h4>
+                        <p class="text-sm mb-2">Inscreva-se para receber as principais notícias.</p>
+                        <div id="newsletter-form" class="flex">
+                            <input type="email" placeholder="Seu e-mail" class="text-sm px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-l-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-3 rounded-r-md text-white">
+                                <i class="fas fa-paper-plane text-sm"></i>
                             </button>
                         </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
+                        <div id="social-links" class="flex space-x-3 mt-4">
+                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
+                <div id="footer-bottom" class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500 dark:text-gray-500">
                     <p>&copy; 2025 Confia!. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResults = document.getElementById('searchResults');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
-
-        // Lógica do Menu Lateral
-        function openMenu() {
-            sidebar.classList.add('side-open');
-            overlay.classList.remove('pointer-events-none');
-            overlay.classList.add('opacity-100');
-        }
-
-        function closeMenu() {
-            sidebar.classList.remove('side-open');
-            overlay.classList.add('pointer-events-none');
-            overlay.classList.remove('opacity-100');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebar.classList.contains('side-open') ? closeMenu() : openMenu();
-        });
-        
-        overlay.addEventListener('click', closeMenu);
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('side-open')) {
-                closeMenu();
-            }
-        });
-
-        // Lógica da Barra de Busca
-        function performSearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            searchResults.innerHTML = '';
-
-            if (query.length > 2) {
-                const newsTitles = document.querySelectorAll('.news-title');
-                let results = [];
-
-                newsTitles.forEach(titleElement => {
-                    const titleText = titleElement.textContent;
-                    const category = titleElement.getAttribute('data-category');
-                    const article = titleElement.closest('article');
-
-                    if (titleText.toLowerCase().includes(query) || (category && category.toLowerCase().includes(query))) {
-                        let time = article.querySelector('.text-sm')?.textContent || 'Não especificado';
-                        results.push({ title: titleText, category: category, time: time, element: article });
-                    }
-                });
-
-                if (results.length === 0) {
-                    searchResults.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Nenhum resultado encontrado.</div>`;
-                } else {
-                    results.forEach(result => {
-                        const resultItem = document.createElement('a');
-                        resultItem.href = '#';
-                        resultItem.className = 'block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600';
-                        resultItem.innerHTML = `
-                            <div class="font-medium text-gray-800 dark:text-gray-200">${result.title}</div>
-                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                <span>${result.category}</span>
-                                <span>${result.time}</span>
-                            </div>
-                        `;
-                        resultItem.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            result.element.style.outline = '3px solid #3b82f6';
-                            setTimeout(() => {
-                                result.element.style.outline = 'none';
-                            }, 3000);
-                            searchInput.value = '';
-                            searchResults.innerHTML = '';
-                        });
-                        searchResults.appendChild(resultItem);
-                    });
-                }
-            }
-        }
-
-        searchInput.addEventListener('input', performSearch);
-        searchButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-
-        // Lógica do Tema (Claro/Escuro)
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        themeToggle.addEventListener('click', toggleTheme);
-
-        // Carregar tema salvo no localStorage
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-                if (savedTheme === 'dark') {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
-            } else {
-                html.classList.add('light');
-                themeIcon.classList.add('fa-sun');
-            }
-        });
-    </script>
+    {/* Link para o JavaScript externo */}
+    <script src="js/politica.js"></script>
 </body>
 </html>

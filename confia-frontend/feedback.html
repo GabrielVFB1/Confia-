@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback - Hub Central</title>
+    <link rel="stylesheet" href="css/feedback.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -12,266 +13,149 @@
         }
     </script>
     <style>
-        .side { transition: transform 0.3s ease-in-out; }
         .side-open { transform: translateX(0) !important; }
-        .overlay { transition: opacity 0.3s ease-in-out; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .s-drop { display: none; position: absolute; width: 100%; z-index: 20; }
-        .s-bar:focus-within .s-drop { display: block;  }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
-<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+<body>
 
-    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
-                               transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center p-4 h-16 border-b  dark:border-gray-700">
+    <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
 
         <nav class="flex-grow p-4 space-y-2 mt-4">
-            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
-            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias</a>
-            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política</a>
-            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias</a>
-            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold"><i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback</a>
-            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós</a>
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
+                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
+            </a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
+                <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
+            </a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
+                <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
+            </a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
+                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
+            </a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
+                <i class="fas fa-comment-alt w-6 mr-3"></i> Feedback
+            </a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
+                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
+            </a>
         </nav>
-           <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
-<a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
-   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
-         alt="User Avatar" 
-         class="w-12 h-12 rounded-full">
-    <span class="text-white font-medium">Nome do Usuário</span>
-</a>
     </aside>
 
-    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+        <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
+        <span class="text-white font-medium">Nome do Usuário</span>
+    </a>
+
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
-                <div class="s-bar relative w-full max-w-lg mx-4">
-                    </div>
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div></div>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </button>
             </div>
         </header>
 
-        <main class="container mx-auto px-4 py-10">
-            <section class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8">
-              <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-comment-alt mr-3 text-blue-500"></i> Envie seu Feedback</h2>
-              <p class="text-gray-600 dark:text-gray-400 mb-8">Sua opinião é fundamental para aprimorarmos nosso conteúdo e a plataforma. Agradecemos por dedicar um momento para compartilhar suas impressões conosco.</p>
-        
-              <form id="feedback-form" class="space-y-6">
-                <div class="relative">
-                    <label for="article" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Reportagem Avaliada (Opcional)</label>
-                    <input type="text" id="article"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Comece a digitar o título da notícia..." autocomplete="off" />
-                    <div id="feedback-search-results" class="absolute z-10 w-full bg-white dark:bg-slate-700 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1 border border-gray-300 dark:border-slate-600">
-                        </div>
-                </div>
-                <div>
-                  <label for="rating" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Sua Avaliação Geral</label>
-                  <select id="rating" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Selecione uma nota</option>
-                    <option value="1">⭐ Ruim</option>
-                    <option value="2">⭐⭐ Regular</option>
-                    <option value="3">⭐⭐⭐ Bom</option>
-                    <option value="4">⭐⭐⭐⭐ Muito Bom</option>
-                    <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="comment" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Comentário</label>
-                  <textarea id="comment" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deixe seu comentário, sugestão ou crítica..."></textarea>
-                </div>
-                <div class="flex justify-end pt-4">
-                  <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"><i class="fas fa-paper-plane mr-2"></i> Enviar Feedback</button>
-                </div>
-              </form>
+        <main>
+            <section id="feedback-section">
+                <h2>
+                    <i class="fas fa-comment-alt"></i> Envie seu Feedback
+                </h2>
+                <p class="intro-text">Sua opinião é fundamental para aprimorarmos nosso conteúdo e a plataforma. Agradecemos por dedicar um momento para compartilhar suas impressões conosco.</p>
+
+                <form id="feedback-form">
+                    <div class="form-group">
+                        <label for="article" class="form-label">Reportagem Avaliada (Opcional)</label>
+                        <input type="text" id="article" class="form-input" placeholder="Comece a digitar o título da notícia..." autocomplete="off">
+                        <div id="feedback-search-results"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating" class="form-label">Sua Avaliação Geral</label>
+                        <select id="rating" class="form-select">
+                            <option value="">Selecione uma nota</option>
+                            <option value="1">⭐ Ruim</option>
+                            <option value="2">⭐⭐ Regular</option>
+                            <option value="3">⭐⭐⭐ Bom</option>
+                            <option value="4">⭐⭐⭐⭐ Muito Bom</option>
+                            <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment" class="form-label">Comentário</label>
+                        <textarea id="comment" rows="5" class="form-textarea" placeholder="Deixe seu comentário, sugestão ou crítica..."></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Enviar Feedback
+                    </button>
+                </form>
             </section>
         </main>
 
-         <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    <div class="sm:col-span-2 lg:col-span-1">
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
-                        <p class="text-sm">Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
+        <footer>
+            <div id="footer-container">
+                <div id="footer-content">
+                    <div class="footer-section">
+                        <h3>Confia!</h3>
+                        <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
                     </div>
 
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
+                    <div class="footer-section">
+                        <h4>Categorias</h4>
+                        <ul>
+                            <li><a href="#">Política</a></li>
+                            <li><a href="#">Economia</a></li>
+                            <li><a href="#">Tecnologia</a></li>
+                            <li><a href="#">Saúde</a></li>
                         </ul>
                     </div>
 
-                    <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li><a href="g.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
+                    <div class="footer-section">
+                        <h4>Links Úteis</h4>
+                        <ul>
+                            <li><a href="sobre-nos.html">Sobre Nós</a></li>
+                            <li><a href="#">Contato</a></li>
+                            <li><a href="#">Termos de Uso</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
                         </ul>
                     </div>
 
-                    <div class="sm:col-span-2 lg:col-span-1">
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2 text-sm">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex w-full">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-200 dark:bg-slate-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white flex items-center justify-center">
+                    <div class="footer-section">
+                        <h4>Newsletter</h4>
+                        <p>Inscreva-se para receber as principais notícias</p>
+                        <div id="newsletter-form">
+                            <input type="email" placeholder="Seu e-mail">
+                            <button>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
+                        <div id="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
-                    <p class="text-sm">&copy; 2025 Confia!. Todos os direitos reservados.</p>
+                <div id="footer-bottom">
+                    <p>&copy; 2025 Confia!. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script>
-        // Lógica do Template (Menu, Tema) que já existia
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.querySelector('html');
-
-        function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
-        function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
-        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
-        overlay.addEventListener('click', closeMenu);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
-        function toggleTheme() {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark'); html.classList.add('light');
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light'); html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-        themeToggle.addEventListener('click', toggleTheme);
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.classList.add(savedTheme);
-            if (savedTheme === 'dark') {
-                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-            } else {
-                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-            }
-        });
-
-        // --- CÓDIGO NOVO PARA O FORMULÁRIO DE FEEDBACK ---
-        const feedbackForm = document.getElementById('feedback-form');
-
-        feedbackForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Impede o recarregamento da página
-
-            const artigoAvaliado = document.getElementById('article').value;
-            const avaliacao = document.getElementById('rating').value;
-            const comentario = document.getElementById('comment').value;
-
-            if (!avaliacao || !comentario) {
-                alert('Por favor, preencha sua avaliação e o comentário.');
-                return;
-            }
-
-            const feedbackData = {
-                artigoAvaliado,
-                avaliacao,
-                comentario
-            };
-
-            try {
-                const response = await fetch('http://localhost:3000/api/feedback', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(feedbackData)
-                });
-
-                if (response.ok) {
-                    alert('Obrigado pelo seu feedback!');
-                    feedbackForm.reset(); // Limpa o formulário
-                } else {
-                    alert('Ocorreu um erro ao enviar seu feedback. Tente novamente.');
-                }
-            } catch (error) {
-                console.error('Erro de conexão:', error);
-                alert('Erro de conexão com o servidor.');
-            }
-        });
-
-                const articleInput = document.getElementById('article');
-        const searchResultsContainer = document.getElementById('feedback-search-results');
-
-        // Adiciona um "escutador" para o evento de digitação no campo
-        articleInput.addEventListener('input', async () => {
-            const query = articleInput.value.trim();
-            searchResultsContainer.innerHTML = ''; // Limpa resultados anteriores
-
-            if (query.length < 3) {
-                return; // Só busca com 3+ caracteres
-            }
-
-            try {
-                const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
-                const resultados = await response.json();
-
-                if (resultados.length > 0) {
-                    resultados.forEach(noticia => {
-                        const resultItem = document.createElement('div');
-                        resultItem.className = 'p-3 hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer text-gray-800 dark:text-gray-200';
-                        resultItem.innerText = noticia.titulo;
-
-                        // Ação de clique: preenche o campo e limpa os resultados
-                        resultItem.addEventListener('click', () => {
-                            articleInput.value = noticia.titulo;
-                            searchResultsContainer.innerHTML = '';
-                        });
-
-                        searchResultsContainer.appendChild(resultItem);
-                    });
-                } else {
-                    searchResultsContainer.innerHTML = '<div class="p-3 text-gray-500">Nenhum artigo encontrado.</div>';
-                }
-
-            } catch (error) {
-                console.error('Erro ao buscar artigos:', error);
-            }
-        });
-
-        // Opcional: esconde os resultados quando o usuário clica fora
-        articleInput.addEventListener('blur', () => {
-            // Adiciona um pequeno atraso para permitir que o clique no resultado seja registrado
-            setTimeout(() => {
-                searchResultsContainer.innerHTML = '';
-            }, 200);
-        });
-    </script>
+    <script src="js/feedback.js"></script>
 </body>
 </html>

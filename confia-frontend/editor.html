@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor de Notícias - Hub Central</title>
+    <link rel="stylesheet" href="css/editor.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -12,51 +13,21 @@
         }
     </script>
     <style>
-        .side {
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-        .side-open {
-            transform: translateX(0) !important;
-        }
-        .overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .s-drop {
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 20;
-        }
-        .s-bar:focus-within .s-drop {
-            display: block; 
-        }
-        /* Placeholder for contenteditable div */
-        [contenteditable][placeholder]:empty:before {
-            content: attr(placeholder);
-            color: #9ca3af; /* text-gray-400 */
-            pointer-events: none;
-            display: block;
-        }
-        html.dark [contenteditable][placeholder]:empty:before {
-            color: #64748b; /* text-slate-500 */
-        }
+        .side-open { transform: translateX(0) !important; }
+        .s-bar:focus-within .s-drop { display: block; }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
-<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+<body>
 
-    
-    <aside id="sidebar" class="side bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg 
-                                 transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center p-4 h-16 border-b  dark:border-gray-700">
+    <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
             <img src="logo_confia.png" width="145px">
         </div>
 
         <nav class="flex-grow p-4 space-y-2 mt-4">
             <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3"></i> Início
+                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
             </a>
             <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
@@ -65,7 +36,7 @@
                 <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
             </a>
             <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
+                <i class="fas fa-pen-nib w-6 mr-3"></i> Editor de Notícias
             </a>
             <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
@@ -74,17 +45,14 @@
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
         </nav>
-         <!-- 🔹 Foto + Nome do usuário fora da sidebar, no canto inferior esquerdo -->
- <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 
-   bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" 
-         alt="User Avatar" 
-         class="w-12 h-12 rounded-full">
-    <span class="text-white font-medium">Nome do Usuário</span>
-</a>
+        
+        <a href="login.html" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
+            <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
+            <span class="text-white font-medium">Nome do Usuário</span>
+        </a>
     </aside>
 
-    <div id="overlay" class="overlay fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
@@ -97,7 +65,7 @@
                         <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500"><i class="fas fa-search"></i></button>
                     </div>
-                    <div class="s-drop mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
+                    <div class="s-drop hidden absolute w-full z-20 mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
                 </div>
@@ -107,25 +75,25 @@
             </div>
         </header>
 
-        <main class="container mx-auto px-4 py-8">
-            <section class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-2 flex items-center">
-                    <i class="fas fa-pen-nib mr-3 text-blue-500"></i> Editor de Notícias
+        <main>
+            <section>
+                <h2>
+                    <i class="fas fa-pen-nib"></i> Editor de Notícias
                 </h2>
-                <p class="text-xl text-gray-600 dark:text-gray-400">Crie, edite e publique suas reportagens com facilidade.</p>
+                <p>Crie, edite e publique suas reportagens com facilidade.</p>
             </section>
     
-            <section class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mb-8">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Informações do Artigo</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section id="article-info">
+                <h3>Informações do Artigo</h3>
+                <div>
                     <div>
-                        <label for="article-title" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Título da Reportagem</label>
-                        <input type="text" id="article-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o título do seu artigo">
+                        <label for="article-title">Título da Reportagem</label>
+                        <input type="text" id="article-title" placeholder="Digite o título do seu artigo">
                     </div>
                     
                     <div>
-                        <label for="article-category" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Categoria</label>
-                        <select id="article-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="article-category">Categoria</label>
+                        <select id="article-category">
                             <option value="">Selecione uma categoria</option>
                             <option value="politica">Política</option>
                             <option value="economia">Economia</option>
@@ -135,234 +103,102 @@
                         </select>
                     </div>
     
-                    <div class="col-span-1 md:col-span-2">
-                        <label for="article-tags" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Tags (separadas por vírgula)</label>
-                        <input type="text" id="article-tags" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: IA, tecnologia, futuro do trabalho">
+                    <div>
+                        <label for="article-tags">Tags (separadas por vírgula)</label>
+                        <input type="text" id="article-tags" placeholder="Ex: IA, tecnologia, futuro do trabalho">
                     </div>
                 </div>
             </section>
     
-            <section class="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6 mb-8">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Conteúdo da Reportagem</h3>
+            <section id="article-content">
+                <h3>Conteúdo da Reportagem</h3>
                 
-                <div class="border border-gray-300 dark:border-slate-600 rounded-lg mb-4">
-                    <div class="flex space-x-2 p-3 border-b border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50">
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('bold', false, null)"><i class="fas fa-bold"></i></button>
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('italic', false, null)"><i class="fas fa-italic"></i></button>
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('underline', false, null)"><i class="fas fa-underline"></i></button>
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('insertOrderedList', false, null)"><i class="fas fa-list-ol"></i></button>
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('insertUnorderedList', false, null)"><i class="fas fa-list-ul"></i></button>
-                        <button class="text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600 px-2 py-1 rounded-md" onclick="document.execCommand('createLink', false, prompt('Insira a URL:'))"><i class="fas fa-link"></i></button>
+                <div id="editor-container">
+                    <div id="editor-toolbar">
+                        <button onclick="document.execCommand('bold', false, null)"><i class="fas fa-bold"></i></button>
+                        <button onclick="document.execCommand('italic', false, null)"><i class="fas fa-italic"></i></button>
+                        <button onclick="document.execCommand('underline', false, null)"><i class="fas fa-underline"></i></button>
+                        <button onclick="document.execCommand('insertOrderedList', false, null)"><i class="fas fa-list-ol"></i></button>
+                        <button onclick="document.execCommand('insertUnorderedList', false, null)"><i class="fas fa-list-ul"></i></button>
+                        <button onclick="document.execCommand('createLink', false, prompt('Insira a URL:'))"><i class="fas fa-link"></i></button>
                     </div>
-                    <div id="text-editor" class="p-4 min-h-[300px] outline-none text-gray-800 dark:text-gray-300" contenteditable="true" placeholder="Comece a escrever sua reportagem aqui..."></div>
+                    <div id="text-editor" contenteditable="true" placeholder="Comece a escrever sua reportagem aqui..."></div>
                 </div>
                 
                 <div>
-                    <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Upload de Imagem de Capa</label>
-                    <div class="flex items-center space-x-4">
-                        <input type="file" id="image-upload" class="hidden" accept="image/*">
-                        <label for="image-upload" class="bg-blue-600 text-white font-medium py-2 px-4 rounded-lg cursor-pointer hover:bg-blue-700 transition">
-                            <i class="fas fa-upload mr-2"></i> Escolher arquivo
+                    <label>Upload de Imagem de Capa</label>
+                    <div>
+                        <input type="file" id="image-upload" accept="image/*">
+                        <label for="image-upload" id="upload-label">
+                            <i class="fas fa-upload"></i> Escolher arquivo
                         </label>
-                        <span id="file-name" class="text-gray-500 dark:text-gray-400">Nenhum arquivo selecionado</span>
+                        <span id="file-name">Nenhum arquivo selecionado</span>
                     </div>
-                    <div id="image-preview" class="mt-4 hidden max-w-sm rounded-lg shadow-md">
-                        <img src="#" alt="Preview da imagem" class="w-full h-auto rounded-lg">
+                    <div id="image-preview">
+                        <img src="#" alt="Preview da imagem">
                     </div>
                 </div>
             </section>
     
-            <div class="flex justify-end space-x-4">
-                <button class="bg-gray-300 dark:bg-slate-600 text-gray-800 dark:text-gray-200 font-medium py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-500 transition">
-                    <i class="fas fa-save mr-2"></i> Salvar Rascunho
+            <div id="action-buttons">
+                <button id="save-draft">
+                    <i class="fas fa-save"></i> Salvar Rascunho
                 </button>
-                <button id="publish-button" class="bg-green-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-green-700 transition">
-                    <i class="fas fa-paper-plane mr-2"></i> Publicar Artigo
+                <button id="publish-button">
+                    <i class="fas fa-paper-plane"></i> Publicar Artigo
                 </button>
             </div>
         </main>
 
-        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <footer>
+            <div>
+                <div id="footer-content">
                     <div>
-                        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Confia!</h3>
+                        <h3>Confia!</h3>
                         <p>Sua fonte confiável de notícias atualizadas e relevantes em tempo real.</p>
                     </div>
                     <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Saúde</a></li>
+                        <h4>Categorias</h4>
+                        <ul>
+                            <li><a href="#">Política</a></li>
+                            <li><a href="#">Economia</a></li>
+                            <li><a href="#">Tecnologia</a></li>
+                            <li><a href="#">Saúde</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-2">
-                            <li><a href="g.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Contato</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
+                        <h4>Links Úteis</h4>
+                        <ul>
+                            <li><a href="g.html">Sobre Nós</a></li>
+                            <li><a href="#">Contato</a></li>
+                            <li><a href="#">Termos de Uso</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="font-bold mb-4 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="mb-2">Inscreva-se para receber as principais notícias</p>
-                        <div class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 rounded-l w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 rounded-r text-white">
+                        <h4>Newsletter</h4>
+                        <p>Inscreva-se para receber as principais notícias</p>
+                        <div>
+                            <input type="email" placeholder="Seu e-mail">
+                            <button>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 text-xl"><i class="fab fa-linkedin"></i></a>
+                        <div id="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-500">
+                <div id="footer-bottom">
                     <p>&copy; 2025 Confia!. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script>
-    // --- SELETORES GLOBAIS (MENU, TEMA) ---
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const html = document.querySelector('html');
-    
-    // --- SELETORES DA PÁGINA DO EDITOR ---
-    const imageUpload = document.getElementById('image-upload');
-    const fileNameSpan = document.getElementById('file-name');
-    const imagePreview = document.getElementById('image-preview');
-    const publishButton = document.getElementById('publish-button');
-    const articleTitle = document.getElementById('article-title');
-    const articleCategory = document.getElementById('article-category');
-    const articleTags = document.getElementById('article-tags');
-    const textEditor = document.getElementById('text-editor');
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-    const searchResults = document.getElementById('searchResults');
-    
-    // --- LÓGICA DO TEMPLATE (MENU, TEMA) ---
-    function openMenu() { sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none'); overlay.classList.add('opacity-100'); }
-    function closeMenu() { sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); }
-    menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); });
-    overlay.addEventListener('click', closeMenu);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); });
-    
-    function toggleTheme() {
-        if (html.classList.contains('dark')) {
-            html.classList.remove('dark'); html.classList.add('light');
-            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-            localStorage.setItem('theme', 'light');
-        } else {
-            html.classList.remove('light'); html.classList.add('dark');
-            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-            localStorage.setItem('theme', 'dark');
-        }
-    }
-    themeToggle.addEventListener('click', toggleTheme);
-
-    function carregarTema() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.classList.add(savedTheme);
-        if (savedTheme === 'dark') {
-            themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
-        } else {
-            themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
-        }
-    }
-
-    // Lógica da Barra de Busca (simulação)
-    function performSearch() {
-        // Esta é uma página de editor, então a funcionalidade de busca é apenas um placeholder
-        console.log("A busca foi acionada.");
-        searchResults.innerHTML = `<div class="p-4 text-gray-500 dark:text-gray-400">Funcionalidade de busca não disponível no modo de edição.</div>`;
-    }
-    
-    if (searchInput && searchButton) {
-        searchInput.addEventListener('input', performSearch);
-        searchButton.addEventListener('click', performSearch);
-    }
-    
-    // --- LÓGICA ESPECÍFICA DA PÁGINA DO EDITOR ---
-    imageUpload.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            fileNameSpan.textContent = file.name;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = imagePreview.querySelector('img');
-                img.src = e.target.result;
-                imagePreview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            fileNameSpan.textContent = 'Nenhum arquivo selecionado';
-            imagePreview.classList.add('hidden');
-        }
-    });
-
-    publishButton.addEventListener('click', publicarNoticia);
-
-    async function publicarNoticia() {
-        const titulo = articleTitle.value;
-        const categoria = articleCategory.value;
-        const conteudo = textEditor.innerHTML;
-        const tags = articleTags.value;
-        const imagemArquivo = imageUpload.files[0];
-        if (!titulo || !categoria || !conteudo) {
-            alert('Por favor, preencha o título, a categoria e o conteúdo.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('categoria', categoria);
-        formData.append('tags', tags);
-        formData.append('conteudo', conteudo);
-        if (imagemArquivo) {
-            formData.append('imagemCapa', imagemArquivo);
-        }
-        try {
-            const response = await fetch('http://localhost:3000/api/noticias', {
-                method: 'POST',
-                body: formData
-            });
-            if (response.ok) {
-                const noticiaSalva = await response.json();
-                alert('Notícia publicada com sucesso! Redirecionando...');
-                window.location.href = `artigo.html?id=${noticiaSalva._id}`;
-            } else {
-                const errorData = await response.json();
-                alert(`Erro ao publicar notícia: ${errorData.message}`);
-            }
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-            alert('Ocorreu um erro de conexão. Verifique se o servidor backend está rodando.');
-        }
-    }
-
-    // --- CORREÇÃO PARA O PROBLEMA DE 'COPIAR E COLAR' ---
-    textEditor.addEventListener('paste', (event) => {
-        event.preventDefault();
-        const text = (event.clipboardData || window.clipboardData).getData('text/plain');
-        document.execCommand('insertText', false, text);
-    });
-    
-    // --- FUNÇÃO DE INICIALIZAÇÃO DA PÁGINA ---
-    window.addEventListener('DOMContentLoaded', () => {
-        carregarTema();
-    });
-</script>
+    <script src="js/editor.js"></script>
 </body>
 </html>

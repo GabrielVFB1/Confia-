@@ -129,6 +129,18 @@ class NoticiaRepository {
     return { noticias, total, paginas };
   }
 
+  // /repositories/NoticiaRepository.js (ADICIONAR ESTE MÉTODO)
+
+  /**
+   * Busca todas as notícias publicadas por um autor específico.
+   * @param {String} autorId - O ID do autor.
+   * @returns {Promise<Array>} Uma lista de notícias do autor, ordenadas pela mais recente.
+   */
+  async buscarPorAutor(autorId) {
+    return await Noticia.find({ autor: autorId })
+      .sort({ dataPublicacao: -1 });
+  }
+
 // (O resto dos seus métodos - buscarTodos, buscarPaginado, etc. - continuam aqui)
 
   // Você pode adicionar outros métodos aqui se necessário (atualizar, deletar)

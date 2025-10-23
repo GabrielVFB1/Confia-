@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário - Confia!</title>
+    <link rel="stylesheet" href="css/politica.css"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        .side-open { transform: translateX(0) !important; }
+        #user-profile-container { width: 100%; }
+        #profile-modal { z-index: 60; }
+        /* Estilo para o container de notícias do perfil */
+        #perfil-noticias-container {
+             display: grid;
+             grid-template-columns: 1fr;
+             gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+             #perfil-noticias-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+             #perfil-noticias-container { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+    <link rel="website icon" type="png" href="logo_confia.png">
+</head>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans">
+
+    <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
+        <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
+            <img src="logo_confia.png" width="145px" alt="Logo Confia!">
+        </div>
+        <nav class="flex-grow p-4 space-y-2 mt-4">
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700" style="display: none;"><i class="fas fa-pen-nib w-6 mr-3"></i> Editor</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3"></i> Sobre Nós</a>
+            <a href="login.html" id="auth-link" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700 mt-6 border-t pt-4 dark:border-gray-700">
+                <i class="fas fa-sign-in-alt w-6 mr-3"></i> Login
+            </a>
+        </nav>
+
+        <div id="user-profile-container" class="mt-auto relative">
+            <a href="login.html" id="user-profile" class="flex items-center space-x-3 p-4 bg-blue-400 dark:bg-gray-700 hover:bg-blue-500 dark:hover:bg-gray-600 transition cursor-pointer w-full">
+                <img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar" class="w-10 h-10 rounded-full">
+                <span class="text-white font-medium block text-sm">Fazer Login</span>
+            </a>
+            <div id="profile-modal" class="absolute z-50 left-0 bottom-full mb-1 w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-out transform scale-95 opacity-0 hidden" role="dialog" aria-modal="true" style="min-width: 220px;">
+                <a href="perfil.html" id="modal-profile-link" class="block p-3 border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg">
+                     <div class="flex items-center space-x-3"><img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar Modal" class="w-10 h-10 rounded-full"><div class="flex-grow min-w-0"><p class="font-semibold text-md text-gray-900 dark:text-white truncate">Nome</p><p class="text-xs text-gray-500 dark:text-gray-300 truncate">email</p></div></div>
+                </a>
+                <nav class="p-2 space-y-1">
+                     <a href="perfil.html" id="modal-my-profile-link" class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"><i class="fas fa-user w-5 mr-3"></i> Meu Perfil</a>
+                     <div id="modal-logout-container" class="border-t dark:border-gray-600 mt-1 pt-1"></div>
+                 </nav>
+            </div>
+        </div>
+    </aside>
+
+    <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
+
+    <div class="lg:ml-64">
+        <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
+                <div class="relative w-full max-w-lg mx-4">
+                     <input type="text" id="searchInput" placeholder="Pesquisar..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 ...">
+                     <button id="searchButton" class="absolute right-0 top-0 h-full px-3 ..."><i class="fas fa-search"></i></button>
+                     <div id="searchDropdown" class="hidden absolute w-full z-20 mt-1 ..."><div id="searchResults" class="max-h-60 overflow-y-auto"></div></div>
+                </div>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-8">
+            <section id="perfil-header" class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8 mb-8 flex items-center space-x-6">
+                <img id="perfil-foto" src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true&size=128" alt="Foto do Perfil" class="w-24 h-24 rounded-full bg-gray-300 dark:bg-gray-700">
+                <div>
+                    <h1 id="perfil-nome" class="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-white">Carregando...</h1>
+                    <p id="perfil-membro-desde" class="text-lg text-gray-600 dark:text-gray-400">Membro desde...</p>
+                </div>
+            </section>
+
+            <section id="perfil-noticias">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Artigos Publicados</h2>
+                <div id="perfil-noticias-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/perfil.js"></script>
+</body>
+</html>

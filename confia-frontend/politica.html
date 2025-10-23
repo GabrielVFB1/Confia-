@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Política - Hub Central</title>
-    <link rel="stylesheet" href="css/politica.css"> <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/politica.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
     <style>
         .side-open { transform: translateX(0) !important; }
         .s-bar:focus-within .s-drop { display: block; }
-        /* Adicione aqui estilos personalizados se necessário */
+        #user-profile-container { width: 100%; }
+        #profile-modal { z-index: 60; }
+        /* Feedback visual de carregamento */
+        #news-list:empty::before {
+            content: 'Carregando...'; display: block; text-align: center; padding: 2rem;
+            color: #6b7280; /* text-gray-500 */
+        }
+        html.dark #news-list:empty::before { color: #9ca3af; /* dark:text-gray-400 */ }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
@@ -22,236 +28,143 @@
 
     <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
         <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
-            <img src="logo_confia.png" width="145px" alt="Logo Confia">
+            <img src="logo_confia.png" width="145px" alt="Logo Confia!">
         </div>
-
         <nav class="flex-grow p-4 space-y-2 mt-4">
-            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
-            </a>
-            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
-            </a>
-            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold">
-                <i class="fas fa-landmark w-6 mr-3"></i> Política
-            </a>
-            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
-            </a>
-            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
-            </a>
-            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg bg-blue-500 text-white font-semibold"><i class="fas fa-landmark w-6 mr-3"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700" style="display: none;"><i class="fas fa-pen-nib w-6 mr-3"></i> Editor</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3"></i> Sobre Nós</a>
+            <a href="login.html" id="auth-link" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700 mt-6 border-t pt-4 dark:border-gray-700">
+                <i class="fas fa-sign-in-alt w-6 mr-3"></i> Login
             </a>
         </nav>
-    </aside>
 
-    <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-        <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
-        <span class="text-white font-medium">Nome do Usuário</span>
-    </a>
+        <div id="user-profile-container" class="mt-auto relative">
+            <a href="login.html" id="user-profile" class="flex items-center space-x-3 p-4 bg-blue-400 dark:bg-gray-700 hover:bg-blue-500 dark:hover:bg-gray-600 transition cursor-pointer w-full">
+                <img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar" class="w-10 h-10 rounded-full">
+                <span class="text-white font-medium block text-sm">Fazer Login</span>
+            </a>
+            
+            <div id="profile-modal"
+                 class="absolute z-50 left-0 bottom-full mb-1 w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-out transform scale-95 opacity-0 hidden"
+                 role="dialog" aria-modal="true" style="min-width: 220px;">
+                
+                <a href="perfil.html" id="modal-profile-link" class="block p-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg">
+                     <div class="flex items-center space-x-3">
+                         <img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar Modal" class="w-10 h-10 rounded-full">
+                         <div class="flex-grow min-w-0">
+                             <p class="font-semibold text-md text-gray-900 dark:text-white truncate">Nome</p>
+                             <p class="text-xs text-gray-500 dark:text-gray-300 truncate">email@exemplo.com</p>
+                         </div>
+                    </div>
+                </a>
+                
+                <nav class="p-2 space-y-1">
+                     <a href="perfil.html" id="modal-my-profile-link" class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                         <i class="fas fa-user w-5 mr-3 text-gray-500 dark:text-gray-400"></i> Meu Perfil
+                     </a>
+                     <div id="modal-logout-container" class="border-t border-gray-200 dark:border-gray-600 mt-1 pt-1">
+                     </div>
+                 </nav>
+            </div>
+        </div>
+    </aside>
 
     <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
-                    <i class="fas fa-bars"></i>
-                </button>
-
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
                 <div class="s-bar relative w-full max-w-lg mx-4">
                     <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Pesquisar notícias, tópicos..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <input type="text" id="searchInput" placeholder="Pesquisar..." class="w-full py-2 px-4 pr-10 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="searchButton" class="absolute right-0 top-0 h-full px-3 text-gray-400 dark:text-gray-400 hover:text-blue-500"><i class="fas fa-search"></i></button>
                     </div>
                     <div id="searchDropdown" class="s-drop hidden absolute w-full z-20 mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg overflow-hidden">
                         <div id="searchResults" class="max-h-60 overflow-y-auto"></div>
                     </div>
                 </div>
-
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    <i class="fas fa-sun" id="theme-icon"></i>
-                </button>
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
             </div>
         </header>
 
         <main class="container mx-auto px-4 py-8">
             <section id="page-header" class="mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-2 flex items-center">
-                    <i class="fas fa-landmark mr-3 text-blue-500"></i> Seção de Política
-                </h2>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Conteúdo exclusivo sobre o cenário político nacional e internacional.</p>
+                <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white mb-2 flex items-center"><i class="fas fa-landmark mr-3 text-blue-500"></i> Seção de Política</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400">Conteúdo sobre o cenário político.</p>
             </section>
 
             <section id="main-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div id="conflicts-analysis" class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center">
-                        <i class="fas fa-chart-bar mr-2 text-indigo-500"></i> Análise de Conflitos Políticos
-                    </h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Visualizações sobre disputas e tensões entre partidos, governos e blocos.</p>
-                    <div id="chart-placeholder" class="bg-gray-100 dark:bg-slate-700 p-6 rounded text-center text-gray-500 dark:text-gray-400">
-                        <p>(Visualização de dados - Gráfico de Tensões - irá aqui)</p>
-                    </div>
+                 <div id="conflicts-analysis" class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center"><i class="fas fa-chart-bar mr-2 text-indigo-500"></i> Análise de Conflitos</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Visualizações sobre disputas.</p>
+                    <div id="chart-placeholder" class="bg-gray-100 dark:bg-slate-700 p-6 rounded text-center text-gray-500 dark:text-gray-400"><p>(Gráfico - irá aqui)</p></div>
                 </div>
-
                 <div id="events-calendar" class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center">
-                        <i class="fas fa-calendar-alt mr-2 text-green-500"></i> Calendário de Eventos
-                    </h3>
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center"><i class="fas fa-calendar-alt mr-2 text-green-500"></i> Calendário</h3>
                     <div id="events-list" class="space-y-3">
-                        <div class="event-item border-b border-gray-200 dark:border-gray-700 pb-2">
-                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">28 de Agosto</p>
-                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Debate Eleitoral Nacional</p>
-                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: TV Aberta</span>
-                        </div>
-                        <div class="event-item border-b border-gray-200 dark:border-gray-700 pb-2">
-                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">15 de Setembro</p>
-                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Votação da Lei Orçamentária</p>
-                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: Congresso Nacional</span>
-                        </div>
-                        <div class="event-item">
-                            <p class="event-date text-xs font-semibold text-blue-600 dark:text-blue-400">3 de Outubro</p>
-                            <p class="event-title font-medium text-gray-700 dark:text-gray-200">Comício de Encerramento de Campanha</p>
-                            <span class="event-location text-sm text-gray-500 dark:text-gray-400">Local: Praça Central, São Paulo</span>
-                        </div>
+                        <div class="event-item border-b dark:border-gray-700 pb-2"><p class="text-xs font-semibold text-blue-600 dark:text-blue-400">28/08</p><p class="font-medium">Debate Eleitoral</p><span class="text-sm text-gray-500 dark:text-gray-400">TV Aberta</span></div>
+                        <div class="event-item border-b dark:border-gray-700 pb-2"><p class="text-xs font-semibold">15/09</p><p class="font-medium">Votação Orçamento</p><span class="text-sm">Congresso</span></div>
+                        <div class="event-item"><p class="text-xs font-semibold">03/10</p><p class="font-medium">Comício Final</p><span class="text-sm">Praça Central, SP</span></div>
                     </div>
                 </div>
             </section>
 
             <section id="ai-analysis" class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                    <i class="fas fa-robot mr-2 text-cyan-500"></i> Análises com IA
-                </h3>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-robot mr-2 text-cyan-500"></i> Análises com IA</h3>
                 <div id="ai-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div id="speech-analysis" class="bg-white dark:bg-slate-700 p-4 rounded-lg shadow">
-                        <h4 class="text-md font-bold text-gray-800 dark:text-white mb-2 flex items-center">
-                            <i class="fas fa-microscope mr-2 text-blue-500"></i> Análise de Discurso de Candidatos
-                        </h4>
-                        <div class="analysis-content text-sm text-gray-600 dark:text-gray-300">
-                            <p class="analysis-title font-semibold mb-2">Comparação de Promessas vs. Ações (Mandato Anterior):</p>
-                            <div class="candidates-data space-y-1">
-                                <div class="candidate-item flex justify-between items-center">
-                                    <span class="candidate-name font-medium">Governo Atual:</span>
-                                    <div class="candidate-stats flex gap-2">
-                                        <span class="stat-fulfilled text-green-600 dark:text-green-400">68% Cumpridas</span>
-                                        <span class="stat-ignored text-red-600 dark:text-red-400">32% Ignoradas/Parciais</span>
-                                    </div>
-                                </div>
-                                <div class="candidate-item flex justify-between items-center opacity-70">
-                                    <span class="candidate-name font-medium">Oposição Principal:</span>
-                                     <div class="candidate-stats flex gap-2">
-                                        <span class="text-gray-500 dark:text-gray-400">(Dados de promessas não aplicáveis)</span>
-                                     </div>
-                                </div>
+                        <h4 class="text-md font-bold mb-2 flex items-center"><i class="fas fa-microscope mr-2 text-blue-500"></i> Análise de Discurso</h4>
+                        <div class="text-sm dark:text-gray-300">
+                            <p class="font-semibold mb-2">Promessas vs. Ações:</p>
+                            <div class="space-y-1">
+                                <div class="flex justify-between"><span>Gov. Atual:</span><div class="flex gap-2"><span class="text-green-600 dark:text-green-400">68%</span><span class="text-red-600 dark:text-red-400">32%</span></div></div>
+                                <div class="flex justify-between opacity-70"><span>Oposição:</span><span class="text-gray-500 dark:text-gray-400">(N/A)</span></div>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">*Análise baseada em dados públicos do último ciclo eleitoral. Fonte: Observatório Político Independente (Exemplo).</p>
+                            <p class="text-xs mt-2">*Fonte: Exemplo.</p>
                         </div>
                     </div>
-
                      <div id="interview-summary" class="bg-white dark:bg-slate-700 p-4 rounded-lg shadow">
-                        <h4 class="text-md font-bold text-gray-800 dark:text-white mb-2 flex items-center">
-                            <i class="fas fa-podcast mr-2 text-purple-500"></i> Resumo de Discursos Recentes (via IA)
-                        </h4>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Pontos-chave identificados por IA de discursos e entrevistas relevantes.</p>
-                        <div class="interview-content space-y-3">
-                            <div class="border-b border-gray-200 dark:border-gray-600 pb-2">
-                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Discurso Presidencial sobre Economia (20/10/2025):</p>
-                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
-                                    <li>Ênfase na necessidade de controle inflacionário rigoroso.</li>
-                                    <li>Anúncio de incentivos fiscais para setores de tecnologia verde.</li>
-                                    <li>Menção a negociações comerciais com bloco econômico vizinho.</li>
-                                </ul>
-                            </div>
-                             <div class="border-b border-gray-200 dark:border-gray-600 pb-2">
-                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Líder da Oposição em Comício (18/10/2025):</p>
-                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
-                                    <li>Críticas à política econômica atual, focando no desemprego.</li>
-                                    <li>Proposta de aumento do investimento em programas sociais.</li>
-                                    <li>Apelo por união partidária para as próximas eleições.</li>
-                                </ul>
-                            </div>
-                             <div>
-                                <p class="interview-title text-sm font-semibold text-gray-700 dark:text-gray-200">Ministro da Saúde sobre Nova Campanha (15/10/2025):</p>
-                                <ul class="interview-points list-disc list-inside text-sm text-gray-600 dark:text-gray-400 ml-4">
-                                    <li>Detalhamento da nova campanha nacional de vacinação.</li>
-                                    <li>Alerta sobre riscos de novas variantes sazonais.</li>
-                                    <li>Ênfase na importância da prevenção e informação pública.</li>
-                                </ul>
-                            </div>
+                        <h4 class="text-md font-bold mb-2 flex items-center"><i class="fas fa-podcast mr-2 text-purple-500"></i> Resumo de Discursos</h4>
+                        <p class="text-xs mb-3">Pontos-chave recentes.</p>
+                        <div class="space-y-3">
+                            <div class="border-b dark:border-gray-600 pb-2"><p class="text-sm font-semibold">Presidencial:</p><ul class="list-disc list-inside text-sm ml-4"><li>Inflação</li><li>Incentivos</li><li>Acordos</li></ul></div>
+                             <div class="border-b dark:border-gray-600 pb-2"><p class="text-sm font-semibold">Oposição:</p><ul class="list-disc list-inside text-sm ml-4"><li>Críticas</li><li>Social</li><li>União</li></ul></div>
+                             <div><p class="text-sm font-semibold">Saúde:</p><ul class="list-disc list-inside text-sm ml-4"><li>Vacinação</li><li>Variantes</li><li>Prevenção</li></ul></div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section id="latest-news">
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                    <i class="fas fa-scroll mr-2 text-orange-500"></i> Últimas de Política
-                </h3>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4 flex items-center"><i class="fas fa-scroll mr-2 text-orange-500"></i> Últimas de Política</h3>
                 <div id="news-list" class="space-y-4">
-                    </div>
-
+                </div>
                 <div id="view-all" class="mt-6 text-center">
                     <button id="view-all-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                        Carregar mais notícias de Política
+                        Carregar mais notícias
                     </button>
                 </div>
             </section>
         </main>
 
-        <footer class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 py-8 mt-12">
-            <div id="footer-container" class="container mx-auto px-4">
-                <div id="footer-content" class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="footer-section">
-                        <h3 class="text-lg font-bold mb-2 text-gray-800 dark:text-white">Confia!</h3>
-                        <p class="text-sm">Sua fonte confiável de notícias atualizadas e relevantes.</p>
-                    </div>
-                    <div class="footer-section">
-                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Categorias</h4>
-                        <ul class="space-y-1 text-sm">
-                            <li><a href="politica.html" class="hover:text-blue-500 transition">Política</a></li>
-                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Economia</a></li>
-                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Tecnologia</a></li>
-                            <li><a href="noticias.html" class="hover:text-blue-500 transition">Saúde</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Links Úteis</h4>
-                        <ul class="space-y-1 text-sm">
-                            <li><a href="sobre-nos.html" class="hover:text-blue-500 transition">Sobre Nós</a></li>
-                            <li><a href="feedback.html" class="hover:text-blue-500 transition">Contato/Feedback</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Termos de Uso</a></li>
-                            <li><a href="#" class="hover:text-blue-500 transition">Política de Privacidade</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h4 class="font-bold mb-3 text-gray-800 dark:text-white">Newsletter</h4>
-                        <p class="text-sm mb-2">Inscreva-se para receber as principais notícias.</p>
-                        <div id="newsletter-form" class="flex">
-                            <input type="email" placeholder="Seu e-mail" class="text-sm px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-l-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-3 rounded-r-md text-white">
-                                <i class="fas fa-paper-plane text-sm"></i>
-                            </button>
-                        </div>
-                        <div id="social-links" class="flex space-x-3 mt-4">
-                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-facebook"></i></a>
-                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="hover:text-blue-500 text-lg"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div id="footer-bottom" class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500 dark:text-gray-500">
-                    <p>&copy; 2025 Confia!. Todos os direitos reservados.</p>
-                </div>
-            </div>
+        <footer class="bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-gray-400 py-8 mt-12">
+             <div id="footer-container" class="container mx-auto px-4">
+                 <div id="footer-content" class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                      <div class="footer-section"> <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Confia!</h3> <p class="text-sm">Sua fonte confiável...</p> </div>
+                      <div class="footer-section"> <h4 class="font-bold mb-3 text-gray-900 dark:text-white">Categorias</h4> <ul class="space-y-1 text-sm"> <li><a href="politica.html" class="hover:text-blue-600 dark:hover:text-blue-400">Política</a></li> <li><a href="noticias.html" class="hover:text-blue-600 dark:hover:text-blue-400">Economia</a></li> <li><a href="noticias.html" class="hover:text-blue-600 dark:hover:text-blue-400">Tecnologia</a></li> </ul> </div>
+                      <div class="footer-section"> <h4 class="font-bold mb-3 text-gray-900 dark:text-white">Links Úteis</h4> <ul class="space-y-1 text-sm"> <li><a href="sobre-nos.html" class="hover:text-blue-600 dark:hover:text-blue-400">Sobre</a></li> <li><a href="feedback.html" class="hover:text-blue-600 dark:hover:text-blue-400">Contato</a></li> <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Termos</a></li> </ul> </div>
+                      <div class="footer-section"> <h4 class="font-bold mb-3 text-gray-900 dark:text-white">Newsletter</h4> <p class="text-sm mb-2">Inscreva-se...</p> <div id="newsletter-form" class="flex"> <input type="email" placeholder="Seu e-mail" class="text-sm ..."> <button class="bg-blue-600 ..."><i class="fas fa-paper-plane text-sm"></i></button> </div> <div id="social-links" class="flex space-x-3 mt-4"> <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 text-lg"><i class="fab fa-facebook"></i></a> <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 text-lg"><i class="fab fa-twitter"></i></a> <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 text-lg"><i class="fab fa-instagram"></i></a> </div> </div>
+                 </div>
+                 <div id="footer-bottom" class="border-t border-gray-300 dark:border-gray-700 mt-8 pt-6 text-center text-sm"><p>&copy; 2025 Confia!.</p></div>
+             </div>
         </footer>
     </div>
 
-    {/* Link para o JavaScript externo */}
     <script src="js/politica.js"></script>
 </body>
 </html>

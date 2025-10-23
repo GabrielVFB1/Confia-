@@ -105,98 +105,100 @@
         </div>
     </main>
 
-    <script>
-        // Alternar tema igual login
-       // Validação de cadastro (MODIFICADO PARA CONECTAR AO BACKEND)
-        const cadastrarLink = document.getElementById('cadastrarLink'); // Assumindo que este é o seu botão/link de submit
-        const nomeInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const senhaInput = document.getElementById('password');
+  <script>
+    // --- SELETORES (Cadastro) ---
+    const cadastroForm = document.getElementById('cadastroForm'); // **Verifique se seu FORM tem id="cadastroForm"**
+    const nomeInputCad = document.getElementById('name');
+    const emailInputCad = document.getElementById('email');
+    const senhaInputCad = document.getElementById('password');
+    const cadastrarBtn = document.getElementById('cadastrarLink'); // **Verifique se seu BOTÃO/LINK tem id="cadastrarLink"**
+    const themeToggleCad = document.getElementById('themeToggle');
+    const themeIconCad = document.getElementById('theme-icon');
+    const htmlCad = document.documentElement;
 
-        // Garante que os elementos existem antes de adicionar o listener
-        if (cadastrarLink && nomeInput && emailInput && senhaInput) {
-            cadastrarLink.addEventListener('click', async (e) => { // Tornamos a função async
-                e.preventDefault(); // Impede a navegação padrão do link <a>
+    // --- LÓGICA DO TEMA ---
+    function toggleThemeCad() {
+        if (!htmlCad || !themeIconCad) return;
+        const isDark = htmlCad.classList.toggle('dark'); htmlCad.classList.toggle('light', !isDark);
+        if (isDark) { themeIconCad.classList.remove('fa-sun'); themeIconCad.classList.add('fa-moon'); localStorage.setItem('theme', 'dark'); }
+        else { themeIconCad.classList.remove('fa-moon'); themeIconCad.classList.add('fa-sun'); localStorage.setItem('theme', 'light'); }
+    }
+    function carregarTemaCad() {
+        if (!htmlCad || !themeIconCad) return;
+        const p = localStorage.getItem('theme'), s = window.matchMedia('(prefers-color-scheme: dark)').matches, i = p || (s ? 'dark' : 'light');
+        htmlCad.classList.remove('light', 'dark'); htmlCad.classList.add(i);
+        if (i === 'dark') { themeIconCad.classList.remove('fa-sun'); themeIconCad.classList.add('fa-moon'); }
+        else { themeIconCad.classList.remove('fa-moon'); themeIconCad.classList.add('fa-sun'); }
+    }
 
-                const nome = nomeInput.value.trim();
-                const email = emailInput.value.trim();
-                const password = senhaInput.value.trim();
+    // --- LÓGICA DO FORMULÁRIO DE CADASTRO ---
+    if (cadastroForm && nomeInputCad && emailInputCad && senhaInputCad && cadastrarBtn) {
+        // Usa 'submit' no formulário em vez de 'click' no botão/link para melhor prática
+        cadastroForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Impede o envio padrão
 
-                // Validação (igual antes)
-                if (!nome || !email || !password) {
-                    alert("Por favor, preencha todos os campos antes de cadastrar.");
-                    return;
-                }
+            const nome = nomeInputCad.value.trim();
+            const email = emailInputCad.value.trim();
+            const password = senhaInputCad.value.trim();
 
-                // --- INÍCIO DA LÓGICA DE ENVIO PARA O BACKEND ---
-                // Feedback visual (opcional)
-                cadastrarLink.textContent = 'Cadastrando...';
-                cadastrarLink.style.pointerEvents = 'none'; // Desabilita clique
-
-                try {
-                    const response = await fetch('http://localhost:3000/api/auth/signup', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ nome, email, password }), // Envia como JSON
-                    });
-
-                    const data = await response.json(); // Lê a resposta do backend
-
-                    if (response.ok) { // Status 201 Created
-                        alert(data.message || 'Cadastro realizado com sucesso! Faça o login.');
-                        window.location.href = 'login.html'; // Redireciona para o login
-                    } else {
-                        // Mostra a mensagem de erro vinda do backend (ex: email já existe, senha curta)
-                        alert(`Erro no cadastro: ${data.message || `Erro ${response.status}`}`);
-                         // Restaura o botão em caso de erro
-                        cadastrarLink.textContent = 'Cadastrar';
-                        cadastrarLink.style.pointerEvents = 'auto'; // Reabilita clique
-                    }
-                } catch (error) {
-                    console.error('Erro na requisição de cadastro:', error);
-                    alert('Não foi possível conectar ao servidor. Verifique se o backend está rodando e tente novamente.');
-                     // Restaura o botão em caso de erro de rede
-                    cadastrarLink.textContent = 'Cadastrar';
-                    cadastrarLink.style.pointerEvents = 'auto';
-                }
-                // Não precisa de 'finally' se o botão só é restaurado no erro
-                // --- FIM DA LÓGICA DE ENVIO ---
-            });
-        } else {
-             console.error("Não foi possível encontrar um ou mais elementos do formulário de cadastro (name, email, password, cadastrarLink).");
-        }
-
-        // --- LÓGICA DO TEMA (Mantida igual) ---
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('theme-icon'); // Verifique se o ID é esse mesmo
-        const html = document.documentElement;
-
-        if (themeToggle && themeIcon && html) {
-             themeToggle.addEventListener('click', () => {
-                html.classList.toggle('dark');
-                 const isDark = html.classList.contains('dark');
-                 html.classList.toggle('light', !isDark); // Garante que light/dark sejam opostos
-
-                if (isDark) {
-                    themeIcon.classList.replace('fa-sun', 'fa-moon');
-                     localStorage.setItem('theme', 'dark'); // Salva a preferência
-                } else {
-                    themeIcon.classList.replace('fa-moon', 'fa-sun');
-                     localStorage.setItem('theme', 'light');
-                }
-            });
-
-             // Carregar tema ao iniciar
-             const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-             html.classList.add(savedTheme); // Define a classe inicial
-             if (savedTheme === 'dark') {
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-            } else {
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            if (!nome || !email || !password) {
+                alert("Por favor, preencha todos os campos.");
+                return;
             }
-        }
-    </script>
+             // Feedback visual (desabilita botão)
+             cadastrarBtn.textContent = 'Cadastrando...';
+             cadastrarBtn.style.pointerEvents = 'none';
+             cadastrarBtn.style.opacity = '0.7';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) { // Status 201 Created
+                    alert(data.message || 'Cadastro realizado! Faça o login.');
+                    window.location.href = 'login.html'; // Redireciona
+                } else {
+                    alert(`Erro no cadastro: ${data.message || `Erro ${response.status}`}`);
+                     // Restaura botão em caso de erro
+                    cadastrarBtn.textContent = 'Cadastrar';
+                    cadastrarBtn.style.pointerEvents = 'auto';
+                    cadastrarBtn.style.opacity = '1';
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Não foi possível conectar ao servidor. Tente novamente.');
+                 // Restaura botão em caso de erro de rede
+                cadastrarBtn.textContent = 'Cadastrar';
+                cadastrarBtn.style.pointerEvents = 'auto';
+                cadastrarBtn.style.opacity = '1';
+            }
+        });
+    } else {
+        console.error("Erro: Não foi possível encontrar todos os elementos do formulário de cadastro.");
+    }
+
+    // --- INICIALIZAÇÃO (Cadastro) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTemaCad(); // Carrega o tema ao iniciar
+         // Verifica se os seletores foram encontrados após o DOM carregar
+         if (!cadastroForm) console.error("Elemento #cadastroForm não encontrado.");
+         if (!nomeInputCad) console.error("Elemento #name não encontrado.");
+         if (!emailInputCad) console.error("Elemento #email não encontrado.");
+         if (!senhaInputCad) console.error("Elemento #password não encontrado.");
+         if (!cadastrarBtn) console.error("Elemento #cadastrarLink não encontrado.");
+         if (!themeToggleCad) console.error("Elemento #themeToggle não encontrado.");
+    });
+
+     // Adiciona listener do tema APÓS o DOM carregar
+     if (themeToggleCad) {
+        themeToggleCad.addEventListener('click', toggleThemeCad);
+     }
+
+</script>
 </body>
 </html>

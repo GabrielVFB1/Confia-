@@ -51,7 +51,7 @@ class NoticiaRepository {
    * @returns {Promise<Object|null>} A notícia encontrada ou null.
    */
   async buscarPorId(id) {
-    return await Noticia.findById(id);
+    return await Noticia.findById(id).populate('autor', 'nome');
   }
 
   /**

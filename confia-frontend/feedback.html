@@ -14,6 +14,10 @@
     </script>
     <style>
         .side-open { transform: translateX(0) !important; }
+        /* Garante que o container do perfil ocupe a largura total */
+        #user-profile-container {
+            width: 100%;
+        }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
@@ -43,13 +47,35 @@
             <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
                 <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
             </a>
+            <a href="login.html" id="auth-link" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700 mt-6 border-t pt-4 dark:border-gray-700">
+                <i class="fas fa-sign-in-alt w-6 mr-3 text-white dark:text-slate-400"></i> Login
+            </a>
         </nav>
-    </aside>
 
-    <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-        <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
-        <span class="text-white font-medium">Nome do Usuário</span>
-    </a>
+        <div id="user-profile-container" class="absolute bottom-0 left-0">
+            <a href="#" onclick="toggleProfileModal(event)" id="user-profile" class="flex items-center space-x-3 p-4 bg-blue-400 dark:bg-gray-700 hover:bg-blue-500 transition cursor-pointer">
+                <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
+                <div>
+                    <span class="text-white font-medium block">Nome do Usuário</span>
+                    </div>
+            </a>
+            
+            <div id="profile-modal" class="absolute hidden z-50 left-0 w-full bg-white dark:bg-gray-700 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-out transform scale-95 opacity-0">
+                
+                <div class="p-4 flex flex-col items-center space-y-2 border-b dark:border-gray-600">
+                    <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
+                    <p class="font-semibold text-lg text-gray-900 dark:text-white text-center">Nome do Usuário</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 text-center">nome.usuario@email.com</p>
+                </div>
+                
+                <nav class="p-2 space-y-1">
+                    <a href="login.html" class="flex items-center p-2 text-sm text-red-600 hover:bg-red-100 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                        <i class="fas fa-sign-out-alt w-5 mr-3"></i> Sair
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
 
     <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 

@@ -12,61 +12,88 @@
     </script>
     <style>
         .side-open { transform: translateX(0) !important; }
+        #user-profile-container { width: 100%; }
+        #profile-modal { z-index: 60; }
+        .prose { color: inherit; }
+        .prose a { color: #2563eb; }
+        .dark .prose a { color: #60a5fa; }
+        .prose strong { color: inherit; }
     </style>
     <link rel="website icon" type="png" href="logo_confia.png">
 </head>
-<body>
+<body class="bg-gray-100 dark:bg-slate-900 font-sans">
 
     <aside id="sidebar" class="transition-transform duration-300 ease-in-out flex flex-col bg-blue-300 dark:bg-gray-800 w-64 fixed inset-y-0 left-0 z-30 shadow-lg transform -translate-x-full lg:translate-x-0">
         <div class="flex items-center justify-center p-4 h-16 border-b dark:border-gray-700">
-            <img src="logo_confia.png" width="145px">
+            <img src="logo_confia.png" width="145px" alt="Logo Confia!">
         </div>
         <nav class="flex-grow p-4 space-y-2 mt-4">
-            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-home w-6 mr-3 text-white dark:text-slate-400"></i> Início
-            </a>
-            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-th-large w-6 mr-3 text-white dark:text-slate-400"></i> Notícias
-            </a>
-            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-landmark w-6 mr-3 text-white dark:text-slate-400"></i> Política
-            </a>
-            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-pen-nib w-6 mr-3 text-white dark:text-slate-400"></i> Editor de Notícias
-            </a>
-            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-comment-alt w-6 mr-3 text-white dark:text-slate-400"></i> Feedback
-            </a>
-            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 transition-colors dark:text-slate-300 dark:hover:bg-gray-700">
-                <i class="fas fa-users w-6 mr-3 text-white dark:text-slate-400"></i> Sobre Nós
+            <a href="index.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-home w-6 mr-3"></i> Início</a>
+            <a href="noticias.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-th-large w-6 mr-3"></i> Notícias</a>
+            <a href="politica.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-landmark w-6 mr-3"></i> Política</a>
+            <a href="editor.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700" style="display: none;"><i class="fas fa-pen-nib w-6 mr-3"></i> Editor</a>
+            <a href="feedback.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-comment-alt w-6 mr-3"></i> Feedback</a>
+            <a href="sobre-nos.html" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700"><i class="fas fa-users w-6 mr-3"></i> Sobre Nós</a>
+            <a href="login.html" id="auth-link" class="flex items-center py-2.5 px-4 rounded-lg text-white hover:bg-blue-600 dark:text-slate-300 dark:hover:bg-gray-700 mt-6 border-t pt-4 dark:border-gray-700">
+                <i class="fas fa-sign-in-alt w-6 mr-3"></i> Login
             </a>
         </nav>
-    </aside>
 
-    <a href="login.html" id="user-profile" class="fixed bottom-4 left-4 z-40 flex items-center space-x-3 bg-blue-300 dark:bg-gray-800 p-3 rounded-lg shadow-lg hover:bg-blue-400 transition">
-        <img src="https://ui-avatars.com/api/?name=Nome+Usuario&background=3b82f6&color=fff&bold=true" alt="User Avatar" class="w-12 h-12 rounded-full">
-        <span class="text-white font-medium">Nome do Usuário</span>
-    </a>
+        <div id="user-profile-container" class="mt-auto relative">
+            <a href="login.html" id="user-profile" class="flex items-center space-x-3 p-4 bg-blue-400 dark:bg-gray-700 hover:bg-blue-500 dark:hover:bg-gray-600 transition cursor-pointer w-full">
+                <img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar" class="w-10 h-10 rounded-full">
+                <span class="text-white font-medium block text-sm">Fazer Login</span>
+            </a>
+            <div id="profile-modal"
+                 class="absolute z-50 left-0 bottom-full mb-1 w-full bg-white dark:bg-gray-700 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-out transform scale-95 opacity-0 hidden"
+                 role="dialog" aria-modal="true" style="min-width: 220px;">
+                <a href="perfil.html" class="block p-3 border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg">
+                     <div class="flex items-center space-x-3">
+                         <img src="https://ui-avatars.com/api/?name=?&background=6b7280&color=fff&bold=true" alt="User Avatar Modal" class="w-10 h-10 rounded-full">
+                         <div class="flex-grow min-w-0">
+                             <p class="font-semibold text-md text-gray-900 dark:text-white truncate">Nome</p>
+                             <p class="text-xs text-gray-500 dark:text-gray-300 truncate">email@exemplo.com</p>
+                         </div>
+                    </div>
+                </a>
+                <nav class="p-2 space-y-1">
+                     <a href="#" class="flex items-center p-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"><i class="fas fa-cog w-5 mr-3"></i> Configurações</a>
+                     <div id="modal-logout-container" class="border-t dark:border-gray-600 mt-1 pt-1"></div>
+                 </nav>
+            </div>
+        </div>
+    </aside>
 
     <div id="overlay" class="transition-opacity duration-300 ease-in-out fixed inset-0 bg-black/60 opacity-0 z-20 lg:hidden pointer-events-none"></div>
 
     <div class="lg:ml-64">
         <header class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
             <div class="container mx-auto px-4 py-3 h-16 flex justify-between items-center">
-                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div></div>
-                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    <i class="fas fa-sun" id="theme-icon"></i>
-                </button>
+                <button id="menuToggle" class="text-gray-600 dark:text-gray-300 text-2xl lg:hidden"><i class="fas fa-bars"></i></button>
+                <div class="relative w-full max-w-lg mx-4"></div> 
+                <button id="themeToggle" class="text-gray-600 dark:text-gray-300 text-xl p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i class="fas fa-sun" id="theme-icon"></i></button>
             </div>
         </header>
 
         <main class="container mx-auto px-4 py-12">
             <article id="article-container" class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-6 md:p-8">
-                <h1 id="artigo-titulo" class="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-white mb-4">Carregando Título...</h1>
-                <div id="artigo-tags-container" class="flex flex-wrap items-center gap-2 mb-6">
+               <h1 id="artigo-titulo" class="text-3xl ...">Carregando...</h1>
+
+<div id="artigo-autor-container" class="my-4 flex items-center space-x-3">
+   
+    <img id="artigo-autor-img" src="" alt="Avatar do autor" class="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-700 hidden">
+    <div>
+        <p class="text-sm font-medium text-gray-900 dark:text-white">
+           
+            <a href="#" id="artigo-autor-link" class="text-blue-600 dark:text-blue-400 hover:underline">Carregando autor...</a>
+        </p>
+        <p id="artigo-data" class="text-sm text-gray-500 dark:text-gray-400">
+            
+        </p>
+    </div>
+</div>
+<div id="artigo-tags-container" class="flex flex-wrap items-center gap-2 mb-6">
+    {/* ... */}
                     <div id="artigo-score-container" class="flex items-center gap-2"></div>
                 </div>
 
@@ -81,20 +108,19 @@
                     <h3 class="text-lg font-bold text-blue-800 dark:text-blue-200 flex items-center mb-2">
                         <i class="fas fa-robot mr-2"></i> Análise da IA
                     </h3>
-                    
-                    <div class="mb-3">
-                        <strong class="text-gray-700 dark:text-gray-300">Resumo:</strong>
-                        <p id="ia-resumo" class="text-gray-600 dark:text-gray-400 italic">...</p>
-                    </div>
-
-                    <div>
-                        <strong class="text-gray-700 dark:text-gray-300">Revisão:</strong>
-                        <p id="ia-revisao" class="text-gray-600 dark:text-gray-400">...</p>
+                    <div id="ia-content-wrapper">
+                        <div class="mb-3">
+                            <strong class="text-gray-700 dark:text-gray-300">Resumo:</strong>
+                            <p id="ia-resumo" class="text-gray-600 dark:text-gray-400 italic">...</p>
+                        </div>
+                        <div>
+                            <strong class="text-gray-700 dark:text-gray-300">Revisão:</strong>
+                            <p id="ia-revisao" class="text-gray-600 dark:text-gray-400">...</p>
+                        </div>
                     </div>
                 </section>
 
-
-                <img id="artigo-imagem" src="" alt="Imagem de capa" class="w-full h-auto rounded-lg shadow-md mb-6 hidden">
+                <img id="artigo-imagem" src="" alt="Imagem de capa" class="w-full max-w-2xl mx-auto h-auto rounded-lg shadow-md mb-8 hidden">
                 
                 <div id="artigo-conteudo" class="text-gray-800 dark:text-gray-200 leading-relaxed prose dark:prose-invert max-w-none">
                     <p>Carregando conteúdo...</p>
@@ -103,9 +129,11 @@
 
             <section id="related-section" class="mt-12">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Notícias Relacionadas</h2>
-                <div id="relacionadas-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="relacionadas-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
             </section>
         </main>
+        
     </div>
 
     <script src="js/artigo.js"></script>

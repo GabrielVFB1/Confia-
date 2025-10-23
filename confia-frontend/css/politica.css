@@ -23,7 +23,7 @@ html.dark body {
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Essencial para ancorar o perfil no final */
 }
 
 html.dark #sidebar {
@@ -93,38 +93,49 @@ html.dark #sidebar nav a:hover {
     margin-right: 0.75rem;
 }
 
-/* User Profile */
-#sidebar + a {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
+/* User Profile (NOVO/CORRIGIDO) */
+
+/* Container para ancorar o link de perfil e o modal no fundo da sidebar */
+#user-profile-container {
+    margin-top: auto; /* Empurra o container para o fundo */
+    position: relative; 
     z-index: 40;
+    width: 100%; 
+}
+
+/* Link/Botão do perfil (#user-profile) */
+#user-profile {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    background-color: #93c5fd;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: #93c5fd; /* Cor do modo claro */
+    box-shadow: none; /* REMOVIDO BOX SHADOW */
     text-decoration: none;
     transition: background-color 0.15s;
+    border-radius: 0; /* GARANTIDO: sem arredondamento */
 }
 
-#sidebar + a:hover {
+#user-profile:hover {
     background-color: #60a5fa;
 }
 
-html.dark #sidebar + a {
+/* Estilo do modo escuro para o perfil (Cor da sidebar #1f2937) */
+html.dark #user-profile {
     background-color: #1f2937;
 }
 
-#sidebar + a img {
+html.dark #user-profile:hover {
+    background-color: #374151;
+}
+
+#user-profile img {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
 }
 
-#sidebar + a span {
+#user-profile span {
     color: white;
     font-weight: 500;
 }

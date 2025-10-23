@@ -1,3 +1,5 @@
+/* css/index.css (VERSÃO CORRIGIDA E PADRONIZADA) */
+
 /* Reset básico */
 body {
     margin: 0;
@@ -10,7 +12,7 @@ html.dark body {
     background-color: #0f172a;
 }
 
-/* Sidebar */
+/* Sidebar (Verificado: display: flex e column estão corretos) */
 #sidebar {
     background-color: #93c5fd;
     width: 16rem;
@@ -93,21 +95,30 @@ html.dark #sidebar nav a:hover {
     margin-right: 0.75rem;
 }
 
-/* User Profile */
-#user-profile {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
+/* --- BLOCO DO PERFIL CORRIGIDO --- */
+/* (Baseado no politica.css) */
+
+/* 1. Container do Perfil (Novo) */
+#user-profile-container {
+    margin-top: auto; /* Empurra para o fundo */
+    position: relative; 
     z-index: 40;
+    width: 100%; 
+}
+
+/* 2. Botão de Perfil (Corrigido) */
+#user-profile {
+    /* REMOVIDO: position: fixed, bottom, left, z-index, box-shadow, border-radius */
     display: flex;
     align-items: center;
     gap: 0.75rem;
     background-color: #93c5fd;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1rem; /* Ajustado para p-4 do Tailwind (era 0.75rem) */
     text-decoration: none;
     transition: background-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+    position: static; /* Garante que não é fixed */
 }
 
 #user-profile:hover {
@@ -115,19 +126,38 @@ html.dark #sidebar nav a:hover {
 }
 
 html.dark #user-profile {
-    background-color: #1f2937;
+    background-color: #1f2937; /* Cor da sidebar escura */
+}
+
+html.dark #user-profile:hover {
+    background-color: #374151; /* Cor hover escura */
 }
 
 #user-profile img {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;  /* w-10 (ajustado do HTML) */
+    height: 2.5rem; /* h-10 (ajustado do HTML) */
     border-radius: 50%;
 }
 
 #user-profile span {
     color: white;
     font-weight: 500;
+    font-size: 0.875rem; /* text-sm */
 }
+
+/* 3. Posicionamento do Modal (Novo) */
+#profile-modal {
+    position: absolute;
+    left: 0;
+    bottom: 100%; /* Acima do botão */
+    margin-bottom: 0.25rem; /* mb-1 */
+    width: 100%;
+    min-width: 220px;
+    z-index: 60; 
+    /* O resto é controlado pelo Tailwind no HTML */
+}
+/* --- FIM DO BLOCO DO PERFIL --- */
+
 
 /* Overlay */
 #overlay {
@@ -202,15 +232,15 @@ html.dark #menuToggle {
     }
 }
 
-/* Search Bar */
-#search-bar {
+/* Search Bar (Corrigido para usar classes) */
+.s-bar {
     position: relative;
     width: 100%;
     max-width: 32rem;
     margin: 0 1rem;
 }
 
-#search-bar > div:first-child {
+.s-bar > div:first-child {
     position: relative;
 }
 
@@ -246,7 +276,7 @@ html.dark #searchInput {
     color: #3b82f6;
 }
 
-#search-dropdown {
+.s-drop {
     position: absolute;
     margin-top: 0.25rem;
     background-color: white;
@@ -258,11 +288,11 @@ html.dark #searchInput {
     display: none;
 }
 
-html.dark #search-dropdown {
+html.dark .s-drop {
     background-color: #334155;
 }
 
-#search-bar:focus-within #search-dropdown {
+.s-bar:focus-within .s-drop {
     display: block;
 }
 

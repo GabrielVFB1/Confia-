@@ -154,44 +154,101 @@
   </main>
 
   <script>
-    // alternar tema (ícone apenas)
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const html = document.documentElement;
+    // --- SELETORES (Login) ---
+    const loginForm = document.getElementById('loginForm'); // **Verifique se seu FORM tem id="loginForm"**
+    const emailInputLogin = document.getElementById('email');
+    const passwordInputLogin = document.getElementById('password');
+    const entrarBtn = document.getElementById('entrarBtn'); // **Verifique se seu BOTÃO tem id="entrarBtn"**
+    const themeToggleLogin = document.getElementById('themeToggle');
+    const themeIconLogin = document.getElementById('themeIcon') || document.getElementById('theme-icon'); // Tenta os dois IDs comuns
+    const htmlLogin = document.documentElement;
 
-    themeToggle.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      themeIcon.classList.add('rotate-180', 'transition-transform', 'duration-500');
+    // --- LÓGICA DO TEMA ---
+    function toggleThemeLogin() {
+        if (!htmlLogin || !themeIconLogin) return;
+        const isDark = htmlLogin.classList.toggle('dark'); htmlLogin.classList.toggle('light', !isDark);
+        if (isDark) { themeIconLogin.classList.remove('fa-sun'); themeIconLogin.classList.add('fa-moon'); localStorage.setItem('theme', 'dark'); }
+        else { themeIconLogin.classList.remove('fa-moon'); themeIconLogin.classList.add('fa-sun'); localStorage.setItem('theme', 'light'); }
+    }
+    function carregarTemaLogin() {
+        if (!htmlLogin || !themeIconLogin) return;
+        const p = localStorage.getItem('theme'), s = window.matchMedia('(prefers-color-scheme: dark)').matches, i = p || (s ? 'dark' : 'light');
+        htmlLogin.classList.remove('light', 'dark'); htmlLogin.classList.add(i);
+        if (i === 'dark') { themeIconLogin.classList.remove('fa-sun'); themeIconLogin.classList.add('fa-moon'); }
+        else { themeIconLogin.classList.remove('fa-moon'); themeIconLogin.classList.add('fa-sun'); }
+    }
 
-      setTimeout(() => themeIcon.classList.remove('rotate-180'), 500);
+    // --- LÓGICA DO FORMULÁRIO DE LOGIN ---
+    if (loginForm && emailInputLogin && passwordInputLogin && entrarBtn) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Impede o envio padrão
 
-      if (html.classList.contains('dark')) {
-        themeIcon.classList.replace('fa-sun', 'fa-moon');
-      } else {
-        themeIcon.classList.replace('fa-moon', 'fa-sun');
-      }
+            const email = emailInputLogin.value.trim();
+            const password = passwordInputLogin.value.trim();
+
+            if (!email || !password) {
+                alert("Por favor, preencha e-mail e senha.");
+                return;
+            }
+
+            // Feedback visual
+            entrarBtn.textContent = 'Entrando...';
+            entrarBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) { // Status 200 OK
+                    // --- SUCESSO! Armazena token e user info ---
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('userInfo', JSON.stringify({
+                        id: data.user.id, // Guarda o ID também, pode ser útil
+                        nome: data.user.nome,
+                        email: data.user.email
+                    }));
+                    // alert('Login realizado com sucesso!'); // Opcional
+                    window.location.href = 'index.html'; // Redireciona para home
+                } else {
+                    alert(`Erro no login: ${data.message || `Erro ${response.status}`}`);
+                    // Restaura botão em caso de erro
+                    entrarBtn.textContent = 'Entrar';
+                    entrarBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Não foi possível conectar ao servidor. Tente novamente.');
+                // Restaura botão em caso de erro de rede
+                entrarBtn.textContent = 'Entrar';
+                entrarBtn.disabled = false;
+            }
+        });
+    } else {
+        console.error("Erro: Não foi possível encontrar todos os elementos do formulário de login.");
+    }
+
+    // --- INICIALIZAÇÃO (Login) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        carregarTemaLogin();
+        // Verifica se os seletores foram encontrados
+        if (!loginForm) console.error("Elemento #loginForm não encontrado.");
+        if (!emailInputLogin) console.error("Elemento #email não encontrado.");
+        if (!passwordInputLogin) console.error("Elemento #password não encontrado.");
+        if (!entrarBtn) console.error("Elemento #entrarBtn não encontrado.");
+        if (!themeToggleLogin) console.error("Elemento #themeToggle não encontrado.");
     });
 
-    // validação do login
-    const entrarBtn = document.getElementById('entrarBtn');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
+     // Adiciona listener do tema APÓS o DOM carregar
+     if (themeToggleLogin) {
+        themeToggleLogin.addEventListener('click', toggleThemeLogin);
+     }
 
-    entrarBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const email = emailInput.value.trim();
-      const senha = passwordInput.value.trim();
-
-      if (!email || !senha) {
-        alert("Por favor, preencha todos os campos antes de entrar.");
-        return;
-      }
-
-      // redirecionar se estiver tudo ok
-      window.location.href = "index.html";
-    });
-  </script>
+</script>
 
 </body>
 </html>

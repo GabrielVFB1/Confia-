@@ -1,154 +1,183 @@
-// Lógica do Template (Menu, Tema)
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('theme-icon');
-const html = document.querySelector('html');
+// js/feedback.js (VERSÃO FINAL COMPLETA - COM AUTH, TEMA, E LÓGICA DE FEEDBACK)
 
-function openMenu() { 
-    sidebar.classList.add('side-open'); 
-    overlay.classList.remove('pointer-events-none'); 
-    overlay.classList.add('opacity-100'); 
-}
+// --- SELETORES GLOBAIS (Definidos no DOMContentLoaded) ---
+let menuToggle, sidebar, overlay, themeToggle, themeIcon, html,
+    searchInput, searchButton, searchDropdown, searchResultsContainer, // Para a busca global
+    userProfileButton, profileModal, authLinkSidebar, editorLinkSidebar, modalLogoutContainer,
+    feedbackForm, articleInput, feedbackSearchResults; // Específicos do Feedback
 
-function closeMenu() { 
-    sidebar.classList.remove('side-open'); 
-    overlay.classList.add('pointer-events-none'); 
-    overlay.classList.remove('opacity-100'); 
-}
+// --- 1. LÓGICA DO MENU LATERAL ---
+let menuOpenFeedback = false;
+function openMenuFeedback() { if (!sidebar || !overlay) return; sidebar.classList.add('side-open'); overlay.classList.remove('pointer-events-none', 'opacity-0'); overlay.classList.add('opacity-100'); menuOpenFeedback = true; }
+function closeMenuFeedback() { if (!sidebar || !overlay) return; sidebar.classList.remove('side-open'); overlay.classList.add('pointer-events-none'); overlay.classList.remove('opacity-100'); overlay.classList.add('opacity-0'); menuOpenFeedback = false; }
 
-menuToggle.addEventListener('click', (e) => { 
-    e.stopPropagation(); 
-    sidebar.classList.contains('side-open') ? closeMenu() : openMenu(); 
-});
+// --- 2. LÓGICA DO TEMA ---
+function toggleThemeFeedback() { if (!html || !themeIcon) return; const iD = html.classList.toggle('dark'); html.classList.toggle('light', !iD); if (iD) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); localStorage.setItem('theme', 'dark'); } else { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); localStorage.setItem('theme', 'light'); } }
+function carregarTemaFeedback() { if (!html || !themeIcon) { console.warn("Tema: HTML/Icon ausente."); return; } const p=localStorage.getItem('theme'), s=window.matchMedia('(prefers-color-scheme: dark)').matches, i=p||(s?'dark':'light'); html.classList.remove('light','dark'); html.classList.add(i); if(i==='dark'){themeIcon.classList.remove('fa-sun');themeIcon.classList.add('fa-moon');}else{themeIcon.classList.remove('fa-moon');themeIcon.classList.add('fa-sun');}}
 
-overlay.addEventListener('click', closeMenu);
+// --- 3. LÓGICA DO MODAL DE PERFIL ---
+function toggleProfileModalFeedback(event) { if(event)event.preventDefault(); if(!userProfileButton||!profileModal){console.warn("Modal: Botão/Modal ausente.");return;} const r=userProfileButton.getBoundingClientRect(); profileModal.style.top='auto'; profileModal.style.bottom=`${window.innerHeight-r.top-window.scrollY+5}px`; profileModal.style.left=`${r.left+window.scrollX}px`; profileModal.style.minWidth='220px'; if(profileModal.classList.contains('hidden')){profileModal.classList.remove('hidden');void profileModal.offsetWidth;profileModal.classList.remove('opacity-0','scale-95');profileModal.classList.add('opacity-100','scale-100');}else{profileModal.classList.remove('opacity-100','scale-100');profileModal.classList.add('opacity-0','scale-95');setTimeout(()=>{profileModal.classList.add('hidden');},300);}}
+function handleClickOutsideModalFeedback(event) { if(!userProfileButton||!profileModal)return; if(!userProfileButton.contains(event.target)&&!profileModal.contains(event.target)&&!profileModal.classList.contains('hidden')){profileModal.classList.remove('opacity-100','scale-100');profileModal.classList.add('opacity-0','scale-95');setTimeout(()=>{profileModal.classList.add('hidden');},300);}}
 
-document.addEventListener('keydown', (e) => { 
-    if (e.key === 'Escape' && sidebar.classList.contains('side-open')) closeMenu(); 
-});
-
-function toggleTheme() {
-    if (html.classList.contains('dark')) {
-        html.classList.remove('dark'); 
-        html.classList.add('light');
-        themeIcon.classList.remove('fa-moon'); 
-        themeIcon.classList.add('fa-sun');
-        localStorage.setItem('theme', 'light');
-    } else {
-        html.classList.remove('light'); 
-        html.classList.add('dark');
-        themeIcon.classList.remove('fa-sun'); 
-        themeIcon.classList.add('fa-moon');
-        localStorage.setItem('theme', 'dark');
+// --- 4. LÓGICA DE AUTENTICAÇÃO ---
+function verificarLoginFeedback() {
+    const token = localStorage.getItem('authToken'); let userInfo = null; const sUI = localStorage.getItem('userInfo');
+    if(sUI){try{userInfo=JSON.parse(sUI);}catch(e){localStorage.clear();token=null;userInfo=null;}}
+    const cPB = document.getElementById('user-profile'); const cAL = document.getElementById('auth-link'); const cEL = document.querySelector('nav a[href="editor.html"]'); const cPM = document.getElementById('profile-modal'); const cMLC = cPM ? cPM.querySelector('#modal-logout-container') : null;
+    if(!cPB){console.error("CRÍTICO: #user-profile NÃO ENCONTRADO!"); return;}
+    const nPB = cPB.cloneNode(true); const uNS = nPB.querySelector('span'); const uI = nPB.querySelector('img');
+    if (cPB.parentNode) { cPB.parentNode.replaceChild(nPB, cPB); } else { console.error("Pai do #user-profile não encontrado"); }
+    if (token && userInfo && userInfo.nome) { // LOGADO
+        const uN=userInfo.nome,uE=userInfo.email||'';
+        if(uNS)uNS.textContent=uN; if(uI)uI.src=`https://ui-avatars.com/api/?name=${encodeURIComponent(uN)}&b=3b82f6&c=fff&bold=true`;
+        nPB.href='#'; nPB.addEventListener('click',toggleProfileModalFeedback);
+        if(cAL){const nA=cAL.cloneNode(true); nA.href='#'; nA.innerHTML='<i class="fas fa-sign-out-alt w-6 mr-3"></i> Sair'; if(cAL.parentNode)cAL.parentNode.replaceChild(nA,cAL); nA.addEventListener('click',fazerLogoutFeedback); authLinkSidebar = nA;}
+        if(cEL)cEL.style.display='flex';
+        if(cPM){const mUN=cPM.querySelector('p.font-semibold'), mUE=cPM.querySelector('p.text-xs'), mUI=cPM.querySelector('img'); if(mUN)mUN.textContent=uN; if(mUE)mUE.textContent=uE; if(mUI)mUI.src=`https://ui-avatars.com/api/?name=${encodeURIComponent(uN)}&b=3b82f6&c=fff&bold=true`; if(cMLC){cMLC.innerHTML=`<button id="logout-b-m-f" class="flex items-center p-2 text-sm w-full text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700/50 rounded-lg"><i class="fas fa-sign-out-alt w-5 mr-3"></i> Sair</button>`; const l=document.getElementById('logout-b-m-f'); if(l)l.addEventListener('click',fazerLogoutFeedback);}}
+    } else { // DESLOGADO
+        if(uNS)uNS.textContent='Fazer Login'; if(uI)uI.src=`https://ui-avatars.com/api/?name=?&b=6b7280&c=fff&bold=true`;
+        nPB.href='login.html';
+        if(cAL){const nA=cAL.cloneNode(true); nA.href='login.html'; nA.innerHTML='<i class="fas fa-sign-in-alt w-6 mr-3"></i> Login'; if(cAL.parentNode)cAL.parentNode.replaceChild(nA,cAL); authLinkSidebar = nA;}
+        if(cEL)cEL.style.display='none';
+        if(cPM){const mUN=cPM.querySelector('p.font-semibold'), mUE=cPM.querySelector('p.text-xs'), mUI=cPM.querySelector('img'); if(mUN)mUN.textContent="Nome"; if(mUE)mUE.textContent="email"; if(mUI)mUI.src=`https://ui-avatars.com/api/?name=?&b=6b7280&c=fff&bold=true`; if(cMLC)cMLC.innerHTML=''; if(!cPM.classList.contains('hidden')){cPM.classList.add('hidden','opacity-0','scale-95'); cPM.classList.remove('opacity-100','scale-100');}}
     }
+    userProfileButton = nPB; // Atualiza referência global
 }
+function fazerLogoutFeedback(e){ if(e)e.preventDefault(); localStorage.removeItem('authToken'); localStorage.removeItem('userInfo'); alert('Desconectado.'); const c=()=>{verificarLoginFeedback();}; const m=document.getElementById('profile-modal'); if(m&&!m.classList.contains('hidden')){m.classList.remove('opacity-100','scale-100'); m.classList.add('opacity-0','scale-95');setTimeout(()=>{m.classList.add('hidden');c();},300);}else{c();}}
 
-themeToggle.addEventListener('click', toggleTheme);
+// --- FUNÇÃO escapeHtml ---
+function escapeHtml(unsafe){if(typeof unsafe !== 'string')return "";try{return unsafe.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}catch(e){return "";}}
 
-window.addEventListener('load', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    html.classList.add(savedTheme);
-    if (savedTheme === 'dark') {
-        themeIcon.classList.remove('fa-sun'); 
-        themeIcon.classList.add('fa-moon');
-    } else {
-        themeIcon.classList.remove('fa-moon'); 
-        themeIcon.classList.add('fa-sun');
-    }
-});
+// --- LÓGICA DA BARRA DE BUSCA GLOBAL (HEADER) ---
+async function performSearchGlobal() {
+    if(!searchInput||!searchResultsContainer||!searchDropdown)return; const q=searchInput.value.trim(); searchResultsContainer.innerHTML=''; if(q.length<3){searchDropdown.classList.add('hidden');return;} searchDropdown.classList.remove('hidden'); searchResultsContainer.innerHTML='<div class="p-4 ...">Buscando...</div>';
+    try{const r=await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(q)}`); if(!r.ok)throw new Error(`Falha ${r.status}`); const d=await r.json(); searchResultsContainer.innerHTML='';
+        if(d.length===0){searchResultsContainer.innerHTML=`<div class="p-4 ...">Nada para "${escapeHtml(q)}".</div>`;}
+        else{d.forEach(n=>{searchResultsContainer.innerHTML+=`<a href="artigo.html?id=${n._id}" class="block..."><div class="...">${escapeHtml(n.titulo)}</div><div class...">${escapeHtml(n.categoria?.toUpperCase()||'G')}</span></div></a>`;});}
+    }catch(e){console.error('Erro:',e); searchResultsContainer.innerHTML=`<div class="p-4 text-red-500">Erro (${escapeHtml(e.message)}).</div>`;}
+}
+let searchTimeoutGlobal;
 
-// Código para o formulário de feedback
-const feedbackForm = document.getElementById('feedback-form');
 
-feedbackForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Impede o recarregamento da página
-
-    const artigoAvaliado = document.getElementById('article').value;
-    const avaliacao = document.getElementById('rating').value;
-    const comentario = document.getElementById('comment').value;
+// --- LÓGICA ESPECÍFICA DA PÁGINA (Formulário de Feedback) ---
+async function handleFeedbackSubmit(event) {
+    event.preventDefault(); // Impede o recarregamento
+    const artigoAvaliado = document.getElementById('article')?.value;
+    const avaliacao = document.getElementById('rating')?.value;
+    const comentario = document.getElementById('comment')?.value;
+    const submitBtn = document.getElementById('submit-btn'); // Pega o botão
 
     if (!avaliacao || !comentario) {
         alert('Por favor, preencha sua avaliação e o comentário.');
         return;
     }
+    
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando...'; }
 
-    const feedbackData = {
-        artigoAvaliado,
-        avaliacao,
-        comentario
-    };
+    const feedbackData = { artigoAvaliado, avaliacao, comentario };
 
     try {
         const response = await fetch('http://localhost:3000/api/feedback', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(feedbackData)
         });
-
         if (response.ok) {
             alert('Obrigado pelo seu feedback!');
-            feedbackForm.reset(); // Limpa o formulário
+            if (feedbackForm) feedbackForm.reset();
         } else {
             alert('Ocorreu um erro ao enviar seu feedback. Tente novamente.');
         }
     } catch (error) {
         console.error('Erro de conexão:', error);
         alert('Erro de conexão com o servidor.');
+    } finally {
+         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Enviar Feedback'; }
     }
-});
+}
 
-const articleInput = document.getElementById('article');
-const searchResultsContainer = document.getElementById('feedback-search-results');
-
-// Adiciona um "escutador" para o evento de digitação no campo
-articleInput.addEventListener('input', async () => {
+// Lógica de busca de artigos para o formulário
+async function handleArticleSearch() {
+    if (!articleInput || !feedbackSearchResults) return;
     const query = articleInput.value.trim();
-    searchResultsContainer.innerHTML = ''; // Limpa resultados anteriores
-    searchResultsContainer.style.display = 'none';
+    feedbackSearchResults.innerHTML = '';
+    feedbackSearchResults.style.display = 'none';
 
-    if (query.length < 3) {
-        return; // Só busca com 3+ caracteres
-    }
+    if (query.length < 3) return;
 
     try {
-        const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${query}`);
+        const response = await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(query)}`);
         const resultados = await response.json();
-
+        
         if (resultados.length > 0) {
-            searchResultsContainer.style.display = 'block';
+            feedbackSearchResults.style.display = 'block';
             resultados.forEach(noticia => {
                 const resultItem = document.createElement('div');
-                resultItem.className = 'search-result-item';
-                resultItem.innerText = noticia.titulo;
-
-                // Ação de clique: preenche o campo e limpa os resultados
+                resultItem.className = 'p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 rounded'; // Classes Tailwind
+                resultItem.innerText = escapeHtml(noticia.titulo);
                 resultItem.addEventListener('click', () => {
-                    articleInput.value = noticia.titulo;
-                    searchResultsContainer.innerHTML = '';
-                    searchResultsContainer.style.display = 'none';
+                    articleInput.value = noticia.titulo; // Preenche o campo
+                    feedbackSearchResults.innerHTML = '';
+                    feedbackSearchResults.style.display = 'none';
                 });
-
-                searchResultsContainer.appendChild(resultItem);
+                feedbackSearchResults.appendChild(resultItem);
             });
         } else {
-            searchResultsContainer.style.display = 'block';
-            searchResultsContainer.innerHTML = '<div class="search-result-item">Nenhum artigo encontrado.</div>';
+            feedbackSearchResults.style.display = 'block';
+            feedbackSearchResults.innerHTML = '<div class="p-2 text-gray-500">Nenhum artigo encontrado.</div>'; // Classe Tailwind
         }
-
     } catch (error) {
         console.error('Erro ao buscar artigos:', error);
     }
-});
+}
+let articleSearchTimeout;
 
-// Opcional: esconde os resultados quando o usuário clica fora
-articleInput.addEventListener('blur', () => {
-    // Adiciona um pequeno atraso para permitir que o clique no resultado seja registrado
-    setTimeout(() => {
-        searchResultsContainer.innerHTML = '';
-        searchResultsContainer.style.display = 'none';
-    }, 200);
+
+// --- FUNÇÃO DE INICIALIZAÇÃO (Feedback) ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM Feedback Carregado."); // DEBUG
+    // Define seletores globais
+    menuToggle = document.getElementById('menuToggle'); sidebar = document.getElementById('sidebar'); overlay = document.getElementById('overlay');
+    themeToggle = document.getElementById('themeToggle'); themeIcon = document.getElementById('theme-icon'); html = document.querySelector('html');
+    searchInput = document.getElementById('searchInput'); searchButton = document.getElementById('searchButton'); searchDropdown = document.getElementById('searchDropdown'); searchResultsContainer = document.getElementById('searchResults');
+    userProfileButton = document.getElementById('user-profile'); profileModal = document.getElementById('profile-modal');
+    authLinkSidebar = document.getElementById('auth-link'); editorLinkSidebar = document.querySelector('nav a[href="editor.html"]');
+    modalLogoutContainer = profileModal ? profileModal.querySelector('#modal-logout-container') : null;
+    
+    // Define seletores específicos da página
+    feedbackForm = document.getElementById('feedback-form');
+    articleInput = document.getElementById('article');
+    feedbackSearchResults = document.getElementById('feedback-search-results'); // Container dos resultados
+
+    // Adiciona listeners globais
+    if(menuToggle)menuToggle.addEventListener('click',(e)=>{e.stopPropagation();menuOpenFeedback?closeMenuFeedback():openMenuFeedback();});
+    if(overlay)overlay.addEventListener('click',closeMenuFeedback);
+    if(themeToggle)themeToggle.addEventListener('click',toggleThemeFeedback);
+    if(searchInput){searchInput.addEventListener('input',()=>{clearTimeout(searchTimeoutGlobal);searchTimeoutGlobal=setTimeout(performSearchGlobal,300);}); searchInput.addEventListener('focus',()=>{if(searchInput.value.length>=3&&searchDropdown)searchDropdown.classList.remove('hidden');}); searchInput.addEventListener('blur',()=>{if(searchDropdown)setTimeout(()=>{searchDropdown.classList.add('hidden');},200);});}
+    if(searchButton)searchButton.addEventListener('click',performSearchGlobal);
+    document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&menuOpenFeedback)closeMenuFeedback();});
+    document.addEventListener('click',handleClickOutsideModalFeedback);
+
+    // Adiciona listeners específicos da página
+    if (feedbackForm) {
+        feedbackForm.addEventListener('submit', handleFeedbackSubmit);
+    }
+    if (articleInput) {
+        articleInput.addEventListener('input', () => {
+             clearTimeout(articleSearchTimeout);
+             articleSearchTimeout = setTimeout(handleArticleSearch, 300); // Debounce na busca
+        });
+        // Esconde resultados ao clicar fora (blur)
+        articleInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if(feedbackSearchResults) feedbackSearchResults.style.display = 'none';
+            }, 200); // Atraso para permitir clique no resultado
+        });
+    }
+
+    // Chama as funções de inicialização globais
+    carregarTemaFeedback();
+    verificarLoginFeedback();
+    // (Não há notícias para carregar nesta página)
+    console.log("Inicialização Feedback Concluída."); // DEBUG
 });

@@ -75,34 +75,40 @@ exports.buscarNoticiaPorId = async (req, res) => {
 exports.criarNoticia = async (req, res) => {
     try {
         const { titulo, categoria, tags, conteudo } = req.body;
+        
+        // 'req.user' agora existe graças ao middleware 'protect'
+        // Se a requisição chegou até aqui, req.user está 100% definido.
+        
         const tagsArray = tags ? tags.split(',').map(tag => tag.trim()) : [];
         const conteudoLimpo = purify.sanitize(conteudo);
-
-        // --- LÓGICA DA IA INTEGRADA ---
+        
         const analysisStrategy = AnalysisStrategyFactory.getStrategy(categoria);
         const analiseIA = await analysisStrategy.analyze(conteudo);
-        // ------------------------------
-
+        
         const dadosDaNoticia = {
             titulo,
             categoria,
             tags: tagsArray,
             conteudo: conteudoLimpo,
-            imagemCapa: req.file ? req.file.path : null, // Caminho do arquivo via Multer
+            imagemCapa: req.file ? req.file.path : null,
             resumo: analiseIA.resumo,
             taxaConfiabilidade: analiseIA.taxaConfiabilidade,
-            revisaoIA: analiseIA.revisao
+            revisaoIA: analiseIA.revisao,
+            
+            // --- CAMPO DE AUTOR ADICIONADO ---
+            // Pega o ID do usuário que o middleware 'protect' encontrou
+            autor: req.user.id 
+            // ---------------------------------
         };
 
         const noticiaSalva = await noticiaRepository.criar(dadosDaNoticia);
         res.status(201).json(noticiaSalva);
-
+        
     } catch (error) {
         console.error('DETALHES DO ERRO AO CRIAR NOTÍCIA:', error);
         res.status(500).json({ message: 'Erro ao criar notícia', error: error.message });
     }
 };
-
 // Controlador para pesquisar notícias (sem alteração)
 exports.pesquisarNoticias = async (req, res) => {
     try {

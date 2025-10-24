@@ -243,7 +243,18 @@
         function escapeHtml(unsafe){if(typeof unsafe !== 'string')return "";try{return unsafe.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}catch(e){return "";}}
 
         // --- LÓGICA DA BARRA DE BUSCA ---
-        async function performSearchIndex() { if(!searchInput||!searchResultsContainer||!searchDropdown)return; const q=searchInput.value.trim(); searchResultsContainer.innerHTML=''; if(q.length<3){searchDropdown.classList.add('hidden');return;} searchDropdown.classList.remove('hidden'); searchResultsContainer.innerHTML='<div class="p-4 ...">Buscando...</div>'; try{const r=await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(q)}`); if(!r.ok)throw new Error(`Falha ${r.status}`); const d=await r.json(); searchResultsContainer.innerHTML=''; if(d.length===0){searchResultsContainer.innerHTML=`<div class="p-4 ...">Nada para "${escapeHtml(q)}".</div>`;}else{d.forEach(n=>{searchResultsContainer.innerHTML+=`<a href="artigo.html?id=${n._id}" class="block..."><div class="...">${escapeHtml(n.titulo)}</div><div class...">${escapeHtml(n.categoria?.toUpperCase()||'G')}</span></div></a>`;});}}catch(e){console.error('Erro:',e); searchResultsContainer.innerHTML=`<div class="p-4 text-red-500">Erro (${escapeHtml(e.message)}).</div>`;}}
+        async function performSearchIndex() {
+            if(!searchInput||!searchResultsContainer||!searchDropdown)return; const q=searchInput.value.trim(); searchResultsContainer.innerHTML=''; if(q.length<3){searchDropdown.classList.add('hidden');return;} searchDropdown.classList.remove('hidden'); searchResultsContainer.innerHTML='<div class="p-4 text-gray-500 dark:text-gray-200">Buscando...</div>';
+            try{const r=await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(q)}`); if(!r.ok)throw new Error(`Falha ${r.status}`); const d=await r.json(); searchResultsContainer.innerHTML='';
+                if(d.length===0){searchResultsContainer.innerHTML=`<div class="p-4 text-gray-500 dark:text-gray-200">Nada para "${escapeHtml(q)}".</div>`;}
+                else{d.forEach(n=>{searchResultsContainer.innerHTML+=
+                    `<a href="artigo.html?id=${n._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600">
+                        <div class="font-medium text-gray-800 dark:text-white">${escapeHtml(n.titulo)}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-300 mt-1"><span>${escapeHtml(n.categoria?.toUpperCase()||'G')}</span></div>
+                    </a>`;
+                });}
+            }catch(e){console.error('Erro na busca:',e); searchResultsContainer.innerHTML=`<div class="p-4 text-red-500 dark:text-red-400">Erro (${escapeHtml(e.message)}).</div>`;}
+        }
         let searchTimeoutIndex;
 
         // --- LÓGICA DE CARREGAMENTO DAS NOTÍCIAS DO INDEX ---
@@ -260,11 +271,27 @@
             }catch(e){console.error('Erro:',e); noticiasContainer.innerHTML=`<p class="text-red-500 ... text-center">Erro (${escapeHtml(e.message)}).</p>`; if(prevBtn)prevBtn.style.display='none'; if(nextBtn)nextBtn.style.display='none';}
         }
 
-        // --- RENDERIZAR CARD PARA INDEX ---
-        function renderizarCardNoticiaHomepageIndex(noticia){
-            if(!noticia)return ""; const img=noticia.imagemCapa?`http://localhost:3000/${noticia.imagemCapa.replace(/\\/g,'/')}`:`https://source.unsplash.com/random/300x200/?news&sig=${noticia._id}`; const rIA=noticia.resumo||"", cB=noticia.conteudo||""; const resumo=(rIA&&!rIA.includes("não")&&!rIA.includes("indis"))?rIA:cB.replace(/<[^>]+>/g,'').substring(0,120)+'...'; let sC='bg-gray-200 dark:bg-gray-600', sD='N/A'; if(noticia.taxaConfiabilidade!==undefined&&noticia.taxaConfiabilidade!==null){ const s=noticia.taxaConfiabilidade; sD=`${s}%`; sC='bg-green-100 dark:bg-green-200 text-green-800 dark:text-green-900'; if(s<85)sC='bg-yellow-100 dark:bg-yellow-200 text-yellow-800 dark:text-yellow-900'; if(s<70)sC='bg-red-100 dark:bg-red-200 text-red-800 dark:text-red-900';} const cat=noticia.categoria?.toUpperCase()||'G'; const data=noticia.dataPublicacao?new Date(noticia.dataPublicacao).toLocaleDateString():'--';
-            return `<article class="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col"><div class="md:flex flex-shrink-0"><div class="md:flex-shrink-0 md:w-48"><img src="${img}" alt="${escapeHtml(noticia.titulo||'')}" class="w-full h-32 md:h-full object-cover"></div><div class="p-4 flex flex-col justify-between flex-grow"><div><div class="flex flex-wrap justify-between items-center text-xs mb-1 gap-1"><span class="bg-purple-100 ...">${escapeHtml(cat)}</span><span class="${sC} font-bold px-2 py-0.5 ... text-xs" title="Confiabilidade"><i class="fas fa-shield-alt mr-1 opacity-75"></i> ${sD}</span><span class="text-gray-500 dark:text-gray-400 ...">${data}</span></div><h3 class="text-lg font-bold ... line-clamp-2"><a href="artigo.html?id=${noticia._id}" class="hover:underline">${escapeHtml(noticia.titulo||'')}</a></h3></div><p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mt-1 flex-grow">${escapeHtml(resumo)}</p><a href="artigo.html?id=${noticia._id}" class="text-blue-600 dark:text-blue-400 hover:underline ... mt-2 self-start">Leia mais <i class="fas fa-arrow-right ml-1 text-xs"></i></a></div></div></article>`;
-        }
+       function renderizarCardNoticiaHomepageIndex(noticia){
+            if(!noticia)return ""; const img=noticia.imagemCapa?`http://localhost:3000/${noticia.imagemCapa.replace(/\\/g,'/')}`:`https://source.unsplash.com/random/300x200/?news&sig=${noticia._id}`; const rIA=noticia.resumo||"", cB=noticia.conteudo||""; const resumo=(rIA&&!rIA.includes("não")&&!rIA.includes("indis"))?rIA:cB.replace(/<[^>]+>/g,'').substring(0,120)+'...'; let sC='bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300', sD='N/A'; if(noticia.taxaConfiabilidade!==undefined&&noticia.taxaConfiabilidade!==null){ const s=noticia.taxaConfiabilidade; sD=`${s}%`; sC='bg-green-100 dark:bg-green-200 text-green-800 dark:text-green-900'; if(s<85)sC='bg-yellow-100 dark:bg-yellow-200 text-yellow-800 dark:text-yellow-900'; if(s<70)sC='bg-red-100 dark:bg-red-200 text-red-800 dark:text-red-900';} const cat=noticia.categoria?.toUpperCase()||'G'; const data=noticia.dataPublicacao?new Date(noticia.dataPublicacao).toLocaleDateString():'--';
+            return `
+                <article class="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col">
+                    <div class="md:flex flex-shrink-0">
+                        <div class="md:flex-shrink-0 md:w-48"><img src="${img}" alt="${escapeHtml(noticia.titulo||'')}" class="w-full h-32 md:h-full object-cover"></div>
+                        <div class="p-4 flex flex-col justify-between flex-grow">
+                            <div>
+                                <div class="flex flex-wrap justify-between items-center text-xs mb-1 gap-1">
+                                    <span class="bg-purple-100 dark:bg-purple-200 text-purple-800 dark:text-purple-900 font-semibold px-2 py-0.5 rounded">${escapeHtml(cat)}</span>
+                                    <span class="${sC} font-bold px-2 py-0.5 rounded-full text-xs" title="Confiabilidade"><i class="fas fa-shield-alt mr-1 opacity-75"></i> ${sD}</span>
+                                    <span class="text-gray-500 dark:text-gray-200 w-full text-right mt-1 md:w-auto md:text-left md:mt-0">${data}</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 dark:text-white mt-1 mb-1 line-clamp-2"><a href="artigo.html?id=${noticia._id}" class="hover:underline">${escapeHtml(noticia.titulo||'')}</a></h3>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-200 text-sm line-clamp-2 mt-1 flex-grow">${escapeHtml(resumo)}</p>
+                            <a href="artigo.html?id=${noticia._id}" class="text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm mt-2 self-start">Leia mais <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                        </div>
+                    </div>
+                </article>`;
+        }
 
         // --- LÓGICA DO CARROSSEL ---
         let currentSlideIndex=0; let slidesIndex=[]; let slideIntervalIndex; function goToSlideIndex(i){if(!carousel||slidesIndex.length===0)return; currentSlideIndex=(i+slidesIndex.length)%slidesIndex.length; carousel.style.transform=`translateX(-${currentSlideIndex*100}%)`;} function startSlideIntervalIndex(){clearInterval(slideIntervalIndex); slideIntervalIndex=setInterval(()=>{if(document.hasFocus())goToSlideIndex(currentSlideIndex+1);},5000);} function iniciarCarrosselIndex(){if(!carousel){console.warn("Carrossel não encontrado"); return;} slidesIndex=carousel.querySelectorAll('.flex-shrink-0'); if(slidesIndex.length<=1){if(prevBtn)prevBtn.style.display='none';if(nextBtn)nextBtn.style.display='none'; carousel.style.transform='translateX(0%)';return;}else{if(prevBtn)prevBtn.style.display='block';if(nextBtn)nextBtn.style.display='block';} if(prevBtn){const n=prevBtn.cloneNode(true);prevBtn.parentNode.replaceChild(n,prevBtn); prevBtn=n; prevBtn.addEventListener('click',()=>{goToSlideIndex(currentSlideIndex-1); startSlideIntervalIndex();});} if(nextBtn){const n=nextBtn.cloneNode(true);nextBtn.parentNode.replaceChild(n,nextBtn); nextBtn=n; nextBtn.addEventListener('click',()=>{goToSlideIndex(currentSlideIndex+1); startSlideIntervalIndex();});} startSlideIntervalIndex();}

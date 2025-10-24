@@ -1,4 +1,4 @@
-// js/noticias.js (VERSÃO FINAL COMPLETA - COM AUTH, TEMA, E TODAS AS NOTÍCIAS)
+// js/noticias.js (VERSÃO FINAL COM BUSCA FUNCIONAL)
 
 // --- SELETORES GLOBAIS (Definidos no DOMContentLoaded) ---
 let menuToggle, sidebar, overlay, themeToggle, themeIcon, html,
@@ -50,22 +50,45 @@ function verificarLoginNoticias() {
         if(cEL)cEL.style.display='none';
         if(cPM){const mUN=cPM.querySelector('p.font-semibold'), mUE=cPM.querySelector('p.text-xs'), mUI=cPM.querySelector('img'); if(mUN)mUN.textContent="Nome"; if(mUE)mUE.textContent="email"; if(mUI)mUI.src=`https://ui-avatars.com/api/?name=?&b=6b7280&c=fff&bold=true`; if(cMPL_Top) cMPL_Top.href="login.html"; if(cMPL_Text) cMPL_Text.href="login.html"; if(cMLC)cMLC.innerHTML=''; if(!cPM.classList.contains('hidden')){cPM.classList.add('hidden','opacity-0','scale-95'); cPM.classList.remove('opacity-100','scale-100');}}
     }
-    userProfileButton = nPB; // Atualiza referência global
+    userProfileButton = nPB;
 }
 function fazerLogoutNoticias(e){ if(e)e.preventDefault(); localStorage.removeItem('authToken'); localStorage.removeItem('userInfo'); alert('Desconectado.'); const c=()=>{verificarLoginNoticias();}; const m=document.getElementById('profile-modal'); if(m&&!m.classList.contains('hidden')){m.classList.remove('opacity-100','scale-100'); m.classList.add('opacity-0','scale-95');setTimeout(()=>{m.classList.add('hidden');c();},300);}else{c();}}
 
-// --- FUNÇÃO escapeHtml ---
-function escapeHtml(unsafe){if(typeof unsafe !== 'string')return "";try{return unsafe.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}catch(e){return "";}}
+// --- FUNÇÃO escapeHtml (100% LIMPA) ---
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return "";
+    try {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    } catch (e) {
+        console.error("Erro no escapeHtml:", e);
+        return "";
+    }
+}
 
-// --- LÓGICA DA BARRA DE BUSCA ---
+// --- LÓGICA DA BARRA DE BUSCA (ADICIONADA e CORRIGIDA) ---
 async function performSearchNoticias() {
-    if(!searchInput||!searchResultsContainer||!searchDropdown)return; const q=searchInput.value.trim(); searchResultsContainer.innerHTML=''; if(q.length<3){searchDropdown.classList.add('hidden');return;} searchDropdown.classList.remove('hidden'); searchResultsContainer.innerHTML='<div class="p-4 text-gray-500 dark:text-gray-400">Buscando...</div>';
+    if(!searchInput||!searchResultsContainer||!searchDropdown)return; const q=searchInput.value.trim(); searchResultsContainer.innerHTML=''; if(q.length<3){searchDropdown.classList.add('hidden');return;}
+    searchDropdown.classList.remove('hidden'); searchResultsContainer.innerHTML='<div class="p-4 text-gray-500 dark:text-gray-400">Buscando...</div>';
     try{const r=await fetch(`http://localhost:3000/api/noticias/pesquisa?q=${encodeURIComponent(q)}`); if(!r.ok)throw new Error(`Falha ${r.status}`); const d=await r.json(); searchResultsContainer.innerHTML='';
         if(d.length===0){searchResultsContainer.innerHTML=`<div class="p-4 text-gray-500 dark:text-gray-400">Nada para "${escapeHtml(q)}".</div>`;}
-        else{d.forEach(n=>{searchResultsContainer.innerHTML+=`<a href="artigo.html?id=${n._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600"><div class="font-medium text-gray-800 dark:text-gray-200">${escapeHtml(n.titulo)}</div><div class="text-xs text-gray-500 dark:text-gray-400 mt-1"><span>${escapeHtml(n.categoria?.toUpperCase()||'G')}</span></div></a>`;});}
+        else{d.forEach(n=>{searchResultsContainer.innerHTML+=
+            // HTML do resultado COM classes dark:
+            `<a href="artigo.html?id=${n._id}" class="block p-3 hover:bg-gray-200 dark:hover:bg-slate-600 cursor-pointer border-b border-gray-200 dark:border-slate-600">
+                <div class="font-medium text-gray-800 dark:text-gray-200">${escapeHtml(n.titulo)}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <span>${escapeHtml(n.categoria?.toUpperCase()||'G')}</span>
+                </div>
+            </a>`;
+        });}
     }catch(e){console.error('Erro na busca:',e); searchResultsContainer.innerHTML=`<div class="p-4 text-red-500">Erro (${escapeHtml(e.message)}).</div>`;}
 }
 let searchTimeoutNoticias;
+// --- FIM DA LÓGICA DE BUSCA ---
 
 // --- LÓGICA DE CARREGAMENTO (TODAS AS NOTÍCIAS) ---
 async function carregarNoticiasPaginadas(pagina = 1, anexar = false) {
@@ -74,7 +97,6 @@ async function carregarNoticiasPaginadas(pagina = 1, anexar = false) {
     if (loadMoreBtn && anexar) { loadMoreBtn.textContent = 'Carregando...'; loadMoreBtn.disabled = true; }
     if (!anexar) articlesGrid.innerHTML = '<p class="text-gray-500 dark:text-gray-400 col-span-full text-center py-10">Carregando...</p>';
     try {
-        // MUDA A URL: Busca em /api/noticias (todas)
         const r = await fetch(`http://localhost:3000/api/noticias?page=${pagina}&limit=${limite}`);
         if (!r.ok) throw new Error(`Falha ${r.status}`); const d = await r.json(); const n = d.noticias || [];
         paginaAtualNoticias = d.paginaAtual || pagina; totalPaginasNoticias = d.totalPaginas || paginaAtualNoticias;
@@ -89,7 +111,7 @@ async function carregarNoticiasPaginadas(pagina = 1, anexar = false) {
     finally { carregandoMaisNoticias = false; }
 }
 
-// --- RENDERIZAR CARD (Noticias) ---
+// --- RENDERIZAR CARD (Noticias - LIMPO) ---
 function renderizarCardNoticia(noticia) {
     if (!noticia) return "";
     const img = noticia.imagemCapa ? `http://localhost:3000/${noticia.imagemCapa.replace(/\\/g, '/')}` : `https://source.unsplash.com/random/400x250/?news&sig=${noticia._id}`;
@@ -103,7 +125,6 @@ function renderizarCardNoticia(noticia) {
     }
     const cat = noticia.categoria?.toUpperCase() || 'GERAL';
     const data = noticia.dataPublicacao ? new Date(noticia.dataPublicacao).toLocaleDateString() : '--';
-    // Adiciona o 'onclick' para chamar a função de toggle com o nome correto
     return `
         <article class="article-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-xl flex flex-col">
             <img src="${img}" alt="${escapeHtml(noticia.titulo || '')}" class="w-full h-48 object-cover">
@@ -148,20 +169,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if(menuToggle)menuToggle.addEventListener('click',(e)=>{e.stopPropagation();(sidebar&&sidebar.classList.contains('side-open'))?closeMenuNoticias():openMenuNoticias();});
     if(overlay)overlay.addEventListener('click',closeMenuNoticias);
     if(themeToggle)themeToggle.addEventListener('click',toggleThemeNoticias);
-    if(searchInput){searchInput.addEventListener('input',()=>{clearTimeout(searchTimeoutNoticias);searchTimeoutNoticias=setTimeout(performSearchNoticias,300);}); searchInput.addEventListener('focus',()=>{if(searchInput.value.length>=3&&searchDropdown)searchDropdown.classList.remove('hidden');}); searchInput.addEventListener('blur',()=>{if(searchDropdown)setTimeout(()=>{searchDropdown.classList.add('hidden');},200);});}
+    
+    // --- LISTENERS DA BUSCA (ADICIONADOS) ---
+    if(searchInput){
+        searchInput.addEventListener('input',()=>{clearTimeout(searchTimeoutNoticias);searchTimeoutNoticias=setTimeout(performSearchNoticias,300);});
+        searchInput.addEventListener('focus',()=>{if(searchInput.value.length>=3&&searchDropdown)searchDropdown.classList.remove('hidden');});
+        searchInput.addEventListener('blur',()=>{if(searchDropdown)setTimeout(()=>{searchDropdown.classList.add('hidden');},200);});
+    }
     if(searchButton)searchButton.addEventListener('click',performSearchNoticias);
+    // --- FIM DOS LISTENERS DA BUSCA ---
+    
     document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&menuOpenNoticias)closeMenuNoticias();});
     document.addEventListener('click',handleClickOutsideModalNoticias);
 
-    // Adiciona Listener do Botão Carregar Mais AQUI
     if (loadMoreBtn) {
-        loadMoreBtn.style.display = 'none'; // Começa escondido
+        loadMoreBtn.style.display = 'none';
         loadMoreBtn.addEventListener('click', () => {
             if (!carregandoMaisNoticias && paginaAtualNoticias < totalPaginasNoticias) {
                 carregarNoticiasPaginadas(paginaAtualNoticias + 1, true);
             }
         });
-    } else { const l=document.getElementById('load-more'); if(l)l.style.display='none'; console.warn("Botão #load-more-btn não encontrado."); }
+    } else { const l=document.getElementById('load-more'); if(l)l.style.display='none'; }
 
     // Chama Funções de Inicialização
     carregarTemaNoticias();

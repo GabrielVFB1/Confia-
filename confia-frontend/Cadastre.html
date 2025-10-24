@@ -105,13 +105,13 @@
         </div>
     </main>
 
-  <script>
+ <script>
     // --- SELETORES (Cadastro) ---
-    const cadastroForm = document.getElementById('cadastroForm'); // **Verifique se seu FORM tem id="cadastroForm"**
+    const cadastroForm = document.getElementById('cadastroForm');
     const nomeInputCad = document.getElementById('name');
     const emailInputCad = document.getElementById('email');
     const senhaInputCad = document.getElementById('password');
-    const cadastrarBtn = document.getElementById('cadastrarLink'); // **Verifique se seu BOTÃO/LINK tem id="cadastrarLink"**
+    const cadastrarBtn = document.getElementById('cadastrarLink'); // O Botão/Link <a>
     const themeToggleCad = document.getElementById('themeToggle');
     const themeIconCad = document.getElementById('theme-icon');
     const htmlCad = document.documentElement;
@@ -131,11 +131,15 @@
         else { themeIconCad.classList.remove('fa-moon'); themeIconCad.classList.add('fa-sun'); }
     }
 
-    // --- LÓGICA DO FORMULÁRIO DE CADASTRO ---
+    // --- LÓGICA DO FORMULÁRIO DE CADASTRO (CORRIGIDA) ---
+    // Verifica se todos os elementos do formulário existem
     if (cadastroForm && nomeInputCad && emailInputCad && senhaInputCad && cadastrarBtn) {
-        // Usa 'submit' no formulário em vez de 'click' no botão/link para melhor prática
-        cadastroForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Impede o envio padrão
+        
+        // ***** MUDANÇA PRINCIPAL AQUI *****
+        // Trocamos o listener de 'submit' no 'cadastroForm'
+        // para 'click' no 'cadastrarBtn' (que é o seu link <a>)
+        cadastrarBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Impede o link <a> de navegar
 
             const nome = nomeInputCad.value.trim();
             const email = emailInputCad.value.trim();
@@ -178,26 +182,30 @@
                 cadastrarBtn.style.opacity = '1';
             }
         });
+        // ***** FIM DA MUDANÇA *****
+
     } else {
-        console.error("Erro: Não foi possível encontrar todos os elementos do formulário de cadastro.");
+        console.error("Erro: Não foi possível encontrar um ou mais elementos do formulário de cadastro.");
     }
 
     // --- INICIALIZAÇÃO (Cadastro) ---
     document.addEventListener('DOMContentLoaded', () => {
         carregarTemaCad(); // Carrega o tema ao iniciar
-         // Verifica se os seletores foram encontrados após o DOM carregar
+        
+        // Move o listener do tema para dentro do DOMContentLoaded
+         if (themeToggleCad) {
+            themeToggleCad.addEventListener('click', toggleThemeCad);
+         } else {
+            console.error("Elemento #themeToggle não encontrado.");
+         }
+
+         // Verifica seletores (apenas para debug)
          if (!cadastroForm) console.error("Elemento #cadastroForm não encontrado.");
          if (!nomeInputCad) console.error("Elemento #name não encontrado.");
          if (!emailInputCad) console.error("Elemento #email não encontrado.");
          if (!senhaInputCad) console.error("Elemento #password não encontrado.");
          if (!cadastrarBtn) console.error("Elemento #cadastrarLink não encontrado.");
-         if (!themeToggleCad) console.error("Elemento #themeToggle não encontrado.");
     });
-
-     // Adiciona listener do tema APÓS o DOM carregar
-     if (themeToggleCad) {
-        themeToggleCad.addEventListener('click', toggleThemeCad);
-     }
 
 </script>
 </body>

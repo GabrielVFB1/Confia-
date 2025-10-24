@@ -1,0 +1,517 @@
+/* css/sobre-nos.css (VERSÃO CORRIGIDA E PADRONIZADA) */
+
+/* Reset básico */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f3f4f6;
+}
+
+html.dark body {
+    background-color: #0f172a;
+}
+
+/* Sidebar (Padronizada) */
+#sidebar {
+    background-color: #93c5fd;
+    width: 16rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Essencial */
+}
+
+html.dark #sidebar {
+    background-color: #1f2937;
+}
+
+@media (min-width: 1024px) {
+    #sidebar {
+        transform: translateX(0);
+    }
+}
+
+.side-open {
+    transform: translateX(0) !important;
+}
+
+#sidebar > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    height: 4rem;
+    border-bottom: 1px solid #d1d5db;
+}
+
+html.dark #sidebar > div:first-child {
+    border-bottom-color: #374151;
+}
+
+#sidebar nav {
+    flex-grow: 1; /* Empurra o perfil para baixo */
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+#sidebar nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+#sidebar nav a:hover {
+    background-color: #2563eb;
+}
+
+html.dark #sidebar nav a {
+    color: #cbd5e1;
+}
+
+html.dark #sidebar nav a:hover {
+    background-color: #374151;
+}
+
+/* Destaque da página ativa (Sobre Nós) */
+#sidebar nav a[href="sobre-nos.html"] {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+}
+
+#sidebar nav a i {
+    width: 1.5rem;
+    margin-right: 0.75rem;
+}
+
+/* --- BLOCO DO PERFIL CORRIGIDO (PADRÃO) --- */
+#user-profile-container {
+    margin-top: auto; /* Empurra para o fundo */
+    position: relative; 
+    z-index: 40;
+    width: 100%; 
+}
+
+#user-profile {
+    /* REMOVIDO: position: fixed, bottom, left, z-index, box-shadow, border-radius */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #93c5fd;
+    padding: 1rem; /* Ajustado para p-4 */
+    text-decoration: none;
+    transition: background-color 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+    position: static;
+}
+
+#user-profile:hover {
+    background-color: #60a5fa;
+}
+
+html.dark #user-profile {
+    background-color: #1f2937; /* Cor da sidebar escura */
+}
+
+html.dark #user-profile:hover {
+    background-color: #374151; /* Cor hover escura */
+}
+
+#user-profile img {
+    width: 2.5rem;  /* w-10 (ajustado do HTML) */
+    height: 2.5rem; /* h-10 (ajustado do HTML) */
+    border-radius: 50%;
+}
+
+#user-profile span {
+    color: white;
+    font-weight: 500;
+    font-size: 0.875rem; /* text-sm */
+}
+
+#profile-modal {
+    position: absolute;
+    left: 0;
+    bottom: 100%; /* Acima do botão */
+    margin-bottom: 0.25rem; /* mb-1 */
+    width: 100%;
+    min-width: 220px;
+    z-index: 60; 
+}
+/* --- FIM DO BLOCO DO PERFIL --- */
+
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+@media (min-width: 1024px) {
+    #overlay {
+        display: none;
+    }
+}
+
+/* Main Content */
+/* Renomeado de #main-content para .lg\:ml-64 para corresponder ao HTML */
+.lg\:ml-64 { 
+    margin-left: 0;
+}
+
+@media (min-width: 1024px) {
+    .lg\:ml-64 {
+        margin-left: 16rem;
+    }
+}
+
+/* Header */
+header {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+html.dark header {
+    background-color: rgba(30, 41, 59, 0.8);
+}
+
+header > div {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#menuToggle {
+    color: #4b5563;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+html.dark #menuToggle {
+    color: #d1d5db;
+}
+
+@media (min-width: 1024px) {
+    #menuToggle {
+        display: none;
+    }
+}
+
+/* Search Bar (Corrigido para .s-bar) */
+.s-bar {
+    position: relative;
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 1rem;
+}
+
+/* (O CSS para a busca estava faltando, mas o JS do sobre-nos não o usa ativamente) */
+/* (Se precisar, copie as regras de .s-bar, #searchInput, etc. do index.css) */
+
+
+/* Theme Toggle */
+#themeToggle {
+    color: #4b5563;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+#themeToggle:hover {
+    background-color: #e5e7eb;
+}
+
+html.dark #themeToggle {
+    color: #d1d5db;
+}
+
+html.dark #themeToggle:hover {
+    background-color: #374151;
+}
+
+/* Main Content */
+main {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+}
+
+/* About Section */
+#about-section {
+    background-color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    #about-section {
+        padding: 2rem;
+    }
+}
+
+html.dark #about-section {
+    background-color: #1e293b;
+}
+
+#about-section h2 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+html.dark #about-section h2 {
+    color: white;
+}
+
+#about-section h2 i {
+    margin-right: 0.75rem;
+    color: #3b82f6;
+}
+
+#about-section .intro-text {
+    color: #4b5563;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+html.dark #about-section .intro-text {
+    color: #d1d5db;
+}
+
+#about-section h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+html.dark #about-section h3 {
+    color: white;
+}
+
+#about-section p {
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+}
+
+html.dark #about-section p {
+    color: #d1d5db;
+}
+
+#about-section ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+}
+
+html.dark #about-section ul {
+    color: #9ca3af;
+}
+
+#about-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+#team-list {
+    color: #4b5563;
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+html.dark #team-list {
+    color: #9ca3af;
+}
+
+#team-list li {
+    margin-bottom: 0.25rem;
+}
+
+#last-update {
+    margin-top: 2.5rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+html.dark #last-update {
+    border-top-color: #334155;
+    color: #6b7280;
+}
+
+/* Footer */
+footer {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    padding: 2rem 0;
+}
+
+html.dark footer {
+    background-color: #111827;
+    color: #9ca3af;
+}
+
+#footer-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+#footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    #footer-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.footer-section h3, .footer-section h4 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
+html.dark .footer-section h3, html.dark .footer-section h4 {
+    color: white;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.footer-section a:hover {
+    color: #3b82f6;
+}
+
+#newsletter-form {
+    display: flex;
+}
+
+#newsletter-form input {
+    padding: 0.5rem 0.75rem;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    border-radius: 0.5rem 0 0 0.5rem;
+    border: none;
+    width: 100%;
+    outline: none;
+}
+
+#newsletter-form input:focus {
+    ring: 2px solid #3b82f6;
+}
+
+html.dark #newsletter-form input {
+    background-color: #1f2937;
+    color: #d1d5db;
+}
+
+#newsletter-form button {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+#newsletter-form button:hover {
+    background-color: #1d4ed8;
+}
+
+#social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#social-links a {
+    font-size: 1.25rem;
+    transition: color 0.15s;
+}
+
+#social-links a:hover {
+    color: #3b82f6;
+}
+
+#footer-bottom {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+html.dark #footer-bottom {
+    border-top-color: #374151;
+    color: #6b7280;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+    .side-open {
+        transform: translateX(0) !important;
+    }
+    
+    .overlay {
+        transition: opacity 0.3s ease-in-out;
+    }
+}

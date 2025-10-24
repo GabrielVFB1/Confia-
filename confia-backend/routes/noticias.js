@@ -18,15 +18,16 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
+
+const { protect } = require('../middleware/authMiddleware');
 // -----------------------------------------------------------------------
 
 
-// 2. As rotas agora apenas apontam para as funções do controlador
 router.get('/', noticiaController.buscarTodasAsNoticias);
-router.get('/pesquisa', noticiaController.pesquisarNoticias)
+router.get('/pesquisa', noticiaController.pesquisarNoticias);
+router.get('/categoria/:categoriaNome', noticiaController.buscarNoticiasPorCategoria); // Rota de Categoria
 router.get('/:id', noticiaController.buscarNoticiaPorId);
 router.get('/:id/relacionadas', noticiaController.buscarNoticiasRelacionadas);
-router.post('/', upload.single('imagemCapa'), noticiaController.criarNoticia);
-
+router.post('/', protect, upload.single('imagemCapa'), noticiaController.criarNoticia);
 
 module.exports = router;
